@@ -7,11 +7,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @AllArgsConstructor
-public class Tag {
+public class Language {
     private Long id;
-
     private String name;
 
-    private FlashcardsSet[] sets;
-//    can add color
 }
