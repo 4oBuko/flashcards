@@ -18,9 +18,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
-//	todo: update version of jackson because 2.0.1 has vulnerability
 }
 
 tasks.named('test') {
