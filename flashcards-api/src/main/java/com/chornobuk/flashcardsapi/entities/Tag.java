@@ -21,6 +21,8 @@ public class Tag {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @Column(length = 50)
     private String name;
 
     @ManyToMany

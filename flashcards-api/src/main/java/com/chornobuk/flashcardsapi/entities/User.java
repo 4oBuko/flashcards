@@ -23,6 +23,7 @@ public class User {
 
     private String password;
 
+    @Column(length = 50)
     private String nickname;
 
     private LocalDate registrationDate;

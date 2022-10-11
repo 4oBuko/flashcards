@@ -21,6 +21,8 @@ public class FlashcardsSet {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @Column(length = 50)
     private String name;
     @ManyToOne
     @JoinColumn(name = "question_language_id", referencedColumnName = "id")
@@ -29,6 +31,9 @@ public class FlashcardsSet {
     @ManyToOne
     @JoinColumn(name = "answer_language_id", referencedColumnName = "id")
     private Language answerLanguage;
+
+    @Column(length = 500)
+    private String description;
 
     @OneToMany
     @JoinColumn(name = "set_id", referencedColumnName = "id")

@@ -21,8 +21,9 @@ public class Flashcard {
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private FlashcardsSet set;
 
+    @Column(length = 500)
     private String question;
-
+    @Column(length = 500)
     private String answer;
 
 //    can add images as an answer
