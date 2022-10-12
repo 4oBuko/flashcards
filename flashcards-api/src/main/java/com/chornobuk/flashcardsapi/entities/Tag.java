@@ -32,7 +32,6 @@ public class Tag {
             inverseJoinColumns = @JoinColumn(name = "set_id", referencedColumnName = "id")
     )
     private List<FlashcardsSet> sets;
-//    can add color
 
     @ManyToOne
     @JoinColumn(name = "color_id", referencedColumnName = "id")
