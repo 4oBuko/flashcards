@@ -42,4 +42,6 @@ public class FlashcardsSet {
 //    todo: change name
     @ManyToMany(mappedBy = "sets")
     private List<Tag> tags;
+
+    private boolean isPublic;
 }
