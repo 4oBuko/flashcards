@@ -21,4 +21,6 @@ public class TagColor {
     private Long id;
     
     private String colorCode;
+
+    private String colorName;
 }
