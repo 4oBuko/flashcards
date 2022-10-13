@@ -27,9 +27,9 @@ public class Tag {
 
     @ManyToMany
     @JoinTable (
-            name = "sets_tags",
+            name = "flashcards_set_tag",
             joinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "set_id", referencedColumnName = "id")
+            inverseJoinColumns = @JoinColumn(name = "flashcards_set_id", referencedColumnName = "id")
     )
     private List<FlashcardsSet> sets;
 

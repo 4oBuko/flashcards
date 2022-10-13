@@ -13,7 +13,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "sets")
 public class FlashcardsSet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,7 +38,6 @@ public class FlashcardsSet {
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private List<Flashcard> flashcards;
 
-//    todo: change name
     @ManyToMany(mappedBy = "sets")
     private List<Tag> tags;
 
