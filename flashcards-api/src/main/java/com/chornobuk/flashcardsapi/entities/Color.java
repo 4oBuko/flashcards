@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TagColor {
+public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -23,4 +23,9 @@ public class TagColor {
     private String colorCode;
 
     private String colorName;
+
+    public Color(String colorCode, String colorName) {
+        this.colorCode = colorCode;
+        this.colorName = colorName;
+    }
 }

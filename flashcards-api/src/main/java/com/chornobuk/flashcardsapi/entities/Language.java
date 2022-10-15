@@ -21,4 +21,7 @@ public class Language {
     private Long id;
     private String name;
 
+    public Language(String name) {
+        this.name = name;
+    }
 }

@@ -26,5 +26,11 @@ public class Flashcard {
     @Column(length = 500)
     private String answer;
 
-//    can add images as an answer
+    public Flashcard(FlashcardsSet set, String question, String answer) {
+        this.set = set;
+        this.question = question;
+        this.answer = answer;
+    }
+
+    //    can add images as an answer
 }

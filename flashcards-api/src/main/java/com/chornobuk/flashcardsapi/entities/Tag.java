@@ -35,5 +35,5 @@ public class Tag {
 
     @ManyToOne
     @JoinColumn(name = "color_id", referencedColumnName = "id")
-    private TagColor color;
+    private Color color;
 }

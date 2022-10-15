@@ -28,4 +28,10 @@ public class User {
 
     private LocalDate registrationDate;
 
+    public User(String email, String password, String nickname, LocalDate registrationDate) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.registrationDate = registrationDate;
+    }
 }
