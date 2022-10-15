@@ -20,12 +20,12 @@ public class Color {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private String colorCode;
+    private String code;
 
-    private String colorName;
+    private String name;
 
-    public Color(String colorCode, String colorName) {
-        this.colorCode = colorCode;
-        this.colorName = colorName;
+    public Color(String code, String name) {
+        this.code = code;
+        this.name = name;
     }
 }

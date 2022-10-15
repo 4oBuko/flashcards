@@ -7,6 +7,8 @@ services:
       - "5432:5432"
     volumes:
       - .pg/storage:/var/lib/postgresql/data
+    # add code for db initialization 
+      # - ./flashcards-api/src/main/resources/data.sql:/docker-entrypoint-initdb.d/data.sql
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
