@@ -1,7 +1,7 @@
 package com.chornobuk.flashcardsapi.services;
 
 import com.chornobuk.flashcardsapi.entities.Color;
-import com.chornobuk.flashcardsapi.repositories.ColorsRepository;
+import com.chornobuk.flashcardsapi.repositories.ColorRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.stream.StreamSupport;
 @Service
 @AllArgsConstructor
 public class ColorsService {
-    private ColorsRepository colorsRepository;
+    private ColorRepository colorRepository;
 
     public List<Color> getAllColors() {
-        return StreamSupport.stream(colorsRepository.findAll().spliterator(), false)
+        return StreamSupport.stream(colorRepository.findAll().spliterator(), false)
                 .toList();
     }
 }
