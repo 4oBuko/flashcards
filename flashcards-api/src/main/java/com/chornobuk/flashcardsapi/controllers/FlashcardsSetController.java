@@ -34,7 +34,10 @@ public class FlashcardsSetController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> addNewTag() {
+    public ResponseEntity<String> addNewSet(@RequestBody FlashcardsSet newSet) {
+//        todo: get userId from access token
+        User testUser = userService.getById(1L);
+        flashcardsSetsService.addNewSet(newSet,testUser);
         return ResponseEntity.ok("todo");
     }
 

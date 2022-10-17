@@ -1,5 +1,6 @@
 package com.chornobuk.flashcardsapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,11 @@ public class Flashcard {
         this.set = set;
         this.question = question;
         this.answer = answer;
+    }
+
+    @JsonBackReference
+    public FlashcardsSet getSet() {
+        return set;
     }
 
     //    can add images as an answer

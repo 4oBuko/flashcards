@@ -1,5 +1,6 @@
 package com.chornobuk.flashcardsapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,5 +53,10 @@ public class FlashcardsSet {
         this.flashcards = flashcards;
         this.tags = tags;
         this.isPublic = isPublic;
+    }
+
+    @JsonManagedReference
+    public List<Flashcard> getFlashcards() {
+        return flashcards;
     }
 }
