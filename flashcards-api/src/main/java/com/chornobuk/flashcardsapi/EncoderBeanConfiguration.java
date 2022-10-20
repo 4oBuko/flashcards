@@ -7,9 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class EncoderBeanConfiguration {
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-//        todo: change leven of encryption
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+////        todo: change leven of encryption
+//        return new BCryptPasswordEncoder();
+//    }
 }
