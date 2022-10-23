@@ -21,7 +21,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //	todo update library version
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-
+	implementation 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.named('test') {
