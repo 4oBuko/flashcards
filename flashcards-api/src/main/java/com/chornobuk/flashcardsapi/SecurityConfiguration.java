@@ -1,6 +1,5 @@
 package com.chornobuk.flashcardsapi;
 
-import com.chornobuk.flashcardsapi.security.jwt.CustomAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

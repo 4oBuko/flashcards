@@ -1,4 +1,4 @@
-package com.chornobuk.flashcardsapi.security.jwt;
+package com.chornobuk.flashcardsapi.security;
 
 import com.chornobuk.flashcardsapi.entities.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
