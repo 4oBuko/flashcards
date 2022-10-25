@@ -6,17 +6,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-public class SecurityConfiguration implements WebMvcConfigurer {
+public class SecurityConfiguration {
 //    AuthenticationManager authenticationManager;
 
     @Bean
@@ -30,28 +34,29 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
-    }
+
+    /* todo: resolve problem with cors request. WebMvcConfigurer doesn't work with Security filter chain.
+
+     */
+    @Bean
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowedMethods(List.of("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH"));
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(List.of("Authorization"));
+        http.csrf().disable().authorizeRequests().antMatchers("/auth/*")
+                .permitAll().anyRequest().authenticated()
+                .and().formLogin().loginPage("/auth/login")
+                .and().exceptionHandling().and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().cors().configurationSource(request -> configuration);
 
 
-
-    //    todo: add filter for enabling cors request and for JWT implementation
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf().disable();
-////        http.authorizeHttpRequests().mvcMatchers("/languages").permitAll();
-//        http.authorizeRequests().mvcMatchers("/languages", "/auth/login").permitAll();
-//        http.authorizeRequests().anyRequest().authenticated();
-////                .authorizeHttpRequests().anyRequest().permitAll()
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-////                .and()
 //        http.addFilter(new CustomAuthenticationFilter(authenticationManager));
-////        http.addFilterBefore(new CustomAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
-//        return http.build();
-//    }
+//        http.addFilterBefore(new CustomAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
 
 
 }
