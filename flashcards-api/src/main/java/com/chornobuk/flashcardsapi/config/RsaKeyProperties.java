@@ -1,4 +1,4 @@
-package com.chornobuk.flashcardsapi;
+package com.chornobuk.flashcardsapi.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
