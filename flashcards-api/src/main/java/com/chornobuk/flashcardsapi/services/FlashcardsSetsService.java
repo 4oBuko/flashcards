@@ -38,4 +38,8 @@ public class FlashcardsSetsService {
 //      use a variable for saved set because of transaction
         return savedSet;
     }
+
+    public FlashcardsSet getSetById(long setId) {
+        return flashcardsSetRepository.findById(setId).orElse(null);
+    }
 }

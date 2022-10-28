@@ -19,8 +19,9 @@ public class FlashcardsSetController {
     private UserService userService;
 
     @GetMapping("/set/{setId}")
-    public ResponseEntity<String> getSetById() {
-        return ResponseEntity.ok("todo");
+    public ResponseEntity<FlashcardsSet> getSetById(@PathVariable long setId) {
+        FlashcardsSet set = flashcardsSetsService.getSetById(setId);
+        return  ResponseEntity.ok(set);
     }
 
     @GetMapping("{userId}")
