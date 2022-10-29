@@ -24,8 +24,8 @@ public class TagsController {
     @GetMapping("/{userId}")
     public ResponseEntity<List<Tag>> getUserTags(@PathVariable long userId) {
         User user = userService.getById(userId);
-        if(user == null) {
-            return ResponseEntity.badRequest().body(null);
+        if (user == null) {
+            return ResponseEntity.ok(null);
         }
         return ResponseEntity.ok(tagsService.getTagsByUser(user));
     }
