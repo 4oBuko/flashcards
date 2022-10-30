@@ -43,12 +43,12 @@ public class FlashcardsSetController {
     }
 
     @PutMapping("/{setId}")
-    public ResponseEntity<String> updateSetById() {
+    public ResponseEntity<String> updateSetById(@PathVariable long setId) {
         return ResponseEntity.ok("todo");
     }
 
     @DeleteMapping("/{setId}")
-    public ResponseEntity<String> deleteTagById() {
+    public ResponseEntity<String> deleteTagById(@PathVariable long setId) {
         return ResponseEntity.ok("todo");
     }
 
