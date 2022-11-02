@@ -1,5 +1,7 @@
 package com.chornobuk.flashcardsapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,12 +20,15 @@ public class FlashcardsSet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @Column(length = 50)
     private String name;
+
     @ManyToOne
     @JoinColumn(name = "question_language_id", referencedColumnName = "id")
     private Language questionLanguage;
@@ -58,5 +63,10 @@ public class FlashcardsSet {
     @JsonManagedReference
     public List<Flashcard> getFlashcards() {
         return flashcards;
+    }
+
+    @JsonGetter(value = "userId")
+    public Long getUserId() {
+        return user.getId();
     }
 }

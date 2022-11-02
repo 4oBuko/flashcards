@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -24,13 +26,16 @@ public class User implements UserDetails {
 
     private String email;
 
+    @JsonIgnore
     private String password;
 
     @Column(length = 50)
     private String nickname;
 
+    @JsonIgnore
     private LocalDate registrationDate;
 
+    @JsonIgnore
     private boolean isConfirmed;
 
     public User(String email, String password, String nickname, LocalDate registrationDate) {

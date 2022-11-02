@@ -1,6 +1,8 @@
 package com.chornobuk.flashcardsapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -26,6 +29,7 @@ public class Tag {
     @Column(length = 50)
     private String name;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable (
             name = "flashcards_set_tag",
@@ -38,7 +42,7 @@ public class Tag {
     @JoinColumn(name = "color_id", referencedColumnName = "id")
     private Color color;
 
-    @JsonGetter(value = "user")
+    @JsonGetter(value = "userId")
     private Long jsonUser() {
         return user.getId();
     }

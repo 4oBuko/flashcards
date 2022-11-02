@@ -1,6 +1,9 @@
 package com.chornobuk.flashcardsapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonGetter;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +21,7 @@ public class Flashcard {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private FlashcardsSet set;
@@ -36,6 +40,11 @@ public class Flashcard {
     @JsonBackReference
     public FlashcardsSet getSet() {
         return set;
+    }
+
+    @JsonGetter(value = "setId")
+    public Long getSetId() {
+        return set.getId();
     }
 
     //    can add images as an answer

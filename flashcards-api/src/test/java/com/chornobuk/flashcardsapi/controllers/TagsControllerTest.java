@@ -1,6 +1,5 @@
 package com.chornobuk.flashcardsapi.controllers;
 
-import com.chornobuk.flashcardsapi.entities.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,7 +23,7 @@ public class TagsControllerTest {
 
     @WithMockUser(value = "test")
     @Test
-    public void getTagByIdWithNonExistedUser() throws Exception {
+    public void getUserTagNonExistedUser() throws Exception {
         this.mockMvc.perform(get("/tags/0"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -33,32 +32,72 @@ public class TagsControllerTest {
 
     @WithMockUser(value = "test")
     @Test
-    public void getTagByIdSuccessful() throws Exception {
+    public void getUserTagsSuccessful() throws Exception {
         String response = """
                 [
                     {
                         "id": 1,
-                        "user": 1,
                         "name": "english",
-                        "sets": [],
-                        "color": null
+                        "color": {
+                            "id":1,
+                            "code":"#000000",
+                            "name":"white"
+                        },
+                        "userId": 1
                     },
                     {
                         "id": 2,
-                        "user": 1,
                         "name": "math",
-                        "sets": [],
-                        "color": null
+                        "color": {
+                            "id":2,
+                            "code":"#111111",
+                            "name":"black"
+                        },
+                        "userId": 1
                     },
                     {
                         "id": 3,
-                        "user": 1,
                         "name": "space",
-                        "sets": [],
-                        "color": null
+                        "color": {
+                            "id":1,
+                            "code":"#000000",
+                            "name":"white"
+                        },
+                        "userId": 1
                     }
                 ]""";
         this.mockMvc.perform(get("/tags/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(response));
+    }
+
+    @WithMockUser(value = "test")
+    @Test
+    public void getTagByIdNonExistedTag() throws Exception {
+        this.mockMvc.perform(get("/tags/tag/0"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(""));
+
+    }
+
+    @WithMockUser(value = "test")
+    @Test
+    public void getTagByIdSuccessful() throws Exception {
+        String response = """
+                {
+                    "id":1,
+                    "name":"english",
+                    "color":{
+                        "id":1,
+                        "code":"#000000",
+                        "name":"white"
+                    },
+                    "userId":1
+                }
+                """;
+        this.mockMvc.perform(get("/tags/tag/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(response));
