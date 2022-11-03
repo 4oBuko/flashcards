@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Getter
@@ -29,10 +31,12 @@ public class FlashcardsSet {
     @Column(length = 50)
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "question_language_id", referencedColumnName = "id")
     private Language questionLanguage;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "answer_language_id", referencedColumnName = "id")
     private Language answerLanguage;
@@ -44,6 +48,7 @@ public class FlashcardsSet {
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private List<Flashcard> flashcards;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "sets")
     private List<Tag> tags;
 
@@ -68,5 +73,21 @@ public class FlashcardsSet {
     @JsonGetter(value = "userId")
     public Long getUserId() {
         return user.getId();
+    }
+
+
+    @JsonGetter(value = "questionLanguageId")
+    public Long getQuestionLanguageId() {
+        return questionLanguage.getId();
+    }
+
+    @JsonGetter(value = "answerLanguageId")
+    public Long getAnswerLanguageId() {
+        return answerLanguage.getId();
+    }
+
+    @JsonGetter(value = "tags")
+    public Long[] getTags() {
+        return tags.stream().map(Tag::getId).toArray(Long[]::new);
     }
 }

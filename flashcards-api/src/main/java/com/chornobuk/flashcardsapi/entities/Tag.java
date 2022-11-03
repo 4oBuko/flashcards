@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+
 //todo: format entity json format by jackson
 @Entity
 @Setter
@@ -31,19 +32,25 @@ public class Tag {
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable (
+    @JoinTable(
             name = "flashcards_set_tag",
             joinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "flashcards_set_id", referencedColumnName = "id")
     )
     private List<FlashcardsSet> sets;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "color_id", referencedColumnName = "id")
     private Color color;
 
     @JsonGetter(value = "userId")
-    private Long jsonUser() {
+    public Long jsonUserId() {
         return user.getId();
+    }
+
+    @JsonGetter(value = "colorId")
+    public Long jsonColorId() {
+        return color.getId();
     }
 }

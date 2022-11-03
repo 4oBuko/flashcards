@@ -38,31 +38,25 @@ public class TagsControllerTest {
                     {
                         "id": 1,
                         "name": "english",
-                        "color": {
-                            "id":1,
-                            "code":"#000000",
-                            "name":"white"
-                        },
+                        "colorId": 1,
                         "userId": 1
                     },
                     {
                         "id": 2,
                         "name": "math",
-                        "color": {
-                            "id":2,
-                            "code":"#111111",
-                            "name":"black"
-                        },
+                        "colorId": 2,
                         "userId": 1
                     },
                     {
                         "id": 3,
                         "name": "space",
-                        "color": {
-                            "id":1,
-                            "code":"#000000",
-                            "name":"white"
-                        },
+                        "colorId": 1,
+                        "userId": 1
+                    },
+                    {
+                        "id": 4,
+                        "name": "science",
+                        "colorId": 2,
                         "userId": 1
                     }
                 ]""";
@@ -89,11 +83,7 @@ public class TagsControllerTest {
                 {
                     "id":1,
                     "name":"english",
-                    "color":{
-                        "id":1,
-                        "code":"#000000",
-                        "name":"white"
-                    },
+                    "colorId":1,
                     "userId":1
                 }
                 """;

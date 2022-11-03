@@ -25,11 +25,10 @@ public class FlashcardsSetController {
     }
 
     @GetMapping("{userId}")
-    public ResponseEntity<List<FlashcardsSet>> getUserTags(@PathVariable Long userId) {
+    public ResponseEntity<List<FlashcardsSet>> getUserSets(@PathVariable Long userId) {
         User user = userService.getById(userId);
         if(user == null) {
-//            todo: user correct method for response
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.ok(null);
         }
         return ResponseEntity.ok(flashcardsSetsService.getSetsByUser(user));
     }
