@@ -1,5 +1,6 @@
 package com.chornobuk.flashcardsapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -73,5 +74,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @JsonSetter(value = "password")
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

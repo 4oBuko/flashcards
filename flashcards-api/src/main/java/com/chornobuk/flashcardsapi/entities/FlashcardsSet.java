@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Getter
@@ -44,6 +42,7 @@ public class FlashcardsSet {
     @Column(length = 500)
     private String description;
 
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private List<Flashcard> flashcards;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonGetter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,10 +43,10 @@ public class Flashcard {
         return set;
     }
 
-    @JsonGetter(value = "setId")
-    public Long getSetId() {
-        return set.getId();
-    }
 
+//    @JsonSetter(value = "setId")
+//    public void setSetId(Long setId) {
+//
+//    }
     //    can add images as an answer
 }
