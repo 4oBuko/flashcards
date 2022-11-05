@@ -49,6 +49,7 @@ public class SecurityConfiguration {
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .authorizeRequests(
                         auth -> auth.antMatchers("/auth/**").permitAll()
+                                .antMatchers("/languages").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
