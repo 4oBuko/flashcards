@@ -8,6 +8,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -91,5 +92,15 @@ public class TagsControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(response));
+    }
+
+    @WithMockUser(value = "test")
+    @Test
+    public void deleteTag() throws Exception {
+        this.mockMvc.perform(delete("/tags/5"))
+                .andExpect(status().isOk());
+        this.mockMvc.perform(get("/tags/tag/5"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""));
     }
 }

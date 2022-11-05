@@ -29,7 +29,6 @@ class FlashcardsSetControllerTest {
                 .andExpect(content().string(""));
     }
 
-    //    todo: add flashcards to the test set
     @Test
     @WithMockUser(value = "test")
     public void getSetByIdSuccessful() throws Exception {

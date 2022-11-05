@@ -46,7 +46,8 @@ public class TagsController {
     }
 
     @DeleteMapping("/{tagId}")
-    public ResponseEntity<String> deleteTagById() {
+    public ResponseEntity<String> deleteTagById(@PathVariable long tagId) {
+        tagsService.deleteTag(tagId);
         return ResponseEntity.ok("todo");
     }
 }

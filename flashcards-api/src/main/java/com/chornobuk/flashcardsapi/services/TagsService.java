@@ -22,4 +22,8 @@ public class TagsService {
     public Tag getTagById(long tagId) {
         return tagRepository.findById(tagId).orElse(null);
     }
+
+    public void deleteTag(long tagId) {
+        tagRepository.deleteById(tagId);
+    }
 }
