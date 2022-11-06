@@ -31,7 +31,7 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         Map<String, String> tokens = new HashMap<>();
         tokens.put("token", tokenService.generateToken(authentication));
-        tokens.put("refreshToken", "todo");//todo:add refresh token
+        tokens.put("refreshToken", tokenService.generateRefreshToken(authentication));
         return ResponseEntity.ok(tokens);
     }
 
