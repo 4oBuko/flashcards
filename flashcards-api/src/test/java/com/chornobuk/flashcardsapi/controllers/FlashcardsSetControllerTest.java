@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -126,6 +127,18 @@ class FlashcardsSetControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(response));
+    }
+
+
+    @Test
+    @WithMockUser(value = "test")
+    public void deleteSetById() throws Exception {
+        String response = "";
+        this.mockMvc.perform(delete("/sets/4"))
+                .andExpect(status().isOk());
+        this.mockMvc.perform(get("/sets/set/4"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""));
     }
 }
 

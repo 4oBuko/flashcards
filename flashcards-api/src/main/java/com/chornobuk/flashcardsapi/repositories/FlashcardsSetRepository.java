@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface FlashcardsSetRepository extends CrudRepository<FlashcardsSet, Long> {
     List<FlashcardsSet> getFlashcardsSetByUser(User user);
+
+    void deleteById(Long id);
 }

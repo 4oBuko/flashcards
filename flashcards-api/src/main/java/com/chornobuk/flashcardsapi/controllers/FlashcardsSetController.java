@@ -21,13 +21,13 @@ public class FlashcardsSetController {
     @GetMapping("/set/{setId}")
     public ResponseEntity<FlashcardsSet> getSetById(@PathVariable long setId) {
         FlashcardsSet set = flashcardsSetsService.getSetById(setId);
-        return  ResponseEntity.ok(set);
+        return ResponseEntity.ok(set);
     }
 
     @GetMapping("{userId}")
     public ResponseEntity<List<FlashcardsSet>> getUserSets(@PathVariable Long userId) {
         User user = userService.getById(userId);
-        if(user == null) {
+        if (user == null) {
             return ResponseEntity.ok(null);
         }
         return ResponseEntity.ok(flashcardsSetsService.getSetsByUser(user));
@@ -37,7 +37,7 @@ public class FlashcardsSetController {
     public ResponseEntity<String> addNewSet(@RequestBody FlashcardsSet newSet) {
 //        todo: get userId from access token
         User testUser = userService.getById(1L);
-        flashcardsSetsService.addNewSet(newSet,testUser);
+        flashcardsSetsService.addNewSet(newSet, testUser);
         return ResponseEntity.ok("todo");
     }
 
@@ -48,6 +48,7 @@ public class FlashcardsSetController {
 
     @DeleteMapping("/{setId}")
     public ResponseEntity<String> deleteTagById(@PathVariable long setId) {
+        flashcardsSetsService.deleteSetById(setId);
         return ResponseEntity.ok("todo");
     }
 
