@@ -1,5 +1,6 @@
 package com.chornobuk.flashcardsapi.services;
 
+import com.chornobuk.flashcardsapi.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,12 +23,13 @@ public class JwtTokenService {
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
+        User user = (User) authentication.getPrincipal();
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
-                .subject(authentication.getName())
-                .claim("scope", scope)
+                .claim("id", user.getId())
+                .claim("email", user.getEmail())
+                .claim("nickname", user.getNickname())
                 .build();
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
@@ -37,12 +39,13 @@ public class JwtTokenService {
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
+        User user = (User) authentication.getPrincipal();
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(182, ChronoUnit.DAYS))
-                .subject(authentication.getName())
-                .claim("scope", scope)
+                .claim("id", user.getId())
+                .claim("email", user.getEmail())
+                .claim("nickname", user.getNickname())
                 .build();
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
