@@ -4,12 +4,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -103,4 +104,35 @@ public class TagsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(""));
     }
+
+    @WithMockUser(value = "test")
+    @Test
+    public void addNewTagWrongColorId() throws Exception {
+        String body = """
+                {
+                    "name" : "test",
+                    "colorId" : 0
+                }
+                """;
+        this.mockMvc.perform(post("/tags")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)
+        ).andExpect(status().isBadRequest());
+    }
+
+    @WithMockUser(value = "test")
+    @Test
+    public void addNewTagEmptyName() throws Exception {
+        String body = """
+                {
+                    "colorId" : 1
+                }
+                """;
+        this.mockMvc.perform(post("/tags")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)
+        ).andExpect(status().isBadRequest());
+    }
+//    todo: this how to do test with jwt
+//      because it's impossible to test successful case when request doesn't have jwt
 }
