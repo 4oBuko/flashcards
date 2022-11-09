@@ -17,4 +17,8 @@ public class ColorsService {
         return StreamSupport.stream(colorRepository.findAll().spliterator(), false)
                 .toList();
     }
+
+    public Color getColorById(long id) {
+        return colorRepository.findById(id).orElse(null);
+    }
 }

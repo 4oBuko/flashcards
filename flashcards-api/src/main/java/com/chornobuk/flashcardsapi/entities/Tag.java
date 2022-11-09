@@ -3,10 +3,12 @@ package com.chornobuk.flashcardsapi.entities;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@ToString
 @AllArgsConstructor
 public class Tag {
     @Id
@@ -43,6 +46,13 @@ public class Tag {
     @ManyToOne
     @JoinColumn(name = "color_id", referencedColumnName = "id")
     private Color color;
+
+
+    public Tag(User user, String name, Color color) {
+        this.user = user;
+        this.name = name;
+        this.color = color;
+    }
 
     @JsonGetter(value = "userId")
     public Long jsonUserId() {

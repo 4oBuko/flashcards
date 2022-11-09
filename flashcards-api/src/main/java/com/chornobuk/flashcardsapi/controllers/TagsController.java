@@ -1,8 +1,12 @@
 package com.chornobuk.flashcardsapi.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.chornobuk.flashcardsapi.entities.Tag;
@@ -36,8 +40,20 @@ public class TagsController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> addNewTag() {
-        return ResponseEntity.ok("todo");
+    public ResponseEntity<String> addNewTag(@RequestBody Map<String, Object> data, @AuthenticationPrincipal Jwt principal) {
+        if (!data.containsKey("name") || !data.containsKey("colorId")) {
+            return ResponseEntity.badRequest().body("");
+        }
+        try {
+            String name = (String) data.get("name");
+            long colorId = (long) (int) data.get("colorId");
+            User user = userService.getById((long) principal.getClaims().get("id"));
+            tagsService.createNewTag(name, colorId, user);
+            return ResponseEntity.ok("Tag was added successfully");
+
+        } catch (ClassCastException | NullPointerException e) {
+            return ResponseEntity.badRequest().body("");
+        }
     }
 
     @PutMapping("/{tagId}")

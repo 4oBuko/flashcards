@@ -2,6 +2,7 @@ package com.chornobuk.flashcardsapi.services;
 
 import java.util.List;
 
+import com.chornobuk.flashcardsapi.entities.Color;
 import org.springframework.stereotype.Service;
 
 import com.chornobuk.flashcardsapi.entities.Tag;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class TagsService {
     private TagRepository tagRepository;
+    private ColorsService colorsService;
 
     public List<Tag> getTagsByUser(User user) {
         return tagRepository.findAllByUser(user);
@@ -25,5 +27,12 @@ public class TagsService {
 
     public void deleteTag(long tagId) {
         tagRepository.deleteById(tagId);
+    }
+
+    public void createNewTag(String name, long colorId, User user) throws NullPointerException {
+        Color color = colorsService.getColorById(colorId);
+        if (color == null) throw new NullPointerException("");
+        Tag newTag = new Tag(user, name, color);
+        tagRepository.save(newTag);
     }
 }
