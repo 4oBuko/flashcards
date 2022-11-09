@@ -40,13 +40,13 @@ public class TagsController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> addNewTag(@RequestBody Map<String, Object> data, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<String> addNewTag(@RequestBody Map<String, String> data, @AuthenticationPrincipal Jwt principal) {
         if (!data.containsKey("name") || !data.containsKey("colorId")) {
             return ResponseEntity.badRequest().body("");
         }
         try {
             String name = (String) data.get("name");
-            long colorId = (long) (int) data.get("colorId");
+            long colorId = Long.parseLong(data.get("colorId"));
             User user = userService.getById((long) principal.getClaims().get("id"));
             tagsService.createNewTag(name, colorId, user);
             return ResponseEntity.ok("Tag was added successfully");
