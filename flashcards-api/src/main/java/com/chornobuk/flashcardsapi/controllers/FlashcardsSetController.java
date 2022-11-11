@@ -6,6 +6,8 @@ import com.chornobuk.flashcardsapi.services.FlashcardsSetsService;
 import com.chornobuk.flashcardsapi.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,11 +36,17 @@ public class FlashcardsSetController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> addNewSet(@RequestBody FlashcardsSet newSet) {
-//        todo: get userId from access token
-        User testUser = userService.getById(1L);
-        flashcardsSetsService.addNewSet(newSet, testUser);
-        return ResponseEntity.ok("todo");
+    public ResponseEntity<String> addNewSet(@RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
+        long userId = (long) principal.getClaims().get("id");
+        User testUser = userService.getById(userId);
+        if (newSet.getName() == null
+                || newSet.getQuestionLanguage() == null
+                || newSet.getAnswerLanguage() == null
+                || newSet.getFlashcards() == null) {
+            return ResponseEntity.badRequest().body("add message");
+        }
+//        flashcardsSetsService.addNewSet(newSet, testUser);
+        return ResponseEntity.ok("set was successfully added!");
     }
 
     @PutMapping("/{setId}")

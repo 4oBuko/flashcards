@@ -16,6 +16,8 @@ public class FlashcardsSetsService {
     private FlashcardsSetRepository flashcardsSetRepository;
     private FlashcardRepository flashcardRepository;
 
+    private UserService userService;
+
     public List<FlashcardsSet> getSetsByUser(User user) {
         //        todo: check who made the request
         return flashcardsSetRepository.getFlashcardsSetByUser(user);
@@ -30,12 +32,10 @@ public class FlashcardsSetsService {
     }
 
     @Transactional
-    public FlashcardsSet addNewSet(FlashcardsSet newSet, User user) {
+    public void addNewSet(FlashcardsSet newSet, User user) {
         newSet.setUser(user);
         newSet.setFlashcards((List<Flashcard>) flashcardRepository.saveAll(newSet.getFlashcards()));
-        FlashcardsSet savedSet = flashcardsSetRepository.save(newSet);
-//      use a variable for saved set because of transaction
-        return savedSet;
+        flashcardsSetRepository.save(newSet);
     }
 
     public FlashcardsSet getSetById(long setId) {

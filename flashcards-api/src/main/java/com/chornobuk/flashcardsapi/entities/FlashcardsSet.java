@@ -3,6 +3,7 @@ package com.chornobuk.flashcardsapi.entities;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,7 +65,7 @@ public class FlashcardsSet {
         this.isPublic = isPublic;
     }
 
-    @JsonManagedReference
+//    @JsonManagedReference
     public List<Flashcard> getFlashcards() {
         return flashcards;
     }
@@ -83,6 +84,26 @@ public class FlashcardsSet {
     @JsonGetter(value = "answerLanguageId")
     public Long getAnswerLanguageId() {
         return answerLanguage.getId();
+    }
+
+    @JsonSetter(value = "questionLanguage")
+    public void setJsonQuestionLanguage(Language language) {
+        questionLanguage = language;
+    }
+
+    @JsonSetter(value = "answerLanguage")
+    public void setJsonAnswerLanguage(Language language) {
+        answerLanguage = language;
+    }
+
+    @JsonSetter(value = "tags")
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    @JsonSetter(value = "flashcards")
+    public void setFlashcards(List<Flashcard> flashcards) {
+        this.flashcards = flashcards;
     }
 
     @JsonGetter(value = "tags")

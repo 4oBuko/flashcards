@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.chornobuk.flashcardsapi.entities.Tag;
@@ -45,7 +44,7 @@ public class TagsController {
             return ResponseEntity.badRequest().body("");
         }
         try {
-            String name = (String) data.get("name");
+            String name = data.get("name");
             long colorId = Long.parseLong(data.get("colorId"));
             User user = userService.getById((long) principal.getClaims().get("id"));
             tagsService.createNewTag(name, colorId, user);
