@@ -43,9 +43,9 @@ public class FlashcardsSetController {
                 || newSet.getQuestionLanguage() == null
                 || newSet.getAnswerLanguage() == null
                 || newSet.getFlashcards() == null) {
-            return ResponseEntity.badRequest().body("add message");
+            return ResponseEntity.badRequest().body("bad request");
         }
-//        flashcardsSetsService.addNewSet(newSet, testUser);
+        flashcardsSetsService.addNewSet(newSet, testUser);
         return ResponseEntity.ok("set was successfully added!");
     }
 
