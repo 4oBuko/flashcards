@@ -49,14 +49,22 @@ public class FlashcardsSetController {
         return ResponseEntity.ok("set was successfully added!");
     }
 
-    @PutMapping("/{setId}")
-    public ResponseEntity<String> updateSetById(@PathVariable long setId) {
-        return ResponseEntity.ok("todo");
+//    todo: test it
+    @PutMapping()
+    public ResponseEntity<FlashcardsSet> updateSetById(@RequestBody FlashcardsSet setToUpdate) {
+        try {
+            FlashcardsSet updatedSet = flashcardsSetsService.updateSet(setToUpdate);
+            return ResponseEntity.ok(updatedSet);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
+    //    todo: test it
     @DeleteMapping("/{setId}")
     public ResponseEntity<String> deleteTagById(@PathVariable long setId) {
         flashcardsSetsService.deleteSetById(setId);
+//        todo: check if the user can delete this tag
         return ResponseEntity.ok("tag was successfully deleted");
     }
 
