@@ -57,7 +57,7 @@ public class FlashcardsSetController {
     @DeleteMapping("/{setId}")
     public ResponseEntity<String> deleteTagById(@PathVariable long setId) {
         flashcardsSetsService.deleteSetById(setId);
-        return ResponseEntity.ok("todo");
+        return ResponseEntity.ok("tag was successfully deleted");
     }
 
 //    todo: method for setting tag for a flashcards set
