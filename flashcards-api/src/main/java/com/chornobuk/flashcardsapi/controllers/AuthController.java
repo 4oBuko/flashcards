@@ -19,7 +19,7 @@ import java.util.Map;
 @RequestMapping("auth")
 @AllArgsConstructor
 public class AuthController {
-//    todo: add new controller for user (change user's data, etc.)
+    //    todo: add new controller for user (change user's data, etc.)
     private final static Logger LOG = LoggerFactory.getLogger(AuthController.class);
     private UserService userService;
 
@@ -37,8 +37,10 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<String> refreshAccessToken() {
-        return ResponseEntity.ok("todo");
+    public ResponseEntity<String> refreshAccessToken(@RequestBody Map<String,String> body) {
+//todo: if refresh token is valid generate new access and refresh tokens
+//        return ResponseEntity.ok("todo");
+        return ResponseEntity.ok(String.valueOf(tokenService.isTokenValid(body.get("refreshToken"))));
     }
 
     @PostMapping("/register")
