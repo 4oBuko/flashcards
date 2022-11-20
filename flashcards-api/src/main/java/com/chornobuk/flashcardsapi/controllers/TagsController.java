@@ -55,9 +55,17 @@ public class TagsController {
         }
     }
 
-    @PutMapping("/{tagId}")
-    public ResponseEntity<String> updateTagById() {
-        return ResponseEntity.ok("todo");
+    @PutMapping()
+    public ResponseEntity<Tag> updateTagById(@RequestBody Map<String, String> body) {
+        try {
+            String newName = body.get("name");
+            Long colorId = Long.valueOf(body.get("colorId"));
+            Long tagId = Long.valueOf(body.get("id"));
+            Tag updatedTag = tagsService.updateTag(tagId, colorId, newName);
+            return ResponseEntity.ok(updatedTag);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @DeleteMapping("/{tagId}")

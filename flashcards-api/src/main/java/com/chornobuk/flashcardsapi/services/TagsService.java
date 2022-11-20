@@ -1,6 +1,7 @@
 package com.chornobuk.flashcardsapi.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.chornobuk.flashcardsapi.entities.Color;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,20 @@ public class TagsService {
         if (color == null) throw new NullPointerException("");
         Tag newTag = new Tag(user, name, color);
         tagRepository.save(newTag);
+    }
+
+    public Tag updateTag(Long tagId, Long newColorId, String newName) throws IllegalArgumentException {
+        Tag tagToUpdate = tagRepository.findById(tagId).orElse(null);
+        if (tagToUpdate == null) {
+            throw new IllegalArgumentException();
+        }
+        if (!tagToUpdate.getColor().getId().equals(newColorId)) {
+            tagToUpdate.setColor(colorsService.getColorById(newColorId));
+        }
+        if (!tagToUpdate.getName().equals(newName)) {
+            tagToUpdate.setName(newName);
+        }
+        tagToUpdate = tagRepository.save(tagToUpdate);
+        return tagRepository.save(tagToUpdate);
     }
 }

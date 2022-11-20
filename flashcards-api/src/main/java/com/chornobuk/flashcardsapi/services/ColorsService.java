@@ -18,7 +18,7 @@ public class ColorsService {
                 .toList();
     }
 
-    public Color getColorById(long id) {
+    public Color getColorById(long id) throws IllegalArgumentException {
         return colorRepository.findById(id).orElse(null);
     }
 }

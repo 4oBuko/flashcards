@@ -135,4 +135,23 @@ public class TagsControllerTest {
     }
 //    todo: this how to do test with jwt
 //      because it's impossible to test successful case when request doesn't have jwt
+
+
+    @WithMockUser(value = "test")
+    @Test
+    public void updateTag() throws Exception {
+        String updatedTag = """
+                 {
+                         "id": 4,
+                         "name": "rockets",
+                         "colorId": 2,
+                         "userId": 1
+                 }
+                 """;
+        this.mockMvc.perform(put("/tags")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedTag)
+                ).andExpect(status().isOk())
+                .andExpect(content().json(updatedTag));
+    }
 }
