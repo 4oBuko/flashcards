@@ -67,6 +67,4 @@ public class FlashcardsSetController {
 //        todo: check if the user can delete this tag
         return ResponseEntity.ok("tag was successfully deleted");
     }
-
-//    todo: method for setting tag for a flashcards set
 }

@@ -43,12 +43,4 @@ public class AuthController {
         return ResponseEntity.ok(String.valueOf(tokenService.isTokenValid(body.get("refreshToken"))));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerNewUser(@RequestBody User newUser) {
-        User registeredUser = userService.registerNewUser(newUser);
-        if (registeredUser != null) {
-            return ResponseEntity.ok("Registration successful!");
-        }
-        return ResponseEntity.badRequest().body("Registration failed");
-    }
 }
