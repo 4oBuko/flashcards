@@ -6,6 +6,7 @@ import com.chornobuk.flashcardsapi.services.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +23,6 @@ public class AuthController {
     //    todo: add new controller for user (change user's data, etc.)
     private final static Logger LOG = LoggerFactory.getLogger(AuthController.class);
     private UserService userService;
-
     private AuthenticationManager authenticationManager;
     private final JwtTokenService tokenService;
 
@@ -30,17 +30,35 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        User authenticationUser = (User) authentication.getPrincipal();
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("token", tokenService.generateToken(authentication));
-        tokens.put("refreshToken", tokenService.generateRefreshToken(authentication));
+        tokens.put("token", tokenService.generateToken(authenticationUser));
+        tokens.put("refreshToken", tokenService.generateRefreshToken(authenticationUser));
         return ResponseEntity.ok(tokens);
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<String> refreshAccessToken(@RequestBody Map<String,String> body) {
-//todo: if refresh token is valid generate new access and refresh tokens
-//        return ResponseEntity.ok("todo");
-        return ResponseEntity.ok(String.valueOf(tokenService.isTokenValid(body.get("refreshToken"))));
+    public ResponseEntity<Map<String, String>> refreshAccessToken(@RequestBody Map<String, String> body) {
+        String refreshToken = body.get("refreshToken");
+        ResponseEntity.BodyBuilder unauthorizedBodyBuilder = ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+        String notValidTokenMessage = "Token isn't valid";
+        Map<String, String> response;
+        if (refreshToken == null) {
+            response = new HashMap<>();
+            response.put("message", "Token isn't present!");
+            return unauthorizedBodyBuilder.body(response);
+        }
+        response = new HashMap<>();
+        response.put("message", notValidTokenMessage);
+        if (!tokenService.isTokenValid(refreshToken)) {
+            return unauthorizedBodyBuilder.body(response);
+        }
+        User user = userService.getUserByToken(refreshToken);
+        if (user == null) {
+            return unauthorizedBodyBuilder.body(response);
+        }
+        response = tokenService.generateTokens(user);
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -16,8 +16,9 @@ import java.time.LocalDate;
 public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private JwtTokenService jwtTokenService;
 
-    public User getById(Long id) {
+    public User getById(Long id) throws IllegalArgumentException {
         return userRepository.findById(id).orElse(null);
     }
 
@@ -33,5 +34,13 @@ public class UserService implements UserDetailsService {
         newUser.setConfirmed(true);//todo: change on false after implementing email verification
         newUser = userRepository.save(newUser);
         return newUser;
+    }
+
+    public User getUserByToken(String token) {
+        Long userId = (Long) jwtTokenService.getTokenClaims(token).get("id");
+        if (userId == null) {
+            return null;
+        }
+        return getById(userId);
     }
 }

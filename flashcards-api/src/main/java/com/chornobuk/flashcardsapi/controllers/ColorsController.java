@@ -20,4 +20,5 @@ public class ColorsController {
     public ResponseEntity<List<Color>> getAllColors() {
         return ResponseEntity.ok(colorsService.getAllColors());
     }
+    // todo: I can join this controller to Tags controller because colors use only for tags.
 }
