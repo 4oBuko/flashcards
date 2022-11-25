@@ -43,4 +43,38 @@ public class UserService implements UserDetailsService {
         }
         return getById(userId);
     }
+
+    public User updatePassoword(String newPassword, Long userId) {
+        // I can get userId from jwt token or as a request param
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        User user = userRepository.findById(userId).orElse(null);
+        if(user == null) {
+            return null;
+        }
+        user.setPassword(encodedNewPassword);
+        return userRepository.save(user);
+    }
+
+    public boolean updateEmail(String newEmail, Long userId) {
+        // User user = userRepository.findById(userId).orElse(null);
+        // todo: get user from db, if null return false or throw an exception
+        // if user exists set new email and set confirmed to false
+        // send confirmation letter to the new email address
+        // method returns logical value if email was updated
+        return false;
+    }
+
+    public User updateNickname(String newNickname, Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if(user == null) {
+            return null;
+        }
+        user.setNickname(newNickname);
+        return userRepository.save(user);
+    }
+
+    public boolean isNicknameAvailable(String nickname) {
+        // check if the nickname is available and return resultof the search 
+        return false;
+    }
 }

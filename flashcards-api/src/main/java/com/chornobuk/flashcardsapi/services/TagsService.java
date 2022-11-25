@@ -1,7 +1,6 @@
 package com.chornobuk.flashcardsapi.services;
 
 import java.util.List;
-import java.util.Objects;
 
 import com.chornobuk.flashcardsapi.entities.Color;
 import org.springframework.stereotype.Service;
