@@ -45,7 +45,6 @@ public class UserService implements UserDetailsService {
     }
 
     public User updatePassoword(String newPassword, Long userId) {
-        // I can get userId from jwt token or as a request param
         String encodedNewPassword = passwordEncoder.encode(newPassword);
         User user = userRepository.findById(userId).orElse(null);
         if(user == null) {

@@ -18,19 +18,23 @@ public class UsersController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
-        if(userId == null) {
+        if (userId == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        User user = userService.getById(userId); 
-        if(user == null) {
+        User user = userService.getById(userId);
+        if (user == null) {
             return ResponseEntity.ok(null);
         }
         return ResponseEntity.ok(user);
     }
 
     @PutMapping("/user/{userId}/password")
-    public ResponseEntity<String> updateUserPassowrd(@RequestParam Long userId) {
-        return ResponseEntity.ok("todo");
+    public ResponseEntity<User> updateUserPassowrd(@RequestParam Long userId, @RequestBody String newPassowrd) {
+        User userWithNewPassword = userService.updatePassoword(newPassowrd, userId);
+        if (userWithNewPassword == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.ok(userWithNewPassword);
     }
 
     @PutMapping("user/{userId}/email")
