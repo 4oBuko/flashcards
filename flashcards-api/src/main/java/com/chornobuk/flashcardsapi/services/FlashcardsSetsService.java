@@ -16,8 +16,7 @@ public class FlashcardsSetsService {
     private FlashcardsSetRepository flashcardsSetRepository;
     private FlashcardRepository flashcardRepository;
 
-    private UserService userService;
-
+    
     public List<FlashcardsSet> getSetsByUser(User user) {
         //        todo: check who made the request
         return flashcardsSetRepository.getFlashcardsSetByUser(user);

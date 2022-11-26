@@ -31,6 +31,7 @@ public class UserService implements UserDetailsService {
     public User registerNewUser(User newUser) {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser.setRegistrationDate(LocalDate.now());
+        // todo check is 
         newUser.setConfirmed(true);//todo: change on false after implementing email verification
         newUser = userRepository.save(newUser);
         return newUser;
@@ -73,7 +74,6 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean isNicknameAvailable(String nickname) {
-        // check if the nickname is available and return resultof the search 
-        return false;
+        return userRepository.findAllByNickname(nickname).size() == 0;
     }
 }

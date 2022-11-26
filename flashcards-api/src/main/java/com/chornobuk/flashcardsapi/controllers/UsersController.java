@@ -47,4 +47,11 @@ public class UsersController {
         return ResponseEntity.ok("todo");
     }
 
+    // this endpoint will be used for registration and nickname update
+    @GetMapping("nickname/{nickname}")
+    public ResponseEntity<String> getNicknameAvilability(@RequestParam String nickname) {
+        String response = "isAvailable: " + userService.isNicknameAvailable(nickname);
+        return ResponseEntity.ok(response);
+    }
+
 }
