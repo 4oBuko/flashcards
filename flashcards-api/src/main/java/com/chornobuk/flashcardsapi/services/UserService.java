@@ -17,6 +17,7 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private JwtTokenService jwtTokenService;
+    private EmailService emailService;
 
     public User getById(Long id) throws IllegalArgumentException {
         return userRepository.findById(id).orElse(null);
@@ -31,8 +32,8 @@ public class UserService implements UserDetailsService {
     public User registerNewUser(User newUser) {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser.setRegistrationDate(LocalDate.now());
-        // todo check is 
-        newUser.setConfirmed(true);//todo: change on false after implementing email verification
+        // todo check is
+        newUser.setConfirmed(true);// todo: change on false after implementing email verification
         newUser = userRepository.save(newUser);
         return newUser;
     }
@@ -48,25 +49,28 @@ public class UserService implements UserDetailsService {
     public User updatePassoword(String newPassword, Long userId) {
         String encodedNewPassword = passwordEncoder.encode(newPassword);
         User user = userRepository.findById(userId).orElse(null);
-        if(user == null) {
+        if (user == null) {
             return null;
         }
         user.setPassword(encodedNewPassword);
         return userRepository.save(user);
     }
 
-    public boolean updateEmail(String newEmail, Long userId) {
-        // User user = userRepository.findById(userId).orElse(null);
-        // todo: get user from db, if null return false or throw an exception
-        // if user exists set new email and set confirmed to false
-        // send confirmation letter to the new email address
-        // method returns logical value if email was updated
-        return false;
+    public User updateEmail(Long userId, String newEmail) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        user.setEmail(newEmail);
+        user.setConfirmed(false);
+        userRepository.save(user);
+        emailService.sendEmailUpdateLetter(user);
+        return user;
     }
 
-    public User updateNickname(String newNickname, Long userId) {
+    public User updateNickname(Long userId, String newNickname) {
         User user = userRepository.findById(userId).orElse(null);
-        if(user == null) {
+        if (user == null) {
             return null;
         }
         user.setNickname(newNickname);

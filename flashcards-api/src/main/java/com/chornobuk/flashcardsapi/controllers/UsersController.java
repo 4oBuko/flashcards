@@ -38,13 +38,21 @@ public class UsersController {
     }
 
     @PutMapping("user/{userId}/email")
-    public ResponseEntity<String> updateUserEmail() {
-        return ResponseEntity.ok("todo");
+    public ResponseEntity<User> updateUserEmail(@RequestParam Long userId, @RequestBody String newEmail) {
+        User userWithNewEmail = userService.updateEmail(userId, newEmail);
+        if(userWithNewEmail == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.ok(userWithNewEmail);
     }
 
     @PutMapping("user/{userId}/nickname")
-    public ResponseEntity<String> updateUserNickname() {
-        return ResponseEntity.ok("todo");
+    public ResponseEntity<User> updateUserNickname(@RequestParam Long userId, @RequestBody String newNickname) {
+        User userWithNewNickname = userService.updateNickname(userId,newNickname);
+        if(userWithNewNickname == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.ok(userWithNewNickname);
     }
 
     // this endpoint will be used for registration and nickname update
