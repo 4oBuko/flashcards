@@ -1,11 +1,14 @@
 package com.chornobuk.flashcardsapi.controllers;
 
 import com.chornobuk.flashcardsapi.entities.User;
+import com.chornobuk.flashcardsapi.services.EmailService;
 import com.chornobuk.flashcardsapi.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 public class RegistrationController {
     private final UserService userService;
+    private EmailService emailService;
 
     @PostMapping()
     public ResponseEntity<String> registerNewUser(@RequestBody User newUser) {
@@ -24,10 +28,23 @@ public class RegistrationController {
         return ResponseEntity.badRequest().body("Registration failed");
     }
 
+    // todo: test it
     @GetMapping("/confirm")
     public void verifyEmail(HttpServletResponse servletResponse, @RequestParam String token) {
-//        todo: confirm token
-//          send redirect to front-end if token was verified
-//          if token is expired send a new one
+        String message = "message: ";
+        if (emailService.verifyToken(token)) {
+            servletResponse.setStatus(HttpServletResponse.SC_OK);
+            message += "\"verified successufully!\"";
+        } else {
+            servletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            message += "\"verification failed! New verification letter was sent!\"";
+        }
+        try {
+            servletResponse.sendRedirect("frontendUrl");
+            servletResponse.getWriter().write(message);
+            servletResponse.getWriter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

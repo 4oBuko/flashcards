@@ -20,7 +20,6 @@ import java.util.Map;
 @RequestMapping("auth")
 @AllArgsConstructor
 public class AuthController {
-    //    todo: add new controller for user (change user's data, etc.)
     private final static Logger LOG = LoggerFactory.getLogger(AuthController.class);
     private UserService userService;
     private AuthenticationManager authenticationManager;

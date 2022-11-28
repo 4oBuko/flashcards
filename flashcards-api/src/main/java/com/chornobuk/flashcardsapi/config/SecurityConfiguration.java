@@ -32,7 +32,7 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // todo: change leven of encryption
+        // todo: change level of encryption
         return new BCryptPasswordEncoder();
     }
 
