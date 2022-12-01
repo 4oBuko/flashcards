@@ -4,11 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -19,7 +20,6 @@ class FlashcardsSetControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
 
     @Test
     @WithMockUser(value = "test")
@@ -66,7 +66,6 @@ class FlashcardsSetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(""));
     }
-
 
     @Test
     @WithMockUser(value = "test")
@@ -129,7 +128,6 @@ class FlashcardsSetControllerTest {
                 .andExpect(content().json(response));
     }
 
-
     @Test
     @WithMockUser(value = "test")
     public void deleteSetById() throws Exception {
@@ -139,5 +137,31 @@ class FlashcardsSetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(""));
     }
-}
 
+    @Test
+    @WithMockUser(value = "test")
+    public void updateSetById() throws Exception {
+        String updatedSet = """
+                {
+                    "id":4,
+                    "name":"countries",
+                    "description":"top 2 the biggest countries",
+                    "flashcards":[
+                    {"id":18,"question":"2nd","answer":"Canada","setId":4}
+                    ],
+                    "public":true,
+                    "tags":[],
+                    "userId":1,
+                    "questionLanguageId":1,
+                    "answerLanguageId":1
+                }
+                    """;
+        this.mockMvc.perform(put("/sets")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updatedSet));
+        this.mockMvc.perform(get("/sets/4"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(updatedSet));
+    }
+
+}

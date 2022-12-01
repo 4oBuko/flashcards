@@ -60,7 +60,6 @@ public class FlashcardsSetController {
         }
     }
 
-    //    todo: test it
     @DeleteMapping("/{setId}")
     public ResponseEntity<String> deleteTagById(@PathVariable long setId) {
         flashcardsSetsService.deleteSetById(setId);
