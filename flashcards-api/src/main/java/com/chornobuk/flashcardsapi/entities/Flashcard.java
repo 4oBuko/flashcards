@@ -1,10 +1,7 @@
 package com.chornobuk.flashcardsapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,11 +39,4 @@ public class Flashcard {
     public FlashcardsSet getSet() {
         return set;
     }
-
-
-//    @JsonSetter(value = "setId")
-//    public void setSetId(Long setId) {
-//
-//    }
-    //    can add images as an answer
 }

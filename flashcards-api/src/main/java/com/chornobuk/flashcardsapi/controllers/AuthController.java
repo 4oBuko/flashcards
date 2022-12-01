@@ -4,8 +4,6 @@ import com.chornobuk.flashcardsapi.entities.User;
 import com.chornobuk.flashcardsapi.services.JwtTokenService;
 import com.chornobuk.flashcardsapi.services.UserService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +18,6 @@ import java.util.Map;
 @RequestMapping("auth")
 @AllArgsConstructor
 public class AuthController {
-    private final static Logger LOG = LoggerFactory.getLogger(AuthController.class);
     private UserService userService;
     private AuthenticationManager authenticationManager;
     private final JwtTokenService tokenService;

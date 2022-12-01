@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 public class EmailService {
     private VerificationTokenRepository tokenRepository;
     private static final int LETTER_VALIDITY_DAYS = 1;
-    
+
     public boolean verifyToken(String token) {
         VerificationToken verificationToken = tokenRepository.findByToken(token).orElse(null);
-        if( verificationToken == null)  {
+        if (verificationToken == null) {
             return false;
         }
         if (verificationToken.getExpiresAt().isAfter(LocalDateTime.now())) {
@@ -42,11 +42,11 @@ public class EmailService {
 
     private VerificationToken createTokenByUser(User user) {
         VerificationToken verificationToken = new VerificationToken();
-        String token = "";//todo:generate token
+        String token = "";// todo:generate token
         verificationToken.setUser(user);
         verificationToken.setToken(token);
         verificationToken.setCreatedAt(LocalDateTime.now());
         verificationToken.setExpiresAt(LocalDateTime.now().plusDays(LETTER_VALIDITY_DAYS));
-        return token;
+        return verificationToken;
     }
 }

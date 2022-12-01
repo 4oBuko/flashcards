@@ -1,6 +1,5 @@
 package com.chornobuk.flashcardsapi.utils;
 
-import com.chornobuk.flashcardsapi.entities.User;
 import com.chornobuk.flashcardsapi.entities.VerificationToken;
 
 public class ConfirmationLetterBuilder {

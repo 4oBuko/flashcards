@@ -133,7 +133,6 @@ class FlashcardsSetControllerTest {
     @Test
     @WithMockUser(value = "test")
     public void deleteSetById() throws Exception {
-        String response = "";
         this.mockMvc.perform(delete("/sets/4"))
                 .andExpect(status().isOk());
         this.mockMvc.perform(get("/sets/set/4"))
