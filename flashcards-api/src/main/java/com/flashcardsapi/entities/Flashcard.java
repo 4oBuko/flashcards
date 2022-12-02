@@ -1,7 +1,5 @@
 package com.flashcardsapi.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,24 +20,20 @@ public class Flashcard {
     // delete set I need only id
     // in getter you can left set id too because it's will be easier to
     // work with on the front end (At least I think so)
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "set_id", referencedColumnName = "id")
-    private FlashcardsSet set;
+    // @JsonIgnore
+    // @ManyToOne
+    // @JoinColumn(name = "set_id", referencedColumnName = "id")
+    // private FlashcardsSet set;
+    private Long setId;
 
     @Column(length = 500)
     private String question;
     @Column(length = 500)
     private String answer;
 
-    public Flashcard(FlashcardsSet set, String question, String answer) {
-        this.set = set;
+    public Flashcard(Long setId, String question, String answer) {
+        this.setId = setId;
         this.question = question;
         this.answer = answer;
-    }
-
-    @JsonBackReference
-    public FlashcardsSet getSet() {
-        return set;
     }
 }
