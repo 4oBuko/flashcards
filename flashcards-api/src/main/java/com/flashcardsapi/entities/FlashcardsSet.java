@@ -57,4 +57,15 @@ public class FlashcardsSet {
     private List<Tag> tags;
 
     private boolean isPublic;
+
+    public FlashcardsSet(Long userId, String name, Long questionLanguageId, Long answerLanguage, String description, List<Flashcard> flashcards, List<Tag> tags, boolean isPublic) {
+        this.userId = userId;
+        this.name = name;
+        this.questionLanguageId = questionLanguageId;
+        this.answerLanguage = answerLanguage;
+        this.description = description;
+        this.flashcards = flashcards;
+        this.tags = tags;
+        this.isPublic = isPublic;
+    }
 }
