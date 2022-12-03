@@ -147,9 +147,10 @@ class FlashcardsSetControllerTest {
                     "name":"countries",
                     "description":"top 2 the biggest countries",
                     "flashcards":[
-                    {"id":18,"question":"2nd","answer":"Canada","setId":4}
+                    {"id":21,"question":"2nd","answer":"Canada","setId":4},
+                    {"id":17,"question":"1st","answer":"russia","setId":4}
                     ],
-                    "public":true,
+                    "public":false,
                     "tags":[],
                     "userId":1,
                     "questionLanguageId":1,

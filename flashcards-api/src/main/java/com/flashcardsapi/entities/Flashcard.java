@@ -17,13 +17,15 @@ public class Flashcard {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    // delete set I need only id
-    // in getter you can left set id too because it's will be easier to
-    // work with on the front end (At least I think so)
+    // // delete set I need only id
+    // // in getter you can left set id too because it's will be easier to
+    // // work with on the front end (At least I think so)
     // @JsonIgnore
-    // @ManyToOne
+    // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "set_id", referencedColumnName = "id")
     // private FlashcardsSet set;
+
+    @Column(name="set_id")
     private Long setId;
 
     @Column(length = 500)

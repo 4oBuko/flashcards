@@ -25,6 +25,7 @@ public class FlashcardsSet {
     // @JoinColumn(name = "user_id", referencedColumnName = "id")
     // private User user;
 
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Long userId;
 
     @Column(length = 50)
@@ -35,34 +36,39 @@ public class FlashcardsSet {
     // @ManyToOne
     // @JoinColumn(name = "question_language_id", referencedColumnName = "id")
     // private Language questionLanguage;
+
+    @JoinColumn(name = "question_language_id", referencedColumnName = "id")
     private Long questionLanguageId;
 
     // only id
-    // @JsonIgnore
-    // @ManyToOne
-    // @JoinColumn(name = "answer_language_id", referencedColumnName = "id")
-    // private Language answerLanguage;
-    private Long answerLanguage;
+//    @JsonIgnore
+//    @ManyToOne
+//    @JoinColumn(name = "answer_language_id", referencedColumnName = "id")
+//    private Language answerLanguage;
+
+    @Column(name = "answer_language_id", insertable = false, updatable = false)
+    private Long answerLanguageId;
 
     @Column(length = 500)
     private String description;
 
-    @JsonIgnore
+    // @JsonIgnore
     @OneToMany
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private List<Flashcard> flashcards;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "sets")
+    @ManyToMany(mappedBy = "sets", fetch = FetchType.LAZY)
     private List<Tag> tags;
 
     private boolean isPublic;
 
-    public FlashcardsSet(Long userId, String name, Long questionLanguageId, Long answerLanguage, String description, List<Flashcard> flashcards, List<Tag> tags, boolean isPublic) {
+    public FlashcardsSet(Long userId, String name, Long questionLanguageId, Long answerLanguageId, String description,
+                         List<Flashcard> flashcards, List<Tag> tags, boolean isPublic) {
         this.userId = userId;
         this.name = name;
         this.questionLanguageId = questionLanguageId;
-        this.answerLanguage = answerLanguage;
+        this.answerLanguageId = answerLanguageId;
         this.description = description;
         this.flashcards = flashcards;
         this.tags = tags;

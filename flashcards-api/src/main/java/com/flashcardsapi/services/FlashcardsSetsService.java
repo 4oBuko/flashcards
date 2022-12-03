@@ -20,7 +20,7 @@ public class FlashcardsSetsService {
     
     public List<FlashcardsSet> getSetsByUser(User user) {
         //        todo: check who made the request
-        return flashcardsSetRepository.getFlashcardsSetByUser(user);
+        return flashcardsSetRepository.getFlashcardsSetByUserId(user.getId());
     }
 
     public void deleteSet(FlashcardsSet set) {
@@ -29,14 +29,14 @@ public class FlashcardsSetsService {
 
     @Transactional
     public FlashcardsSet updateSet(FlashcardsSet setToUpdate) throws IllegalArgumentException {
-        flashcardRepository.deleteAllBySetId(setToUpdate.getId());
+//        flashcardRepository.deleteAllBySetId(setToUpdate.getId());
         flashcardRepository.saveAll(setToUpdate.getFlashcards());
-        return flashcardsSetRepository.save(setToUpdate);
+         return flashcardsSetRepository.save(setToUpdate);
     }
 
     @Transactional
     public void addNewSet(FlashcardsSet newSet, User user) {
-        newSet.setUser(user);
+        newSet.setUserId(user.getId());
         newSet.setFlashcards((List<Flashcard>) flashcardRepository.saveAll(newSet.getFlashcards()));
         flashcardsSetRepository.save(newSet);
     }
