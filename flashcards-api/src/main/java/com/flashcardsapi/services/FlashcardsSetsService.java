@@ -20,7 +20,7 @@ public class FlashcardsSetsService {
     
     public List<FlashcardsSet> getSetsByUser(User user) {
         //        todo: check who made the request
-        return flashcardsSetRepository.getFlashcardsSetByUserId(user.getId());
+        return flashcardsSetRepository.getFlashcardsSetByUser(user);
     }
 
     public void deleteSet(FlashcardsSet set) {

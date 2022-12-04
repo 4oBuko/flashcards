@@ -28,4 +28,10 @@ public class Color {
         this.code = code;
         this.name = name;
     }
+
+    public Color(Long id) {
+        this.id = id;
+    }
+
+    
 }

@@ -41,8 +41,8 @@ public class FlashcardsSetController {
         long userId = (long) principal.getClaims().get("id");
         User testUser = userService.getById(userId);
         if (newSet.getName() == null
-                || newSet.getQuestionLanguageId() == null
-                || newSet.getAnswerLanguageId() == null
+                || newSet.getQuestionLanguage() == null
+                || newSet.getAnswerLanguage() == null
                 || newSet.getFlashcards() == null) {
             return ResponseEntity.badRequest().body("bad request");
         }

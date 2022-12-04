@@ -1,6 +1,10 @@
 package com.flashcardsapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,59 +23,61 @@ public class FlashcardsSet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    // delete user I need only id
-     @JsonIgnore
-     @ManyToOne
-     @JoinColumn(name = "user_id", referencedColumnName = "id")
-     private User user;
-
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    private Long userId;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @Column(length = 50)
     private String name;
 
-    // only id
-    // @JsonIgnore
-    // @ManyToOne
-    // @JoinColumn(name = "question_language_id", referencedColumnName = "id")
-    // private Language questionLanguage;
-
+    @ManyToOne
     @JoinColumn(name = "question_language_id", referencedColumnName = "id")
-    private Long questionLanguageId;
+    private Language questionLanguage;
 
-    // only id
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name = "answer_language_id", referencedColumnName = "id")
-//    private Language answerLanguage;
-
-    @Column(name = "answer_language_id", insertable = false, updatable = false)
-    private Long answerLanguageId;
+    @ManyToOne
+    @JoinColumn(name = "answer_language_id", referencedColumnName = "id")
+    private Language answerLanguage;
 
     @Column(length = 500)
     private String description;
 
-    // @JsonIgnore
     @OneToMany
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private List<Flashcard> flashcards;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "sets", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @ManyToMany
+    @JoinTable(name = "flashcards_set_tag", joinColumns = @JoinColumn(name = "flashcards_set_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private List<Tag> tags;
 
     private boolean isPublic;
 
-    public FlashcardsSet(User user, String name, Long questionLanguageId, Long answerLanguageId, String description,
-                         List<Flashcard> flashcards, List<Tag> tags, boolean isPublic) {
-        this.user = user;
-        this.name = name;
-        this.questionLanguageId = questionLanguageId;
-        this.answerLanguageId = answerLanguageId;
-        this.description = description;
-        this.flashcards = flashcards;
-        this.tags = tags;
-        this.isPublic = isPublic;
+    @JsonGetter(value = "userId")
+    public Long getUserId() {
+        return user.getId();
     }
+
+    @JsonSetter(value = "userId")
+    public void setUserId(Long userId) {
+        User user = new User();
+        user.setId(id);
+        this.setUser(user);
+    }
+
+    @JsonSetter(value = "questionLanguageId")
+    public void setQuestionLanguageId(Long questionLanguageId) {
+        Language language = new Language();
+        language.setId(questionLanguageId);
+        this.setQuestionLanguage(language);
+    }
+
+    @JsonSetter(value = "answerLanguageId")
+    public void setAnswerLanguageId(Long answerLanguageId) {
+        Language language = new Language();
+        language.setId(answerLanguageId);
+        this.setQuestionLanguage(language);
+    }
+
+
 }

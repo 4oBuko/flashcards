@@ -8,7 +8,7 @@ import com.flashcardsapi.entities.User;
 import java.util.List;
 
 public interface FlashcardsSetRepository extends CrudRepository<FlashcardsSet, Long> {
-    List<FlashcardsSet> getFlashcardsSetByUserId(Long userId);
+    List<FlashcardsSet> getFlashcardsSetByUser(User user);
 
     void deleteById(Long id);
 }
