@@ -152,4 +152,10 @@ public class TagsControllerTest {
                 ).andExpect(status().isOk())
                 .andExpect(content().json(updatedTag));
     }
+
+    @WithMockUser(value = "test")
+    @Test
+    public void testNestedEntityChanges() {
+
+    }
 }

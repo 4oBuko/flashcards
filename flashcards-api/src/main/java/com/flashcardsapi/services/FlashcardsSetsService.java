@@ -36,7 +36,7 @@ public class FlashcardsSetsService {
 
     @Transactional
     public void addNewSet(FlashcardsSet newSet, User user) {
-        newSet.setUserId(user.getId());
+        newSet.setUser(user);
         newSet.setFlashcards((List<Flashcard>) flashcardRepository.saveAll(newSet.getFlashcards()));
         flashcardsSetRepository.save(newSet);
     }

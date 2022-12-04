@@ -20,13 +20,13 @@ public class FlashcardsSet {
     private Long id;
 
     // delete user I need only id
-    // @JsonIgnore
-    // @ManyToOne
-    // @JoinColumn(name = "user_id", referencedColumnName = "id")
-    // private User user;
+     @JsonIgnore
+     @ManyToOne
+     @JoinColumn(name = "user_id", referencedColumnName = "id")
+     private User user;
 
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Long userId;
+//    @JoinColumn(name = "user_id", referencedColumnName = "id")
+//    private Long userId;
 
     @Column(length = 50)
     private String name;
@@ -63,9 +63,9 @@ public class FlashcardsSet {
 
     private boolean isPublic;
 
-    public FlashcardsSet(Long userId, String name, Long questionLanguageId, Long answerLanguageId, String description,
+    public FlashcardsSet(User user, String name, Long questionLanguageId, Long answerLanguageId, String description,
                          List<Flashcard> flashcards, List<Tag> tags, boolean isPublic) {
-        this.userId = userId;
+        this.user = user;
         this.name = name;
         this.questionLanguageId = questionLanguageId;
         this.answerLanguageId = answerLanguageId;
