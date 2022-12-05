@@ -6,12 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Languages {
-    public static List<Language> getLanguages() {
-        List<Language> languages = new ArrayList<>();
+
+    private static List<Language> languages = new ArrayList<>();
+    static {
         languages.add(new Language("English"));
         languages.add(new Language("Ukrainian"));
         languages.add(new Language("Japanese"));
-//        todo: add more languages
+        // todo: add more languages
+    }
+
+    public static Language getLanguageById(int id) {
+        return languages.get(id - 1);
+    }
+
+    public static List<Language> getLanguages() {
         return languages;
     }
 }

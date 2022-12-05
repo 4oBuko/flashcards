@@ -10,20 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-@AllArgsConstructor
 public class Users {
 
     private final PasswordEncoder encoder;
 
-    public List<User> getUsers() {
-        List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+
+    public Users(PasswordEncoder encoder) {
+        this.encoder = encoder;
         users.add(new User(
                 "test",
-                encoder.encode("test"),
+                this.encoder.encode("test"),
                 "test",
                 LocalDate.of(2022, 10, 31),
                 true));
+    }
 
+    public List<User> getUsers() {
         return users;
     }
 }
