@@ -78,6 +78,4 @@ public class FlashcardsSet {
         language.setId(answerLanguageId);
         this.setQuestionLanguage(language);
     }
-
-
 }

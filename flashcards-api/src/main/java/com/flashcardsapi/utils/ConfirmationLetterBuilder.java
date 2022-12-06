@@ -4,13 +4,19 @@ import com.flashcardsapi.entities.VerificationToken;
 
 public class ConfirmationLetterBuilder {
     public static String generateRegistrationLetter(VerificationToken token) {
-        return null;//todo
+        String message = """
+                Hi %s, you registered on %s. Activate your account by the link bellow:
+                %s
+                """.formatted(token.getUser().getNickname(), "site", token.getToken());
+        return message;
+
     }
 
     public static String generateEmailUpdateLetter(VerificationToken token) {
-        // todo: for confirmation letter I can create an html template
-        // and read it from this method and set 
-        // (html letter will be pretty but create a text letter is easier and faster)
-        return null;//todo
+        String message = """
+                Hi %s, your email was updated to %s. To set new email, follow the link bellow:
+                %s
+                """.formatted(token.getUser().getNickname(), token.getToken());
+        return message;
     }
 }

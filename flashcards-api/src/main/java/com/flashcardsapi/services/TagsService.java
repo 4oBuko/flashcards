@@ -31,7 +31,9 @@ public class TagsService {
 
     public void createNewTag(String name, long colorId, User user) throws NullPointerException {
         Color color = colorsService.getColorById(colorId);
-        if (color == null) throw new NullPointerException("");
+        if (color == null) {
+            throw new NullPointerException();
+        }
         Tag newTag = new Tag(user, name, color);
         tagRepository.save(newTag);
     }
