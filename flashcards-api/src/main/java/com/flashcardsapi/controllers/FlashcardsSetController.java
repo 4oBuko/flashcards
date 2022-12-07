@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("sets")
 @AllArgsConstructor
-public class FlashcardsSetController {
+public class FlashcardsSetController {//todo: test all endpoints
     private FlashcardsSetsService flashcardsSetsService;
 
     private UserService userService;

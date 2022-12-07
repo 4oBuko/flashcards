@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("tags")
 @AllArgsConstructor
-public class TagsController {
+public class TagsController {//todo: test  all endpoints
 
     private TagsService tagsService;
 

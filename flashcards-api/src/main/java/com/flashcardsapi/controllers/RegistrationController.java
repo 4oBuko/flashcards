@@ -1,6 +1,8 @@
 package com.flashcardsapi.controllers;
 
 import lombok.AllArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/register")
 @AllArgsConstructor
-public class RegistrationController {
+public class RegistrationController { // todo: test all endpoints
     private final UserService userService;
     private EmailService emailService;
+
+    @Value("${frontend.url}")
+    private String frontendUrl;
 
     @PostMapping()
     public ResponseEntity<String> registerNewUser(@RequestBody User newUser) {
@@ -41,7 +46,7 @@ public class RegistrationController {
             message += "\"verification failed! New verification letter was sent!\"";
         }
         try {
-            servletResponse.sendRedirect("frontendUrl");
+            servletResponse.sendRedirect(frontendUrl);
             servletResponse.getWriter().write(message);
             servletResponse.getWriter().flush();
         } catch (IOException e) {
