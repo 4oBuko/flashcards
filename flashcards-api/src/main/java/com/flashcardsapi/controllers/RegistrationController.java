@@ -1,7 +1,5 @@
 package com.flashcardsapi.controllers;
 
-import lombok.AllArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,10 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/register")
-@AllArgsConstructor
 public class RegistrationController { // todo: test all endpoints
     private final UserService userService;
     private EmailService emailService;
+
+    public RegistrationController(UserService userService, EmailService emailService) {
+        this.userService = userService;
+        this.emailService = emailService;
+    }
 
     @Value("${frontend.url}")
     private String frontendUrl;
@@ -34,7 +36,6 @@ public class RegistrationController { // todo: test all endpoints
         return ResponseEntity.badRequest().body("Registration failed");
     }
 
-    // todo: test it
     @GetMapping("/confirm")
     public void verifyEmail(HttpServletResponse servletResponse, @RequestParam String token) {
         String message = "message: ";
