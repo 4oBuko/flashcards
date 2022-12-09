@@ -12,8 +12,8 @@ import com.flashcardsapi.entities.User;
 import com.flashcardsapi.entities.VerificationToken;
 import com.flashcardsapi.repositories.VerificationTokenRepository;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import javax.mail.MessagingException;
+
 
 @Service
 @AllArgsConstructor
@@ -59,13 +59,13 @@ public class EmailService {
 
     private void sendEmail(String email, String to, String subject) {
         try {
-            // MimeMessage mimeMessage = mailSender.createMimeMessage();
-            // MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "utf-8");
-            // mimeMessageHelper.setText(email, true);
-            // mimeMessageHelper.setTo(to);
-            // mimeMessageHelper.setSubject(subject);
-            // mimeMessageHelper.setFrom("buyracktar.app@test.com");
-            // mailSender.send(mimeMessage);
+            javax.mail.internet.MimeMessage mimeMessage =mailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "utf-8");
+            mimeMessageHelper.setText(email, true);
+            mimeMessageHelper.setTo(to);
+            mimeMessageHelper.setSubject(subject);
+            mimeMessageHelper.setFrom("");//todo: add email
+            mailSender.send(mimeMessage);
         } catch (MessagingException e) {
 
         }

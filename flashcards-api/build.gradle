@@ -8,7 +8,7 @@ plugins {
 group = 'com.chornobuk'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
-
+// todo: move to java 19
 repositories {
     mavenCentral()
 }
@@ -22,6 +22,7 @@ dependencies {
     implementation 'org.springframework.security:spring-security-oauth2-resource-server:5.7.4'
     implementation 'org.springframework.security:spring-security-oauth2-jose:5.7.4'
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.0.0'
+    implementation 'javax.mail:javax.mail-api:1.6.2'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
