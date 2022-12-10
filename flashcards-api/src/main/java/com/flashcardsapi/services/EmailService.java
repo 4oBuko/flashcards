@@ -3,6 +3,7 @@ package com.flashcardsapi.services;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -13,7 +14,6 @@ import com.flashcardsapi.entities.VerificationToken;
 import com.flashcardsapi.repositories.VerificationTokenRepository;
 
 import javax.mail.MessagingException;
-
 
 @Service
 @AllArgsConstructor
@@ -49,7 +49,7 @@ public class EmailService {
 
     private VerificationToken createTokenByUser(User user) {
         VerificationToken verificationToken = new VerificationToken();
-        String token = "";// todo:generate token
+        String token = UUID.randomUUID().toString();
         verificationToken.setUser(user);
         verificationToken.setToken(token);
         verificationToken.setCreatedAt(LocalDateTime.now());
@@ -59,12 +59,12 @@ public class EmailService {
 
     private void sendEmail(String email, String to, String subject) {
         try {
-            javax.mail.internet.MimeMessage mimeMessage =mailSender.createMimeMessage();
+            javax.mail.internet.MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "utf-8");
             mimeMessageHelper.setText(email, true);
             mimeMessageHelper.setTo(to);
             mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setFrom("");//todo: add email
+            mimeMessageHelper.setFrom("");// todo: add email
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
 
