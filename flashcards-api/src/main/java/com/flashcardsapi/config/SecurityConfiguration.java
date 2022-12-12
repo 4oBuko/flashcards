@@ -50,6 +50,7 @@ public class SecurityConfiguration {
                 .authorizeRequests(
                         auth -> auth.antMatchers("/auth/**").permitAll()
                                 .antMatchers("/languages").permitAll()
+                                .antMatchers("/register/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
