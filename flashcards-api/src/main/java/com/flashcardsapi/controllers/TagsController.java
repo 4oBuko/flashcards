@@ -38,6 +38,7 @@ public class TagsController {//todo: test  all endpoints
         return ResponseEntity.ok(tagsService.getTagById(tagId));
     }
 
+    // todo: change response message with json message with status and message
     @PostMapping()
     public ResponseEntity<String> addNewTag(@RequestBody Map<String, String> data, @AuthenticationPrincipal Jwt principal) {
         if (!data.containsKey("name") || !data.containsKey("colorId")) {

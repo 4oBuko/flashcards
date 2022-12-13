@@ -10,7 +10,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 //todo: format entity json format by jackson
 @Entity
@@ -29,7 +31,7 @@ public class Tag {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "user_id",insertable = false, updatable = false)
+    @Column(name = "user_id", insertable = false, updatable = false)
     private Long userId;
 
     @Column(length = 50)
@@ -48,5 +50,17 @@ public class Tag {
         this.user = user;
         this.name = name;
         this.color = color;
+    }
+
+    @JsonSetter(value = "colorId")
+    public void setColorId(Long colorId) {
+        Color color = new Color();
+        color.setId(colorId);
+        this.setColor(color);
+    }
+
+    @JsonGetter(value = "colorId")
+    public Long getColorId() {
+        return color.getId();
     }
 }

@@ -9,6 +9,4 @@ import com.flashcardsapi.entities.User;
 
 public interface TagRepository extends CrudRepository<Tag, Long> {
     List<Tag> findAllByUser(User user);
-
-    void deleteById(Long id);
 }

@@ -2,6 +2,9 @@ package com.flashcardsapi.services;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.flashcardsapi.entities.Color;
@@ -14,6 +17,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class TagsService {
+    private final static Logger LOG = LoggerFactory.getLogger(TagsService.class);
     private TagRepository tagRepository;
     private ColorsService colorsService;
 
@@ -26,7 +30,11 @@ public class TagsService {
     }
 
     public void deleteTag(long tagId) {
-        tagRepository.deleteById(tagId);
+        try {
+            tagRepository.deleteById(tagId);
+        } catch (EmptyResultDataAccessException e) {
+            LOG.debug("tag by " + tagId + "not found");
+        }
     }
 
     public void createNewTag(String name, long colorId, User user) throws NullPointerException {
