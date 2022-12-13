@@ -48,11 +48,11 @@ public class FlashcardsSetController {//todo: test all endpoints
         }
         flashcardsSetsService.addNewSet(newSet, testUser);
         return ResponseEntity.ok("set was successfully added!");
-    }
+    }//todo: should I use jwt for getting info about user?
 
 //    todo: test it
     @PutMapping()
-    public ResponseEntity<FlashcardsSet> updateSetById(@RequestBody FlashcardsSet setToUpdate) {
+    public ResponseEntity<FlashcardsSet> updateSet(@RequestBody FlashcardsSet setToUpdate) {
         try {
             FlashcardsSet updatedSet = flashcardsSetsService.updateSet(setToUpdate);
             return ResponseEntity.ok(updatedSet);
@@ -62,7 +62,7 @@ public class FlashcardsSetController {//todo: test all endpoints
     }
 
     @DeleteMapping("/{setId}")
-    public ResponseEntity<String> deleteTagById(@PathVariable long setId) {
+    public ResponseEntity<String> deleteSetById(@PathVariable long setId) {
         flashcardsSetsService.deleteSetById(setId);
 //        todo: check if the user can delete this tag
         return ResponseEntity.ok("tag was successfully deleted");

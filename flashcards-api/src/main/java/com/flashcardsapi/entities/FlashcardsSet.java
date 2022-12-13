@@ -46,7 +46,7 @@ public class FlashcardsSet {
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private List<Flashcard> flashcards;
 
-    @JsonManagedReference
+    // @JsonManagedReference
     @ManyToMany
     @JoinTable(name = "flashcards_set_tag", joinColumns = @JoinColumn(name = "flashcards_set_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private List<Tag> tags;
@@ -78,4 +78,5 @@ public class FlashcardsSet {
         language.setId(answerLanguageId);
         this.setQuestionLanguage(language);
     }
+    
 }
