@@ -1,14 +1,15 @@
 package com.flashcardsapi.entities;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -27,7 +28,7 @@ public class User implements UserDetails {
 
     private String email;
 
-    @JsonIgnore
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
     @Column(length = 50)
@@ -76,10 +77,10 @@ public class User implements UserDetails {
         return true;
     }
 
-    @JsonSetter(value = "password")
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    // @JsonSetter(value = "password")
+    // public void setPassword(String password) {
+    //     this.password = password;
+    // }
 
     public User(String email, String password, String nickname, LocalDate registrationDate, boolean isConfirmed) {
         this.email = email;
