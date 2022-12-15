@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.flashcardsapi.entities.User;
+import com.flashcardsapi.entities.VerificationToken;
 import com.flashcardsapi.services.EmailService;
 import com.flashcardsapi.services.UserService;
 
@@ -24,9 +25,10 @@ public class RegistrationController { // todo: test all endpoints
         this.emailService = emailService;
     }
 
-    @Value("${frontend.url}")
+    // @Value("${frontend.url}")
     private String frontendUrl;
 
+    // todo: add password validation (number of characters and different symbols)
     @PostMapping()
     public ResponseEntity<String> registerNewUser(@RequestBody User newUser) {
         User registeredUser = userService.registerNewUser(newUser);
@@ -39,7 +41,9 @@ public class RegistrationController { // todo: test all endpoints
     @GetMapping("/confirm")
     public void verifyEmail(HttpServletResponse servletResponse, @RequestParam String token) {
         String message = "message: ";
-        if (emailService.verifyToken(token)) {
+        VerificationToken verificationToken = emailService.getToken(token);
+        if (emailService.verifyToken(token) && verificationToken != null) {
+            userService.confirmUser(verificationToken);
             servletResponse.setStatus(HttpServletResponse.SC_OK);
             message += "\"verified successufully!\"";
         } else {

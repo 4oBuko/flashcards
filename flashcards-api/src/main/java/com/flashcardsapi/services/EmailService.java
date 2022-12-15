@@ -18,17 +18,17 @@ import javax.mail.MessagingException;
 @Service
 @AllArgsConstructor
 public class EmailService {
-    private VerificationTokenRepository tokenRepository;
     private static final int LETTER_VALIDITY_DAYS = 1;
-    private final JavaMailSender mailSender;
+    private VerificationTokenRepository tokenRepository;
+    // private final JavaMailSender mailSender;
+
+    public VerificationToken getToken(String token) {
+        return tokenRepository.findByToken(token).orElse(null);
+    }
 
     public boolean verifyToken(String token) {
         VerificationToken verificationToken = tokenRepository.findByToken(token).orElse(null);
-        if (verificationToken == null) {
-            return false;
-        }
-        if (verificationToken.getExpiresAt().isAfter(LocalDateTime.now())) {
-            sendVerificationLetter(verificationToken.getUser());
+        if (verificationToken == null || verificationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
             return false;
         }
         return true;
@@ -58,16 +58,17 @@ public class EmailService {
     }
 
     private void sendEmail(String email, String to, String subject) {
-        try {
-            javax.mail.internet.MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "utf-8");
-            mimeMessageHelper.setText(email, true);
-            mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setFrom("");// todo: add email
-            mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
+        // try {
+        // javax.mail.internet.MimeMessage mimeMessage = mailSender.createMimeMessage();
+        // MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,
+        // "utf-8");
+        // mimeMessageHelper.setText(email, true);
+        // mimeMessageHelper.setTo(to);
+        // mimeMessageHelper.setSubject(subject);
+        // mimeMessageHelper.setFrom("");// todo: add email
+        // mailSender.send(mimeMessage);
+        // } catch (MessagingException e) {
 
-        }
+        // }
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.flashcardsapi.entities.User;
+import com.flashcardsapi.entities.VerificationToken;
 import com.flashcardsapi.repositories.UserRepository;
 
 import java.time.LocalDate;
@@ -80,5 +81,13 @@ public class UserService implements UserDetailsService {
 
     public boolean isNicknameAvailable(String nickname) {
         return userRepository.findAllByNickname(nickname).size() == 0;
+    }
+
+    public void confirmUser(VerificationToken token) {
+        User user = token.getUser();
+        user.setConfirmed(true);
+        // I can delete token after using
+        user.setConfirmed(true);
+        userRepository.save(user);
     }
 }

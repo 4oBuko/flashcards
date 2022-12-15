@@ -23,7 +23,6 @@ public class ConfirmationLetterBuilder {
                 %s
                 """.formatted(token.getUser().getNickname(), token.getUser().getEmail(), generateURL(token.getToken()));
         return message;
-        // todo: write tests
     }
 
     public static String generateURL(String token) {
