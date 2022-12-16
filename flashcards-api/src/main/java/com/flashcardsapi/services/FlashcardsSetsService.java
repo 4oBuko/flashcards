@@ -28,7 +28,6 @@ public class FlashcardsSetsService {
 
     @Transactional
     public FlashcardsSet updateSet(FlashcardsSet setToUpdate) throws IllegalArgumentException {
-        flashcardRepository.deleteAllBySetId(setToUpdate.getId());
         flashcardRepository.saveAll(setToUpdate.getFlashcards());
         return flashcardsSetRepository.save(setToUpdate);
     }
