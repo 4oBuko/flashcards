@@ -17,9 +17,8 @@ public class FlashcardsSetsService {
     private FlashcardsSetRepository flashcardsSetRepository;
     private FlashcardRepository flashcardRepository;
 
-    
     public List<FlashcardsSet> getSetsByUser(User user) {
-        //        todo: check who made the request
+        // todo: check who made the request
         return flashcardsSetRepository.getFlashcardsSetByUser(user);
     }
 
@@ -29,9 +28,9 @@ public class FlashcardsSetsService {
 
     @Transactional
     public FlashcardsSet updateSet(FlashcardsSet setToUpdate) throws IllegalArgumentException {
-//        flashcardRepository.deleteAllBySetId(setToUpdate.getId());
+        flashcardRepository.deleteAllBySetId(setToUpdate.getId());
         flashcardRepository.saveAll(setToUpdate.getFlashcards());
-         return flashcardsSetRepository.save(setToUpdate);
+        return flashcardsSetRepository.save(setToUpdate);
     }
 
     @Transactional

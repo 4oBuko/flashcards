@@ -42,7 +42,7 @@ public class FlashcardsSet {
     @Column(length = 500)
     private String description;
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private List<Flashcard> flashcards;
 
