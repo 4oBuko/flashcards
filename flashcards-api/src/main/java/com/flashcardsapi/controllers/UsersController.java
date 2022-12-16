@@ -18,7 +18,7 @@ public class UsersController {
 
     private final UserService userService;
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         if (userId == null) {
             return ResponseEntity.badRequest().body(null);
@@ -30,7 +30,7 @@ public class UsersController {
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/user/{userId}/password")
+    @PutMapping("/{userId}/password")
     public ResponseEntity<User> updateUserPassowrd(@PathVariable Long userId,
             @RequestBody Map<String, String> requestBody) {
         String newPassowrd = requestBody.get("newPassword");
@@ -44,7 +44,7 @@ public class UsersController {
         return ResponseEntity.ok(userWithNewPassword);
     }
 
-    @PutMapping("user/{userId}/email")
+    @PutMapping("{userId}/email")
     public ResponseEntity<User> updateUserEmail(@PathVariable Long userId,
             @RequestBody Map<String, String> requestBody) {
         String newEmail = requestBody.get("newEmail");
@@ -58,7 +58,7 @@ public class UsersController {
         return ResponseEntity.ok(userWithNewEmail);
     }
 
-    @PutMapping("user/{userId}/nickname")
+    @PutMapping("{userId}/nickname")
     public ResponseEntity<User> updateUserNickname(@PathVariable Long userId,
             @RequestBody Map<String, String> requestBody) {
         String newNickname = requestBody.get("newNickname");
