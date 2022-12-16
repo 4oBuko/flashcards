@@ -11,8 +11,6 @@ import com.flashcardsapi.entities.User;
 import com.flashcardsapi.services.FlashcardsSetsService;
 import com.flashcardsapi.services.UserService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("sets")
 @AllArgsConstructor
@@ -25,15 +23,6 @@ public class FlashcardsSetController {
     public ResponseEntity<FlashcardsSet> getSetById(@PathVariable long setId) {
         FlashcardsSet set = flashcardsSetsService.getSetById(setId);
         return ResponseEntity.ok(set);
-    }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<FlashcardsSet>> getUserSets(@PathVariable Long userId) {
-        User user = userService.getById(userId);
-        if (user == null) {
-            return ResponseEntity.ok(null);
-        }
-        return ResponseEntity.ok(flashcardsSetsService.getSetsByUser(user));
     }
 
     @PostMapping()

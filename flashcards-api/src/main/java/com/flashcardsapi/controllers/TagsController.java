@@ -1,6 +1,5 @@
 package com.flashcardsapi.controllers;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -23,15 +22,6 @@ public class TagsController {
     private TagsService tagsService;
 
     private UserService userService;
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Tag>> getUserTags(@PathVariable long userId) {
-        User user = userService.getById(userId);
-        if (user == null) {
-            return ResponseEntity.ok(null);
-        }
-        return ResponseEntity.ok(tagsService.getTagsByUser(user));
-    }
 
     @GetMapping("/{tagId}")
     public ResponseEntity<Tag> getTagById(@PathVariable long tagId) {

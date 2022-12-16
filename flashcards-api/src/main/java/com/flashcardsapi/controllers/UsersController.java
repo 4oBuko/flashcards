@@ -2,13 +2,18 @@ package com.flashcardsapi.controllers;
 
 import lombok.AllArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import com.flashcardsapi.entities.FlashcardsSet;
+import com.flashcardsapi.entities.Tag;
 import com.flashcardsapi.entities.User;
+import com.flashcardsapi.services.FlashcardsSetsService;
+import com.flashcardsapi.services.TagsService;
 import com.flashcardsapi.services.UserService;
 
 @Controller
@@ -17,6 +22,8 @@ import com.flashcardsapi.services.UserService;
 public class UsersController {
 
     private final UserService userService;
+    private final FlashcardsSetsService setsService;
+    private final TagsService tagsService;
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
@@ -79,4 +86,22 @@ public class UsersController {
         return ResponseEntity.ok(response);
     }
 
+
+    @GetMapping("/{userId}/sets")
+    public ResponseEntity<List<FlashcardsSet>> getUserSets(@PathVariable Long userId) {
+        User user = userService.getById(userId);
+        if (user == null) {
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.ok(setsService.getSetsByUser(user));
+    }
+
+    @GetMapping("/{userId}/tags")
+    public ResponseEntity<List<Tag>> getUserTags(@PathVariable long userId) {
+        User user = userService.getById(userId);
+        if (user == null) {
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.ok(tagsService.getTagsByUser(user));
+    }
 }
