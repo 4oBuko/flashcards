@@ -16,18 +16,18 @@ import java.util.List;
 @RestController
 @RequestMapping("sets")
 @AllArgsConstructor
-public class FlashcardsSetController {//todo: test all endpoints
+public class FlashcardsSetController {
     private FlashcardsSetsService flashcardsSetsService;
 
     private UserService userService;
 
-    @GetMapping("/set/{setId}")
+    @GetMapping("/{setId}")
     public ResponseEntity<FlashcardsSet> getSetById(@PathVariable long setId) {
         FlashcardsSet set = flashcardsSetsService.getSetById(setId);
         return ResponseEntity.ok(set);
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<FlashcardsSet>> getUserSets(@PathVariable Long userId) {
         User user = userService.getById(userId);
         if (user == null) {
@@ -48,9 +48,8 @@ public class FlashcardsSetController {//todo: test all endpoints
         }
         flashcardsSetsService.addNewSet(newSet, testUser);
         return ResponseEntity.ok("set was successfully added!");
-    }//todo: should I use jwt for getting info about user?
+    }// todo: should I use jwt for getting info about user?
 
-//    todo: test it
     @PutMapping()
     public ResponseEntity<FlashcardsSet> updateSet(@RequestBody FlashcardsSet setToUpdate) {
         try {
@@ -64,7 +63,7 @@ public class FlashcardsSetController {//todo: test all endpoints
     @DeleteMapping("/{setId}")
     public ResponseEntity<String> deleteSetById(@PathVariable long setId) {
         flashcardsSetsService.deleteSetById(setId);
-//        todo: check if the user can delete this tag
+        // todo: check if the user can delete this tag
         return ResponseEntity.ok("tag was successfully deleted");
     }
 }

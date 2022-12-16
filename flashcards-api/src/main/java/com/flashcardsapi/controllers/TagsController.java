@@ -18,13 +18,13 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("tags")
 @AllArgsConstructor
-public class TagsController {//todo: test  all endpoints
+public class TagsController {
 
     private TagsService tagsService;
 
     private UserService userService;
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<Tag>> getUserTags(@PathVariable long userId) {
         User user = userService.getById(userId);
         if (user == null) {
@@ -33,7 +33,7 @@ public class TagsController {//todo: test  all endpoints
         return ResponseEntity.ok(tagsService.getTagsByUser(user));
     }
 
-    @GetMapping("tag/{tagId}")
+    @GetMapping("/{tagId}")
     public ResponseEntity<Tag> getTagById(@PathVariable long tagId) {
         return ResponseEntity.ok(tagsService.getTagById(tagId));
     }

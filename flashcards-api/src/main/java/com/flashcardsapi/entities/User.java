@@ -77,11 +77,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    // @JsonSetter(value = "password")
-    // public void setPassword(String password) {
-    //     this.password = password;
-    // }
-
     public User(String email, String password, String nickname, LocalDate registrationDate, boolean isConfirmed) {
         this.email = email;
         this.password = password;
