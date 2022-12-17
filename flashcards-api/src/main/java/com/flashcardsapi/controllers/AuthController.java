@@ -23,6 +23,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
     private final JwtTokenService tokenService;
 
+    //todo: put refresh token in http only cookies
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
