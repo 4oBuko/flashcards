@@ -149,7 +149,7 @@ public class TagsControllerTest {
         this.mockMvc.perform(put("/tags")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedTag)
-                ).andExpect(status().isOk())
+                ).agrndExpect(status().isOk())
                 .andExpect(content().json(updatedTag));
     }
 
