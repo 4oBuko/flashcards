@@ -28,21 +28,20 @@ public class TagsController {
         return ResponseEntity.ok(tagsService.getTagById(tagId));
     }
 
-    // todo: change response message with json message with status and message
     @PostMapping()
-    public ResponseEntity<String> addNewTag(@RequestBody Map<String, String> data, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<Tag> addNewTag(@RequestBody Map<String, String> data, @AuthenticationPrincipal Jwt principal) {
         if (!data.containsKey("name") || !data.containsKey("colorId")) {
-            return ResponseEntity.badRequest().body("");
+            return ResponseEntity.badRequest().body(null);
         }
         try {
             String name = data.get("name");
             long colorId = Long.parseLong(data.get("colorId"));
             User user = userService.getById((long) principal.getClaims().get("id"));
-            tagsService.createNewTag(name, colorId, user);
-            return ResponseEntity.ok("Tag was added successfully");
+            Tag savedTag = tagsService.createNewTag(name, colorId, user);
+            return ResponseEntity.ok(savedTag);
 
         } catch (ClassCastException | NullPointerException e) {
-            return ResponseEntity.badRequest().body("");
+            return ResponseEntity.badRequest().body(null);
         }
     }
 

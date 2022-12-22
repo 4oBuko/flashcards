@@ -26,17 +26,17 @@ public class FlashcardsSetController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> addNewSet(@RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<FlashcardsSet> addNewSet(@RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
         long userId = (long) principal.getClaims().get("id");
         User testUser = userService.getById(userId);
         if (newSet.getName() == null
                 || newSet.getQuestionLanguage() == null
                 || newSet.getAnswerLanguage() == null
                 || newSet.getFlashcards() == null) {
-            return ResponseEntity.badRequest().body("bad request");
+            return ResponseEntity.badRequest().body(null);
         }
-        flashcardsSetsService.addNewSet(newSet, testUser);
-        return ResponseEntity.ok("set was successfully added!");
+        FlashcardsSet savedSet = flashcardsSetsService.addNewSet(newSet, testUser);
+        return ResponseEntity.ok(savedSet);
     }// todo: should I use jwt for getting info about user?
 
     @PutMapping()
