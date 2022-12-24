@@ -1,96 +1,188 @@
-# Authentication /auth
-## POST /login
-### request data
-email and password
-### response
-access token and secure http only cookie with refresh token
-## POST /refresh
-### response
-access token and secure http only cookie with refresh token
+# Authentication
+## login
 
-# Registration /register
-## POST
-register new user
-### request body
-nickname, password and email. Confirmation letter 
-will be send on email
-### response
+Endpoint: `/auth/login`
+
+Method: `POST`
+
+Request body: email, password
+
+Response: access token and http only secure cookie with refresh token
+
+## refresh access token
+
+Endpoint: `/auth/refresh`
+
+Method: `POST`
+
+Response: access token and http only secure cookie with refresh token
+
+*To refresh token you need http only cookie with refresh token!*
+
+# Registration
+
+## Register new user
+
+Endpoint: /register
+
+Method: POST
+
+Request body: email, nickname, password
+
+Response: message with registration status
+
 ## GET /confirm?token={token}
+
 account confirmation
 
-# Users /users
-## GET /{id}
-### response
-user by id
-## PUT /{id}/email
-### request body
-new email
-### response
-user with updated email
-## PUT /{id}/nickname
-### request body
-new nickname
-### response
-user with updated nickname
-## PUT /{id}/password
-### request body
-new password
-### response
-user with updated password
-## GET /{id}/tags
-### response
-list of tags of the user by id
-## GET /{id}/sets
-### response
-list of tags of the user by id
-## GET /nickname/{nickname}
-### response
-returns is nickname available 
+# Users
+
+## get user by id
+
+Endpoint: ` /users/{id}`
+
+Method: `GET`
+
+Response: user by id
+
+## update user's email
+
+Endpoint: ` /users/{id}/email`
+
+Method: `PUT`
+
+Request body: `{"newEmail" : "emai"}`
+
+Response: user with updated email
+
+## update user's nickname
+
+Endpoint: ` /users/{id}/nickname`
+
+Method: `PUT`
+
+Request body: `{"newNickname" : "nickname"}`
+
+Response: user with updated nickname
+
+## update user's password
+
+Endpoint: ` /users/{id}/password`
+
+Method: `PUT`
+
+Request body: `{"newPassword" : "password"}`
+
+Response: updated user
+
+## get user's tags
+
+Endpoint: ` /users/{userId}/tags`
+
+Method: `GET`
+
+Response: list of user's tags
+
+## get user's sets
+
+Endpoint: ` /users/{userId}/tags`
+
+Method: `GET`
+
+Response list of user's tags
+
+## is nickname available
+
+Endpoint: ` /users/nickname/{nickname}`
+
+Method: `GET`
+
+Response: true if nickname available or false if not
 
 # Sets /sets
-## GET /{id}
-get set by id
-### response
-set by id
-## POST
-create a new set
-### request body
-new set
-### response
-<!-- todo -->
-## PUT 
-update set
-### request body
-updated set
-### response
-updated set
-## DELETE /{id}
-delee set by id
 
-# Tags /tags
-## GET /{id}
-### response
-tag by id
-## POST
-### request body
-new tag
-### response
-<!-- todo -->
-## PUT
-### request body
-updated tag
-### response
-updated tag
-## DELETE /{id}
-delete tag by id
+## get set by id
+Endpoint: `/sets/{id}`
+
+Method: `GET`
+
+Response: set by id
+
+## add new set
+Endpoint: `/sets`
+
+Method: `POST`
+
+Request body: new set
+
+Response: saved set
+
+## update existed set
+Endpoint: `/sets`
+
+Method: `PUT`
+
+Request body: updated set
+
+Response: updated set
+
+## delete set
+Endpoint: `/sets/{id}`
+
+Method: `DELETE`
+
+Response: result message
+
+# Tags 
+
+## get tag by id
+Endpoint: `/tags/{id}`
+
+Method: `GET`
+
+Response: tag by id
+
+
+## add new tag
+Endpoint: `/tags`
+
+Method: `POST`
+
+Request body: new tag
+
+Response: saved tag
+
+## update existed tag
+Endpoint: `/tags`
+
+Method: `PUT`
+
+Request body: updated tag
+
+Response: updated tag
+
+
+## delete tag by id
+Endpoint: `/tags/{id}`
+
+Method: `DELETE`
+
+Response: result message
 
 # Colors /colors
-## GET
-### response
-List of available colors for tags
 
-# Languages /languages
-## GET
-### response
-List of available languages for creating sets
+## Get all tag colors
+Endpoint: `/colors`
 
+Method: `GET`
+
+Response: list of tag colors
+
+# Languages
+
+## get supported languages
+Endpoint: `/languages`
+
+Method: `GET`
+
+Response: list of supported languages
