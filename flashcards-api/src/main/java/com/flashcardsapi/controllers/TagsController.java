@@ -24,8 +24,8 @@ public class TagsController {
     private UserService userService;
 
     @GetMapping("/{tagId}")
-    public ResponseEntity<Tag> getTagById(@PathVariable long tagId) {
-        return ResponseEntity.ok(tagsService.getTagById(tagId));
+    public Tag getTagById(@PathVariable long tagId) {
+        return tagsService.getTagById(tagId);
     }
 
     @PostMapping()
@@ -33,7 +33,7 @@ public class TagsController {
         if (!data.containsKey("name") || !data.containsKey("colorId")) {
             return ResponseEntity.badRequest().body(null);
         }
-        try {
+        try { //todo: write a custom setter for color id
             String name = data.get("name");
             long colorId = Long.parseLong(data.get("colorId"));
             User user = userService.getById((long) principal.getClaims().get("id"));
@@ -41,6 +41,7 @@ public class TagsController {
             return ResponseEntity.ok(savedTag);
 
         } catch (ClassCastException | NullPointerException e) {
+            // todo: replace with error handling and spring validation
             return ResponseEntity.badRequest().body(null);
         }
     }

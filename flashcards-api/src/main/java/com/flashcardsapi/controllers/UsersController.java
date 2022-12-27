@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,82 +26,83 @@ public class UsersController {
 
     // todo: I can take user id for update email, password or nickname from jwt
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
-        if (userId == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        User user = userService.getById(userId);
-        if (user == null) {
-            return ResponseEntity.ok(null);
-        }
-        return ResponseEntity.ok(user);
+    public User getUserById(@PathVariable Long userId) {
+        // todo: replace with validation annotation
+        // if (userId == null) {
+        // return ResponseEntity.badRequest().body(null);
+        // }
+        return userService.getById(userId);
     }
 
     @PutMapping("/{userId}/password")
-    public ResponseEntity<User> updateUserPassowrd(@PathVariable Long userId,
-            @RequestBody Map<String, String> requestBody) {
+    public User updateUserPassowrd(@PathVariable Long userId, @RequestBody Map<String, String> requestBody) {
         String newPassowrd = requestBody.get("newPassword");
         if (newPassowrd == null) {
-            return ResponseEntity.badRequest().body(null);
+            // return ResponseEntity.badRequest().body(null);
+            return null;
         }
         User userWithNewPassword = userService.updatePassoword(newPassowrd, userId);
         if (userWithNewPassword == null) {
-            return ResponseEntity.badRequest().body(null);
+            return null;
+            // return ResponseEntity.badRequest().body(null);
         }
-        return ResponseEntity.ok(userWithNewPassword);
+        return userWithNewPassword;
     }
 
     @PutMapping("{userId}/email")
-    public ResponseEntity<User> updateUserEmail(@PathVariable Long userId,
-            @RequestBody Map<String, String> requestBody) {
+    public User updateUserEmail(@PathVariable Long userId, @RequestBody Map<String, String> requestBody) {
         String newEmail = requestBody.get("newEmail");
         if (newEmail == null) {
-            return ResponseEntity.badRequest().body(null);
+            // return ResponseEntity.badRequest().body(null);
+            // return null;
         }
         User userWithNewEmail = userService.updateEmail(userId, newEmail);
         if (userWithNewEmail == null) {
-            return ResponseEntity.badRequest().body(null);
+            // return ResponseEntity.badRequest().body(null);
+            return null;
         }
-        return ResponseEntity.ok(userWithNewEmail);
+        return userWithNewEmail;
     }
 
     @PutMapping("{userId}/nickname")
-    public ResponseEntity<User> updateUserNickname(@PathVariable Long userId,
-            @RequestBody Map<String, String> requestBody) {
+    public User updateUserNickname(@PathVariable Long userId, @RequestBody Map<String, String> requestBody) {
         String newNickname = requestBody.get("newNickname");
         if (newNickname == null) {
-            return ResponseEntity.badRequest().body(null);
+            // return ResponseEntity.badRequest().body(null);
+            return null;
         }
         User userWithNewNickname = userService.updateNickname(userId, newNickname);
         if (userWithNewNickname == null) {
-            return ResponseEntity.badRequest().body(null);
+            // return ResponseEntity.badRequest().body(null);
+            return null;
         }
-        return ResponseEntity.ok(userWithNewNickname);
+        return userWithNewNickname;
     }
 
     // this endpoint will be used for registration and nickname update
-    @GetMapping("nickname/{nickname}")
-    public ResponseEntity<String> getNicknameAvilability(@PathVariable String nickname) {
-        String response = "isAvailable: " + userService.isNicknameAvailable(nickname);
-        return ResponseEntity.ok(response);
+    // todo: fix. After remove response entity endpoint returns 404 error
+    @GetMapping("/nickname/{nickname}")
+    public Map.Entry<String, Boolean> getNicknameAvilability(@PathVariable String nickname) {
+        // String response = "isAvailable: " + userService.isNicknameAvailable(nickname);
+        return Map.entry("isAvailable", userService.isNicknameAvailable(nickname));
     }
 
-
     @GetMapping("/{userId}/sets")
-    public ResponseEntity<List<FlashcardsSet>> getUserSets(@PathVariable Long userId) {
+    public List<FlashcardsSet> getUserSets(@PathVariable Long userId) {
         User user = userService.getById(userId);
+        // todo: replace it
         if (user == null) {
-            return ResponseEntity.ok(null);
+            return null;
         }
-        return ResponseEntity.ok(setsService.getSetsByUser(user));
+        return setsService.getSetsByUser(user);
     }
 
     @GetMapping("/{userId}/tags")
-    public ResponseEntity<List<Tag>> getUserTags(@PathVariable long userId) {
+    public List<Tag> getUserTags(@PathVariable long userId) {
         User user = userService.getById(userId);
         if (user == null) {
-            return ResponseEntity.ok(null);
+            return null;
         }
-        return ResponseEntity.ok(tagsService.getTagsByUser(user));
+        return tagsService.getTagsByUser(user);
     }
 }

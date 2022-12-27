@@ -38,12 +38,14 @@ public class AuthController {
         response.addCookie(getRefreshTokenCookie(authenticationUser));
         tokens.put("refreshToken", tokenService.generateRefreshToken(authenticationUser));
         return ResponseEntity.ok(tokens);
+        // todo: I can make redirect to refresh point automatically if token isn't valid
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<Map<String, String>> refreshAccessToken(@CookieValue(value = "refreshtoken") String refreshToken, HttpServletResponse response) {
         ResponseEntity.BodyBuilder unauthorizedBodyBuilder = ResponseEntity.status(HttpStatus.UNAUTHORIZED);
         String notValidTokenMessage = "Token isn't valid";
+        // todo: rewrite error handling  
         Map<String, String> responseBody;
         if (refreshToken == null) {
             responseBody = new HashMap<>();

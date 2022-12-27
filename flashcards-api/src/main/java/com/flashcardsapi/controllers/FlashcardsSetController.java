@@ -20,23 +20,22 @@ public class FlashcardsSetController {
     private UserService userService;
 
     @GetMapping("/{setId}")
-    public ResponseEntity<FlashcardsSet> getSetById(@PathVariable long setId) {
-        FlashcardsSet set = flashcardsSetsService.getSetById(setId);
-        return ResponseEntity.ok(set);
+    public FlashcardsSet getSetById(@PathVariable long setId) {
+        return flashcardsSetsService.getSetById(setId);
     }
 
     @PostMapping()
-    public ResponseEntity<FlashcardsSet> addNewSet(@RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
+    public FlashcardsSet addNewSet(@RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
         long userId = (long) principal.getClaims().get("id");
         User testUser = userService.getById(userId);
-        if (newSet.getName() == null
-                || newSet.getQuestionLanguage() == null
-                || newSet.getAnswerLanguage() == null
-                || newSet.getFlashcards() == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        FlashcardsSet savedSet = flashcardsSetsService.addNewSet(newSet, testUser);
-        return ResponseEntity.ok(savedSet);
+        // todo: replace with spring boot - validation
+        // if (newSet.getName() == null
+        //         || newSet.getQuestionLanguage() == null
+        //         || newSet.getAnswerLanguage() == null
+        //         || newSet.getFlashcards() == null) {
+        //     return ResponseEntity.badRequest().body(null);
+        // }
+        return flashcardsSetsService.addNewSet(newSet, testUser);
     }// todo: should I use jwt for getting info about user?
 
     @PutMapping()
