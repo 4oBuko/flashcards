@@ -19,6 +19,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.security:spring-security-oauth2-resource-server:5.7.4'
     implementation 'org.springframework.security:spring-security-oauth2-jose:5.7.4'
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.0.0'
