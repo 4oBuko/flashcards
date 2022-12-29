@@ -47,21 +47,21 @@ public class TagsController {
     }
 
     @PutMapping()
-    public ResponseEntity<Tag> updateTagById(@RequestBody Map<String, String> body) {
+    public Tag updateTagById(@RequestBody Map<String, String> body) {
         try {
             String newName = body.get("name");
             Long colorId = Long.valueOf(body.get("colorId"));
             Long tagId = Long.valueOf(body.get("id"));
-            Tag updatedTag = tagsService.updateTag(tagId, colorId, newName);
-            return ResponseEntity.ok(updatedTag);
+            return tagsService.updateTag(tagId, colorId, newName);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            // todo: remove try/catch block with exception handler
+            return null;
         }
     }
 
     @DeleteMapping("/{tagId}")
-    public ResponseEntity<String> deleteTagById(@PathVariable long tagId) {
+    public String deleteTagById(@PathVariable long tagId) {
         tagsService.deleteTag(tagId);
-        return ResponseEntity.ok("tag was deleted");
+        return "tag was deleted";
     }
 }

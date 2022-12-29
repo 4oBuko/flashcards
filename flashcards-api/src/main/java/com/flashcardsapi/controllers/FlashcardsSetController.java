@@ -1,7 +1,6 @@
 package com.flashcardsapi.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -39,19 +38,19 @@ public class FlashcardsSetController {
     }// todo: should I use jwt for getting info about user?
 
     @PutMapping()
-    public ResponseEntity<FlashcardsSet> updateSet(@RequestBody FlashcardsSet setToUpdate) {
+    public FlashcardsSet updateSet(@RequestBody FlashcardsSet setToUpdate) {
         try {
-            FlashcardsSet updatedSet = flashcardsSetsService.updateSet(setToUpdate);
-            return ResponseEntity.ok(updatedSet);
+            return flashcardsSetsService.updateSet(setToUpdate);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            // todo: remove try/catch block with exception handler
+            return null;
         }
     }
 
     @DeleteMapping("/{setId}")
-    public ResponseEntity<String> deleteSetById(@PathVariable long setId) {
+    public String deleteSetById(@PathVariable long setId) {
         flashcardsSetsService.deleteSetById(setId);
         // todo: check if the user can delete this tag
-        return ResponseEntity.ok("tag was successfully deleted");
+        return "tag was successfully deleted";
     }
 }

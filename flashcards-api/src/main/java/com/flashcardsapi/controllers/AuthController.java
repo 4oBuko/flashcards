@@ -41,6 +41,7 @@ public class AuthController {
         // todo: I can make redirect to refresh point automatically if token isn't valid
     }
 
+    // todo: remove response entity
     @PostMapping("/refresh")
     public ResponseEntity<Map<String, String>> refreshAccessToken(@CookieValue(value = "refreshtoken") String refreshToken, HttpServletResponse response) {
         ResponseEntity.BodyBuilder unauthorizedBodyBuilder = ResponseEntity.status(HttpStatus.UNAUTHORIZED);
