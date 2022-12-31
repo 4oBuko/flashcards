@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +26,10 @@ public class UsersController {
     private final FlashcardsSetsService setsService;
     private final TagsService tagsService;
 
+    // todo: error handling if user wasn't found
     // todo: I can take user id for update email, password or nickname from jwt
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable Long userId) {
-        // todo: replace with validation annotation
-        // if (userId == null) {
-        // return ResponseEntity.badRequest().body(null);
-        // }
+    public User getUserById(@Valid @PathVariable Long userId) {
         return userService.getById(userId);
     }
 
