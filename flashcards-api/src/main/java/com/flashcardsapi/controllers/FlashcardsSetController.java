@@ -1,6 +1,9 @@
 package com.flashcardsapi.controllers;
 
 import lombok.AllArgsConstructor;
+
+import javax.validation.Valid;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -23,17 +26,11 @@ public class FlashcardsSetController {
         return flashcardsSetsService.getSetById(setId);
     }
 
+    // todo: test it
     @PostMapping()
-    public FlashcardsSet addNewSet(@RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
+    public FlashcardsSet addNewSet(@Valid @RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
         long userId = (long) principal.getClaims().get("id");
         User testUser = userService.getById(userId);
-        // todo: replace with spring boot - validation
-        // if (newSet.getName() == null
-        //         || newSet.getQuestionLanguage() == null
-        //         || newSet.getAnswerLanguage() == null
-        //         || newSet.getFlashcards() == null) {
-        //     return ResponseEntity.badRequest().body(null);
-        // }
         return flashcardsSetsService.addNewSet(newSet, testUser);
     }// todo: should I use jwt for getting info about user?
 

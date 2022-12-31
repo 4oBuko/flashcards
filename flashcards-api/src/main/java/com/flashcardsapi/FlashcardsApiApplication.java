@@ -13,7 +13,6 @@ public class FlashcardsApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(FlashcardsApiApplication.class, args);
     }
-    // todo: maybe return saved entity with message or just entity in sets and tags controllers
     // todo: add error response customization (I can send exceptions with message
     // without custom message object or maps)
 //    todo: for custom json response (e.g status and data object) you can create builder

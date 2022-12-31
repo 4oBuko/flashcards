@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-//todo: format entity json format by jackson
 @Entity
 @Setter
 @Getter

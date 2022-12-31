@@ -82,12 +82,13 @@ public class UsersController {
     // todo: fix. After remove response entity endpoint returns 404 error
     @GetMapping("/nickname/{nickname}")
     public Map.Entry<String, Boolean> getNicknameAvilability(@PathVariable String nickname) {
-        // String response = "isAvailable: " + userService.isNicknameAvailable(nickname);
+        // String response = "isAvailable: " +
+        // userService.isNicknameAvailable(nickname);
         return Map.entry("isAvailable", userService.isNicknameAvailable(nickname));
     }
 
     @GetMapping("/{userId}/sets")
-    public List<FlashcardsSet> getUserSets(@PathVariable Long userId) {
+    public List<FlashcardsSet> getUserSets(@Valid @PathVariable Long userId) {
         User user = userService.getById(userId);
         // todo: replace it
         if (user == null) {
@@ -97,8 +98,9 @@ public class UsersController {
     }
 
     @GetMapping("/{userId}/tags")
-    public List<Tag> getUserTags(@PathVariable long userId) {
+    public List<Tag> getUserTags(@Valid @PathVariable long userId) {
         User user = userService.getById(userId);
+        // todo: replace it
         if (user == null) {
             return null;
         }
