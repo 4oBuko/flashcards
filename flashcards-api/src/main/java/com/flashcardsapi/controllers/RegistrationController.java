@@ -13,6 +13,7 @@ import com.flashcardsapi.services.UserService;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/register")
@@ -30,7 +31,7 @@ public class RegistrationController { // todo: test all endpoints
 
     // todo: add password validation (number of characters and different symbols)
     @PostMapping()
-    public ResponseEntity<String> registerNewUser(@RequestBody User newUser) {
+    public ResponseEntity<String> registerNewUser(@Valid @RequestBody User newUser) {
         User registeredUser = userService.registerNewUser(newUser);
         if (registeredUser != null) {
             return ResponseEntity.ok("Registration successful!");
