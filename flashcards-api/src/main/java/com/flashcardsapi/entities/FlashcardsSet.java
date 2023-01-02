@@ -37,12 +37,12 @@ public class FlashcardsSet {
     private String name;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_language_id", referencedColumnName = "id")
     private Language questionLanguage;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "answer_language_id", referencedColumnName = "id")
     private Language answerLanguage;
 
@@ -72,18 +72,18 @@ public class FlashcardsSet {
         this.setUser(user);
     }
 
-    @JsonSetter(value = "questionLanguageId")
-    public void setQuestionLanguageId(Long questionLanguageId) {
-        Language language = new Language();
-        language.setId(questionLanguageId);
-        this.setQuestionLanguage(language);
-    }
+    // @JsonSetter(value = "questionLanguageId")
+    // public void setQuestionLanguageId(Long questionLanguageId) {
+    //     Language language = new Language();
+    //     language.setId(questionLanguageId);
+    //     this.setQuestionLanguage(language);
+    // }
 
-    @JsonSetter(value = "answerLanguageId")
-    public void setAnswerLanguageId(Long answerLanguageId) {
-        Language language = new Language();
-        language.setId(answerLanguageId);
-        this.setQuestionLanguage(language);
-    }
+    // @JsonSetter(value = "answerLanguageId")
+    // public void setAnswerLanguageId(Long answerLanguageId) {
+    //     Language language = new Language();
+    //     language.setId(answerLanguageId);
+    //     this.setQuestionLanguage(language);
+    // }
     
 }

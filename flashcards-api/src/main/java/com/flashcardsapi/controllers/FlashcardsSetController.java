@@ -26,7 +26,6 @@ public class FlashcardsSetController {
         return flashcardsSetsService.getSetById(setId);
     }
 
-    // todo: test it
     @PostMapping()
     public FlashcardsSet addNewSet(@Valid @RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
         long userId = (long) principal.getClaims().get("id");
