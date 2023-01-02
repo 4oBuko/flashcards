@@ -28,10 +28,11 @@ public class FlashcardsSetController {
 
     @PostMapping()
     public FlashcardsSet addNewSet(@Valid @RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
+        
         long userId = (long) principal.getClaims().get("id");
         User testUser = userService.getById(userId);
         return flashcardsSetsService.addNewSet(newSet, testUser);
-    }// todo: should I use jwt for getting info about user?
+    }
 
     @PutMapping()
     public FlashcardsSet updateSet(@RequestBody FlashcardsSet setToUpdate) {

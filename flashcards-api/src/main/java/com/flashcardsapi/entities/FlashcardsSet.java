@@ -71,19 +71,4 @@ public class FlashcardsSet {
         user.setId(id);
         this.setUser(user);
     }
-
-    // @JsonSetter(value = "questionLanguageId")
-    // public void setQuestionLanguageId(Long questionLanguageId) {
-    //     Language language = new Language();
-    //     language.setId(questionLanguageId);
-    //     this.setQuestionLanguage(language);
-    // }
-
-    // @JsonSetter(value = "answerLanguageId")
-    // public void setAnswerLanguageId(Long answerLanguageId) {
-    //     Language language = new Language();
-    //     language.setId(answerLanguageId);
-    //     this.setQuestionLanguage(language);
-    // }
-    
 }
