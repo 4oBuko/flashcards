@@ -11,6 +11,8 @@ import com.flashcardsapi.services.EmailService;
 import com.flashcardsapi.services.UserService;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -31,12 +33,16 @@ public class RegistrationController { // todo: test all endpoints
 
     // todo: add password validation (number of characters and different symbols)
     @PostMapping()
-    public ResponseEntity<String> registerNewUser(@Valid @RequestBody User newUser) {
+    @ResponseBody
+    public Map<String,String> registerNewUser(@Valid @RequestBody User newUser) {
+        Map<String, String> test = new HashMap<>();
         User registeredUser = userService.registerNewUser(newUser);
         if (registeredUser != null) {
-            return ResponseEntity.ok("Registration successful!");
+            test.put("message", "Registration successful!. check your email for verification letter");
+            return test;
         }
-        return ResponseEntity.badRequest().body("Registration failed");
+        test.put("message", "Registration failed");
+        return test;
     }
 
     @GetMapping("/confirm")
