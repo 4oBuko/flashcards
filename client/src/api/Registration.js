@@ -1,8 +1,6 @@
 import { API_URLS } from "../config/api-routes.js";
 
-export function register(nickname, email, password) {
-  // make request to api with data for registration
-  // return message from api
+export async function register(nickname, email, password) {
   let registrationInfo = {
     nickname: nickname,
     password: password,
@@ -11,14 +9,13 @@ export function register(nickname, email, password) {
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Access-Control-Allow-Origin", "*");
   const request = new Request(API_URLS.USER_REGISTER, {
     method: "POST",
     headers: myHeaders,
     body: JSON.stringify(registrationInfo),
   });
 
-  fetch(request).then((data) => {
-    console.log(data);
-  });
+  const response = await fetch(request);
+
+  return response.json();
 }

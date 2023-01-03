@@ -2,7 +2,7 @@
 import { register } from "./api/Registration";
 export default {
   created() {
-    register("user1", "user1", "user1");
+    let response = register("user1", "user1", "user1");
   },
 };
 </script>
