@@ -47,7 +47,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.disable())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .authorizeRequests(
                         auth -> auth.antMatchers("/auth/**").permitAll()
@@ -76,7 +75,7 @@ public class SecurityConfiguration {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://localhost:5173");
+				registry.addMapping("/**").allowedOrigins("*");
 			}
 		};
 	}
