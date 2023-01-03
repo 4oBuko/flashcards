@@ -22,5 +22,3 @@ export function register(nickname, email, password) {
     console.log(data);
   });
 }
-
-register("user1", "user1", "user1");
