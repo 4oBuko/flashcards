@@ -9,6 +9,7 @@ export async function register(nickname, email, password) {
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
+  
   const request = new Request(API_URLS.USER_REGISTER, {
     method: "POST",
     headers: myHeaders,
@@ -17,5 +18,5 @@ export async function register(nickname, email, password) {
 
   const response = await fetch(request);
 
-  return response.json();
+  return response.json();//todo why I get a promise
 }
