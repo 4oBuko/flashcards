@@ -28,6 +28,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     @NotBlank(message = "email cannot be empty")
     private String email;
 
@@ -36,7 +37,7 @@ public class User implements UserDetails {
     private String password;
 
     @NotBlank(message = "nickname cannot be empty")
-    @Column(length = 50)
+    @Column(length = 50,unique = true)
     private String nickname;
 
     @JsonIgnore
