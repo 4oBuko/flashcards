@@ -1,11 +1,8 @@
 <script>
-// import { register } from "./api/Registration";
-import { login } from "./api/Authentication"
+import { testLogin } from "./api/ApiRequestManager";
 export default {
   created() {
-    // let response = register("user1", "user1", "user1");
-    let x = login("test", "test").then(token => console.log(token)).catch(error=> console.log(error));
-
+    testLogin();
   },
 };
 </script>
