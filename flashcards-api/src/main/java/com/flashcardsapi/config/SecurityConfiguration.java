@@ -16,7 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,8 +28,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -87,27 +84,4 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }
-    // @Bean
-    // public WebMvcConfigurer corsConfigurer() {
-    // return new WebMvcConfigurer() {
-    // @Override
-    // public void addCorsMappings(CorsRegistry registry) {
-    // registry.addMapping("/**")
-    // .allowedHeaders("*")
-    // .allowedMethods(CorsConfiguration.ALL)
-    // .allowedOrigins("*")
-    // .allowCredentials(true)
-    // .maxAge(-1);
-    // }
-    // };
-    // }
-    // @Bean
-    // public WebMvcConfigurer corsConfigurer() {
-    // return new WebMvcConfigurer() {
-    // @Override
-    // public void addCorsMappings(CorsRegistry registry) {
-    // registry.addMapping("/**").allowedOrigins("*");
-    // }
-    // };
-    // }
 }
