@@ -43,9 +43,7 @@ async function refresh() {
 }
 
 export function testLogin() {
-  let loginInfo = {
-  }
-  return sendRequestToApi(loginInfo, API_URLS.SET_GET.replace(":id",6 ), "POST");
+  return sendRequestToApi(null, API_URLS.SET_GET.replace(":id",6 ), "GET");
 }
 
 export async function login(email, password) {
@@ -76,7 +74,7 @@ function createRequest(body,endpoint,method) {
   const request = new Request(endpoint, {
     method: method,
     headers: headers,
-    body: JSON.stringify(body),
+    body: method == "GET" ? null : JSON.stringify(body),
   });
   return request;
 }
