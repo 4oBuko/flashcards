@@ -27,7 +27,7 @@ public class AuthController {
     private final JwtTokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> loginUser(@RequestBody User user, HttpServletResponse response) {
+    public Map<String, String> loginUser(@RequestBody User user, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user.getEmail(), user.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
@@ -36,7 +36,7 @@ public class AuthController {
         tokens.put("token", tokenService.generateToken(authenticationUser));
 
         response.addCookie(getRefreshTokenCookie(authenticationUser));
-        return ResponseEntity.ok(tokens);
+        return tokens;
         // todo: I can make redirect to refresh point automatically if token isn't valid
     }
 

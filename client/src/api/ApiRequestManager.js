@@ -1,50 +1,82 @@
 import {API_URLS} from '../config/api-routes.js';
-export async function sendRequestToApi(body, endpoint, method) {
-  const headers = new Headers();
-  //   ! add authentication header
-  headers.append("Content-Type", "application/json");
-  const request = new Request(endpoint, {
-    method: method,
-    headers: headers,
-    body: JSON.stringify(body),
-  });
-  fetch(request).then((response) => {
-    if(response.status==401){
-      let refresh = refresh();
-      if(refresh.status >= 400) {//if request failed
-        console.log("refresh failed");
-      }
+import {Token} from "./Token.js";
 
+export async function sendRequestToApi(body, endpoint, method) {
+    let request = createRequest(body,endpoint, method);
+    return fetch(request).then((response) => {
+    if(response.status >= 400) {//if request failed
+      let refreshResponse = refresh();
+      if(refreshResponse.status >= 400){
+          console.log("refresh failed");
+          return;
+      } else {
       console.log("token refreshed. Try to do request again");
+      console.log(response.status);
       console.log(response.json());
-      return sendRequestToApi(body, endpoint, method);
-      // I have to add object for access token
-    }
-    else {
-      {
+        return fetch(createRequest(body,endpoint, method));
+      }
+      }
+    else{
+      let obj = {
         code : response.status,
         body : response.json(),
-      }
+      };
+      console.log(obj);
+      return obj;
     }
-    // TODO: if response is 401 send refresh
-    //if refresh is 401 or another error
-    //(funciont that called will handle it) return response
-    //if response is 200 use new access token and call the function
-    //again
-    console.log(response.json());
   }).catch(error => {
     console.log("error");
     console.log(error);
   });
 }
 
-function refresh() {
-  return;
+async function refresh() {
+  return fetch(API_URLS.REFRESH)
+        .then(response => {
+          if(response.status==200) {
+            const body = response.json();
+            localStorage.setItem("token", new Token(body.token))
+          }
+          return response;
+        });
+
 }
+
 export function testLogin() {
   let loginInfo = {
-    email:"test",
-    password:"test",
   }
-  return sendRequestToApi(loginInfo, API_URLS.ACCOUNT_LOGIN, "POST");
+  return sendRequestToApi(loginInfo, API_URLS.SET_GET.replace(":id",6 ), "POST");
+}
+
+export async function login(email, password) {
+  let loginInfo = {
+    email: email,
+    password: password,
+  };
+
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  const request = new Request(API_URLS.ACCOUNT_LOGIN, {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify(loginInfo),
+  });
+
+  const response = await fetch(request);
+  let object = await response.json();
+  localStorage.setItem("token", new Token(object.token));
+  return object;
+}
+function createRequest(body,endpoint,method) {
+  const headers = new Headers();
+  const token = localStorage.getItem("token");
+  headers.append("Content-Type", "application/json");
+  headers.append("Authentication", `Bearer ${token.token}`)
+  const request = new Request(endpoint, {
+    method: method,
+    headers: headers,
+    body: JSON.stringify(body),
+  });
+  return request;
 }

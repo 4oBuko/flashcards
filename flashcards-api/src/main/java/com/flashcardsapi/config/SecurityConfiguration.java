@@ -22,6 +22,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -52,8 +53,7 @@ public class SecurityConfiguration {
                         auth -> auth.antMatchers("/auth/**").permitAll()
                                 .antMatchers("/languages").permitAll()
                                 .antMatchers("/register/**").permitAll()
-                        .anyRequest().authenticated()
-                )
+                                .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
@@ -71,12 +71,17 @@ public class SecurityConfiguration {
     }
 
     @Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("*");
-			}
-		};
-	}
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                .allowedHeaders("*")
+                .allowedMethods(CorsConfiguration.ALL)
+                .allowedOrigins("*")
+                .allowCredentials(true)
+                .maxAge(-1);
+            }
+        };
+    }
 }
