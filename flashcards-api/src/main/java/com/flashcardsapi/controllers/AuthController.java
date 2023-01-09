@@ -36,7 +36,6 @@ public class AuthController {
         tokens.put("token", tokenService.generateToken(authenticationUser));
 
         response.addCookie(getRefreshTokenCookie(authenticationUser));
-        tokens.put("refreshToken", tokenService.generateRefreshToken(authenticationUser));
         return ResponseEntity.ok(tokens);
         // todo: I can make redirect to refresh point automatically if token isn't valid
     }

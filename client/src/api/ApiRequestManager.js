@@ -10,10 +10,23 @@ export async function sendRequestToApi(body, endpoint, method) {
   });
   fetch(request).then((response) => {
     if(response.status==401){
-      console.log("401");
-      return;
+      let refresh = refresh();
+      if(refresh.status >= 400) {//if request failed
+        console.log("refresh failed");
+      }
+
+      console.log("token refreshed. Try to do request again");
+      console.log(response.json());
+      return sendRequestToApi(body, endpoint, method);
+      // I have to add object for access token
     }
-      //TODO: if response is 401 send refresh
+    else {
+      {
+        code : response.status,
+        body : response.json(),
+      }
+    }
+    // TODO: if response is 401 send refresh
     //if refresh is 401 or another error
     //(funciont that called will handle it) return response
     //if response is 200 use new access token and call the function
