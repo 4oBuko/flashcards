@@ -1,14 +1,11 @@
 <script>
-import { testLogin } from "./api/ApiRequestManager";
-import { login } from "./api/Authentication";
+import { testLogin, login } from "./api/ApiRequestManager";
+import {register } from "./api/Registration"
 export default {
   created() {
-    testLogin();
-    //const token = login("test","test").then(response => response.token);
-    //const request = new Request("http://localhost:8080/sets/6", {
-     // method: "GET",
-
-    //})
+    // const response = login("test1", "test1");
+    register("bocchi", "bocchi", "bocchi").then(obj => console.log(obj));
+    // testLogin();
   },
 };
 </script>

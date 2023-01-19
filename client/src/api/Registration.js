@@ -9,7 +9,6 @@ export async function register(nickname, email, password) {
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  
   const request = new Request(API_URLS.USER_REGISTER, {
     method: "POST",
     headers: myHeaders,
