@@ -42,10 +42,11 @@ public class AuthController {
 
     // todo: remove response entity
     @PostMapping("/refresh")
-    public ResponseEntity<Map<String, String>> refreshAccessToken(@CookieValue(value = "refreshtoken") String refreshToken, HttpServletResponse response) {
+    public ResponseEntity<Map<String, String>> refreshAccessToken(
+            @CookieValue(name = "refreshToken", required = true) String refreshToken, HttpServletResponse response) {
         ResponseEntity.BodyBuilder unauthorizedBodyBuilder = ResponseEntity.status(HttpStatus.UNAUTHORIZED);
         String notValidTokenMessage = "Token isn't valid";
-        // todo: rewrite error handling  
+        // todo: rewrite error handling
         Map<String, String> responseBody;
         if (refreshToken == null) {
             responseBody = new HashMap<>();
@@ -71,6 +72,7 @@ public class AuthController {
     private Cookie getRefreshTokenCookie(User user) {
         Cookie jwtRefreshTokenCookie = new Cookie("refreshToken", tokenService.generateRefreshToken(user));
         jwtRefreshTokenCookie.setHttpOnly(true);
+        jwtRefreshTokenCookie.setMaxAge(182 * 24 * 60 * 60);
         // jwtRefreshTokenCookie.setSecure(true);
         return jwtRefreshTokenCookie;
     }

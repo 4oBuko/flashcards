@@ -32,14 +32,17 @@ export async function sendRequestToApi(body, endpoint, method) {
     });
 }
 
-async function refresh() {
-  return fetch(API_URLS.REFRESH).then((response) => {
-    if (response.status == 200) {
-      const body = response.json();
-      localStorage.setItem("token", new Token(body.token));
-    }
-    return response;
+export async function refresh() {
+  const response = await fetch(API_URLS.ACCOUNT_REFRESH_TOKEN, {
+    credentials: "include",
+    method: "POST",
   });
+  if (response.ok) {
+    const body = await response.json();
+    console.log(body.token);
+    localStorage.setItem("token", body.token);
+    console.log(localStorage.getItem("token"));
+  }
 }
 
 export function testLogin() {
@@ -56,14 +59,15 @@ export async function login(email, password) {
   myHeaders.append("Content-Type", "application/json");
 
   const request = new Request(API_URLS.ACCOUNT_LOGIN, {
+    credentials: "include",
     method: "POST",
     headers: myHeaders,
     body: JSON.stringify(loginInfo),
   });
   const response = await fetch(request);
+  console.log(response);
   let object = await response.json();
   localStorage.setItem("token", new Token(object.token));
-  console.log(object.token);
   return object;
 }
 

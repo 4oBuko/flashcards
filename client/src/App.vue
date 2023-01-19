@@ -1,10 +1,11 @@
 <script>
-import { testLogin, login } from "./api/ApiRequestManager";
-import {register } from "./api/Registration"
+import { ref } from '@vue/reactivity';
+import { testLogin, login, refresh } from "./api/ApiRequestManager";
 export default {
   created() {
     // const response = login("test1", "test1");
-    register("bocchi", "bocchi", "bocchi").then(obj => console.log(obj));
+    // login("bocchi", "bocchi");
+    refresh();
     // testLogin();
   },
 };
