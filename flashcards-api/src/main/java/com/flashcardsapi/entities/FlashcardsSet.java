@@ -37,12 +37,12 @@ public class FlashcardsSet {
     private String name;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "question_language_id", referencedColumnName = "id")
     private Language questionLanguage;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "answer_language_id", referencedColumnName = "id")
     private Language answerLanguage;
 

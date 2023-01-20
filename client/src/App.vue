@@ -5,8 +5,9 @@ export default {
   created() {
     // const response = login("test1", "test1");
     // login("bocchi", "bocchi");
-    refresh();
-    // testLogin();
+    // refresh();
+    let json = testLogin().then(body => body);
+
   },
 };
 </script>

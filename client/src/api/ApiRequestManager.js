@@ -6,6 +6,7 @@ export async function sendRequestToApi(body, endpoint, method) {
   return fetch(request)
     .then((response) => {
       if (response.status >= 400) {
+        console.log("response",response);
         //if request failed (//TODO change)
         let refreshResponse = refresh();
         if (refreshResponse.status >= 400) {
@@ -13,8 +14,8 @@ export async function sendRequestToApi(body, endpoint, method) {
           return refreshResponse;
         } else {
           console.log("token refreshed. Try to do request again");
-          console.log(response.status);
-          console.log(response.json());
+          // console.log(response.status);
+          // console.log(response.json());
           return fetch(createRequest(body, endpoint, method));
         }
       } else {
@@ -27,7 +28,6 @@ export async function sendRequestToApi(body, endpoint, method) {
       }
     })
     .catch((error) => {
-      console.log("error");
       console.log(error);
     });
 }
@@ -39,9 +39,7 @@ export async function refresh() {
   });
   if (response.ok) {
     const body = await response.json();
-    console.log(body.token);
     localStorage.setItem("token", body.token);
-    console.log(localStorage.getItem("token"));
   }
 }
 
@@ -65,18 +63,19 @@ export async function login(email, password) {
     body: JSON.stringify(loginInfo),
   });
   const response = await fetch(request);
-  console.log(response);
   let object = await response.json();
   localStorage.setItem("token", new Token(object.token));
   return object;
 }
 
+
 function createRequest(body, endpoint, method) {
   const headers = new Headers();
   const token = localStorage.getItem("token");
   headers.append("Content-Type", "application/json");
-  headers.append("Authentication", `Bearer ${token.token}`);
+  headers.append("Authorization", `Bearer ${token}`);
   const request = new Request(endpoint, {
+    credentials: "include",
     method: method,
     headers: headers,
     body: method == "GET" ? null : JSON.stringify(body),
