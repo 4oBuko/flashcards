@@ -6,25 +6,18 @@ export async function sendRequestToApi(body, endpoint, method) {
   return fetch(request)
     .then((response) => {
       if (response.status >= 400) {
-        console.log("response",response);
-        //if request failed (//TODO change)
+        console.log("response", response);
+        //if request failed //TODO change
         let refreshResponse = refresh();
         if (refreshResponse.status >= 400) {
           console.log("refresh failed");
           return refreshResponse;
         } else {
           console.log("token refreshed. Try to do request again");
-          // console.log(response.status);
-          // console.log(response.json());
           return fetch(createRequest(body, endpoint, method));
         }
       } else {
-        let obj = {
-          code: response.status,
-          body: response.json(),
-        };
-        console.log(obj);
-        return obj;
+        return response;
       }
     })
     .catch((error) => {
@@ -43,8 +36,12 @@ export async function refresh() {
   }
 }
 
-export function testLogin() {
-  return sendRequestToApi(null, API_URLS.SET_GET.replace(":id", 6), "GET");
+export function testGetId() {
+  sendRequestToApi(null, API_URLS.SET_GET.replace(":id", 6), "GET")
+    .then((r) => r.json())
+    .then((body) => {
+      console.log(body.id);
+    });
 }
 
 export async function login(email, password) {
@@ -67,7 +64,6 @@ export async function login(email, password) {
   localStorage.setItem("token", new Token(object.token));
   return object;
 }
-
 
 function createRequest(body, endpoint, method) {
   const headers = new Headers();
