@@ -1,7 +1,7 @@
 import { API_URLS } from "../config/api-routes.js";
 import { Token } from "./Token.js";
 
-export async function sendRequestToApi(body, endpoint, method) {
+export function sendRequestToApi(body, endpoint, method) {
   let request = createRequest(body, endpoint, method);
   return fetch(request)
     .then((response) => {
@@ -37,11 +37,9 @@ export async function refresh() {
 }
 
 export function testGetId() {
-  sendRequestToApi(null, API_URLS.SET_GET.replace(":id", 6), "GET")
-    .then((r) => r.json())
-    .then((body) => {
-      console.log(body.id);
-    });
+  return sendRequestToApi(null, API_URLS.SET_GET.replace(":id", 6), "GET").then(
+    (r) => r.json()
+  );
 }
 
 export async function login(email, password) {

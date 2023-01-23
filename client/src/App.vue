@@ -2,8 +2,8 @@
 import { ref } from "@vue/reactivity";
 import { testGetId, login, refresh } from "./api/ApiRequestManager";
 export default {
-  created() {
-    const body = testGetId();
+  async created() {
+    const body = await testGetId();
     console.log(body);
   },
 };
