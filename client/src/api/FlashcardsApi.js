@@ -4,16 +4,12 @@ import { Token } from "./Token.js";
 export function sendRequestToApi(body, endpoint, method) {
   let request = createRequest(body, endpoint, method);
   return fetch(request)
-    .then((response) => {
-      if (response.status >= 400) {
-        console.log("response", response);
-        //if request failed //TODO change
-        let refreshResponse = refresh();
-        if (refreshResponse.status >= 400) {
-          console.log("refresh failed");
+    .then(async (response) => {
+      if (!response.ok) {
+        let refreshResponse = await refresh();
+        if (!refreshResponse.ok) {
           return refreshResponse;
         } else {
-          console.log("token refreshed. Try to do request again");
           return fetch(createRequest(body, endpoint, method));
         }
       } else {
@@ -34,12 +30,7 @@ export async function refresh() {
     const body = await response.json();
     localStorage.setItem("token", body.token);
   }
-}
-
-export function testGetId() {
-  return sendRequestToApi(null, API_URLS.SET_GET.replace(":id", 6), "GET").then(
-    (r) => r.json()
-  );
+  return response;
 }
 
 export async function login(email, password) {
