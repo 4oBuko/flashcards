@@ -24,44 +24,44 @@ public class TagsController {
     private UserService userService;
 
     @GetMapping("/{tagId}")
-    public ResponseEntity<Tag> getTagById(@PathVariable long tagId) {
-        return ResponseEntity.ok(tagsService.getTagById(tagId));
+    public Tag getTagById(@PathVariable long tagId) {
+        return tagsService.getTagById(tagId);
     }
 
-    // todo: change response message with json message with status and message
     @PostMapping()
-    public ResponseEntity<String> addNewTag(@RequestBody Map<String, String> data, @AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<Tag> addNewTag(@RequestBody Map<String, String> data, @AuthenticationPrincipal Jwt principal) {
         if (!data.containsKey("name") || !data.containsKey("colorId")) {
-            return ResponseEntity.badRequest().body("");
+            return ResponseEntity.badRequest().body(null);
         }
-        try {
+        try { //todo: write a custom setter for color id
             String name = data.get("name");
             long colorId = Long.parseLong(data.get("colorId"));
             User user = userService.getById((long) principal.getClaims().get("id"));
-            tagsService.createNewTag(name, colorId, user);
-            return ResponseEntity.ok("Tag was added successfully");
+            Tag savedTag = tagsService.createNewTag(name, colorId, user);
+            return ResponseEntity.ok(savedTag);
 
         } catch (ClassCastException | NullPointerException e) {
-            return ResponseEntity.badRequest().body("");
-        }
-    }
-
-    @PutMapping()
-    public ResponseEntity<Tag> updateTagById(@RequestBody Map<String, String> body) {
-        try {
-            String newName = body.get("name");
-            Long colorId = Long.valueOf(body.get("colorId"));
-            Long tagId = Long.valueOf(body.get("id"));
-            Tag updatedTag = tagsService.updateTag(tagId, colorId, newName);
-            return ResponseEntity.ok(updatedTag);
-        } catch (IllegalArgumentException e) {
+            // todo: replace with error handling and spring validation
             return ResponseEntity.badRequest().body(null);
         }
     }
 
+    @PutMapping()
+    public Tag updateTagById(@RequestBody Map<String, String> body) {
+        try {
+            String newName = body.get("name");
+            Long colorId = Long.valueOf(body.get("colorId"));
+            Long tagId = Long.valueOf(body.get("id"));
+            return tagsService.updateTag(tagId, colorId, newName);
+        } catch (IllegalArgumentException e) {
+            // todo: remove try/catch block with exception handler
+            return null;
+        }
+    }
+
     @DeleteMapping("/{tagId}")
-    public ResponseEntity<String> deleteTagById(@PathVariable long tagId) {
+    public String deleteTagById(@PathVariable long tagId) {
         tagsService.deleteTag(tagId);
-        return ResponseEntity.ok("tag was deleted");
+        return "tag was deleted";
     }
 }

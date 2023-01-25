@@ -33,10 +33,10 @@ public class FlashcardsSetsService {
     }
 
     @Transactional
-    public void addNewSet(FlashcardsSet newSet, User user) {
+    public FlashcardsSet addNewSet(FlashcardsSet newSet, User user) {
         newSet.setUser(user);
         newSet.setFlashcards((List<Flashcard>) flashcardRepository.saveAll(newSet.getFlashcards()));
-        flashcardsSetRepository.save(newSet);
+        return flashcardsSetRepository.save(newSet);
     }
 
     public FlashcardsSet getSetById(long setId) {

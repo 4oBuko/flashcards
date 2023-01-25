@@ -12,6 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -26,12 +28,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
+    @NotBlank(message = "email cannot be empty")
     private String email;
 
+    @NotBlank(message = "password cannot be empty")
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
-    @Column(length = 50)
+    @NotBlank(message = "nickname cannot be empty")
+    @Column(length = 50,unique = true)
     private String nickname;
 
     @JsonIgnore

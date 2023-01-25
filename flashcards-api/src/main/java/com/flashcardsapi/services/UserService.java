@@ -32,6 +32,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User registerNewUser(User newUser) {
+        // todo check is email and nickname are available
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser.setRegistrationDate(LocalDate.now());
         // todo check is

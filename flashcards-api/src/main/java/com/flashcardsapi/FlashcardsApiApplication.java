@@ -17,4 +17,8 @@ public class FlashcardsApiApplication {
     // without custom message object or maps)
 //    todo: for custom json response (e.g status and data object) you can create builder
 //      this builder will use string, string map to store a custom response.
+
+
+// todo: in put methods for updating user info
+// user can put any id and change nickname for it
 }
