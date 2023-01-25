@@ -1,5 +1,4 @@
 import { API_URLS } from "../config/api-routes.js";
-import { Token } from "./Token.js";
 
 export function sendRequestToApi(body, endpoint, method) {
   let request = createRequest(body, endpoint, method);
@@ -50,7 +49,7 @@ export async function login(email, password) {
   });
   const response = await fetch(request);
   let object = await response.json();
-  localStorage.setItem("token", new Token(object.token));
+  localStorage.setItem("token", object.token);
   return object;
 }
 
@@ -66,4 +65,24 @@ function createRequest(body, endpoint, method) {
     body: method == "GET" ? null : JSON.stringify(body),
   });
   return request;
+}
+
+export async function registerNewUser(nickname, email, password) {
+  let registrationInfo = {
+    nickname: nickname,
+    password: password,
+    email: email,
+  };
+
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  const request = new Request(API_URLS.USER_REGISTER, {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify(registrationInfo),
+  });
+
+  const response = await fetch(request);
+  const data = await response.json();
+  return data;
 }
