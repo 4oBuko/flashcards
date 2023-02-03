@@ -1,9 +1,14 @@
 <script>
 import { ref } from "@vue/reactivity";
+import Login from "./components/Login.vue";
 export default {
-  created() {
-  },
+  created() {},
+  components: {
+    Login
+  }
 };
 </script>
-<template></template>
+<template>
+  <Login/>
+</template>
 <style></style>
