@@ -12,7 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -29,15 +28,12 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(unique = true)
-    @NotBlank(message = "email cannot be empty")
     private String email;
 
-    @NotBlank(message = "password cannot be empty")
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
-    @NotBlank(message = "nickname cannot be empty")
-    @Column(length = 50,unique = true)
+    @Column(length = 50, unique = true)
     private String nickname;
 
     @JsonIgnore
@@ -45,13 +41,6 @@ public class User implements UserDetails {
 
     @JsonIgnore
     private boolean isConfirmed;
-
-    public User(String email, String password, String nickname, LocalDate registrationDate) {
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
-        this.registrationDate = registrationDate;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -83,11 +72,4 @@ public class User implements UserDetails {
         return true;
     }
 
-    public User(String email, String password, String nickname, LocalDate registrationDate, boolean isConfirmed) {
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
-        this.registrationDate = registrationDate;
-        this.isConfirmed = isConfirmed;
-    }
 }

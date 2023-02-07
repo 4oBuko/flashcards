@@ -1,5 +1,6 @@
 package com.flashcardsapi.controllers;
 
+import com.flashcardsapi.dtos.user.CreateUserDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,14 +34,10 @@ public class RegistrationController { // todo: test all endpoints
     // todo: add password validation (number of characters and different symbols)
     @PostMapping()
     @ResponseBody
-    public Map<String,String> registerNewUser(@Valid @RequestBody User newUser) {
+    public Map<String, String> registerNewUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
         Map<String, String> test = new HashMap<>();
-        User registeredUser = userService.registerNewUser(newUser);
-        if (registeredUser != null) {
-            test.put("message", "Registration successful!. check your email for verification letter");
-            return test;
-        }
-        test.put("message", "Registration failed");
+        User registeredUser = userService.registerNewUser(createUserDTO);
+        test.put("message", "Registration successful!. check your email for verification letter");
         return test;
     }
 

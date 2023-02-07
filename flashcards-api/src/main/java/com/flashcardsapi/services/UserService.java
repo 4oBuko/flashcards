@@ -1,5 +1,7 @@
 package com.flashcardsapi.services;
 
+import com.flashcardsapi.dtos.user.CreateUserDTO;
+import com.flashcardsapi.exceptions.AlreadyUsedCredentialsException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.flashcardsapi.entities.User;
 import com.flashcardsapi.entities.VerificationToken;
 import com.flashcardsapi.repositories.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -27,18 +30,24 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findUserByEmail(email);
-        return user;
+        return userRepository.findUserByEmail(email);
     }
 
-    public User registerNewUser(User newUser) {
-        // todo check is email and nickname are available
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        newUser.setRegistrationDate(LocalDate.now());
-        // todo check is
-        newUser.setConfirmed(true);// todo: change on false after implementing email verification
-        newUser = userRepository.save(newUser);
-        return newUser;
+    @Transactional
+    public User registerNewUser(CreateUserDTO createUserDTO) {
+        if (userRepository.existsByEmail(createUserDTO.getEmail())) {
+            throw new AlreadyUsedCredentialsException("email is already used");
+        } else if (userRepository.existsByNickname(createUserDTO.getNickname())) {
+            throw new AlreadyUsedCredentialsException("nickname is already used");
+        } else {
+            User user = new User();
+            user.setEmail(createUserDTO.getEmail());
+            user.setNickname(createUserDTO.getNickname());
+            user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+            user.setRegistrationDate(LocalDate.now());
+            user.setConfirmed(true);// todo: change on false after implementing email verification
+            return userRepository.save(user);
+        }
     }
 
     public User getUserByToken(String token) {
@@ -49,7 +58,7 @@ public class UserService implements UserDetailsService {
         return getById(userId);
     }
 
-    public User updatePassoword(String newPassword, Long userId) {
+    public User updatePassword(String newPassword, Long userId) {
         String encodedNewPassword = passwordEncoder.encode(newPassword);
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) {

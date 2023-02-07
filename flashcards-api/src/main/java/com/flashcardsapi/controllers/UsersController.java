@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.flashcardsapi.entities.FlashcardsSet;
@@ -17,7 +16,7 @@ import com.flashcardsapi.services.FlashcardsSetsService;
 import com.flashcardsapi.services.TagsService;
 import com.flashcardsapi.services.UserService;
 
-@Controller
+@RestController
 @RequestMapping("/users")
 @AllArgsConstructor
 public class UsersController {
@@ -40,7 +39,7 @@ public class UsersController {
             // return ResponseEntity.badRequest().body(null);
             return null;
         }
-        User userWithNewPassword = userService.updatePassoword(newPassowrd, userId);
+        User userWithNewPassword = userService.updatePassword(newPassowrd, userId);
         if (userWithNewPassword == null) {
             return null;
             // return ResponseEntity.badRequest().body(null);
