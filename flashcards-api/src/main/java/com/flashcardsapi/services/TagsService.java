@@ -13,6 +13,7 @@ import com.flashcardsapi.entities.User;
 import com.flashcardsapi.repositories.TagRepository;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -59,5 +60,10 @@ public class TagsService {
         }
         tagToUpdate = tagRepository.save(tagToUpdate);
         return tagRepository.save(tagToUpdate);
+    }
+
+    @Transactional
+    public List<Tag> getUserTagsById(Long userId) {
+        return tagRepository.findAllByUser_id(userId);
     }
 }

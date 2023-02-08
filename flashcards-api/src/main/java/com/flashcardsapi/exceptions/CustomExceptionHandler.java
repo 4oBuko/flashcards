@@ -17,4 +17,11 @@ public class CustomExceptionHandler {
         log.debug(exception.getMessage());
         return ResponseEntity.badRequest().body(exception.getMessage());
     }
+
+    @ExceptionHandler(value = {CustomEntityNotFoundException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleEntityNotFoundException(CustomEntityNotFoundException exception) {
+        log.debug(exception.getMessage());
+        return ResponseEntity.badRequest().body("Entity by id not found " + exception.getMessage());
+    }
 }

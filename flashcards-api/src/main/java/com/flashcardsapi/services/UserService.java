@@ -1,7 +1,9 @@
 package com.flashcardsapi.services;
 
 import com.flashcardsapi.dtos.user.CreateUserDTO;
+import com.flashcardsapi.dtos.user.UpdateUserCredentialDTO;
 import com.flashcardsapi.exceptions.AlreadyUsedCredentialsException;
+import com.flashcardsapi.exceptions.CustomEntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,12 +22,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
     private UserRepository userRepository;
+
     private PasswordEncoder passwordEncoder;
+
     private JwtTokenService jwtTokenService;
+
     private EmailService emailService;
 
     public User getById(Long id) throws IllegalArgumentException {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
     }
 
     @Override
@@ -58,39 +63,31 @@ public class UserService implements UserDetailsService {
         return getById(userId);
     }
 
-    public User updatePassword(String newPassword, Long userId) {
-        String encodedNewPassword = passwordEncoder.encode(newPassword);
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            return null;
-        }
+    public User updatePassword(UpdateUserCredentialDTO credentialDTO) {
+        String encodedNewPassword = passwordEncoder.encode(credentialDTO.getCredential());
+        User user = userRepository.findById(credentialDTO.getId()).orElseThrow(CustomEntityNotFoundException::new);
         user.setPassword(encodedNewPassword);
         return userRepository.save(user);
     }
 
-    public User updateEmail(Long userId, String newEmail) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            return null;
-        }
-        user.setEmail(newEmail);
+    public User updateEmail(UpdateUserCredentialDTO credentialDTO) {
+        User user = userRepository.findById(credentialDTO.getId()).orElseThrow(CustomEntityNotFoundException::new);
+        user.setEmail(credentialDTO.getCredential());
         user.setConfirmed(false);
         userRepository.save(user);
         emailService.sendEmailUpdateLetter(user);
         return user;
     }
 
-    public User updateNickname(Long userId, String newNickname) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            return null;
-        }
-        user.setNickname(newNickname);
+    @Transactional
+    public User updateNickname(UpdateUserCredentialDTO credentialDTO) {
+        User user = userRepository.findById(credentialDTO.getId()).orElseThrow(CustomEntityNotFoundException::new);
+        user.setNickname(credentialDTO.getCredential());
         return userRepository.save(user);
     }
 
     public boolean isNicknameAvailable(String nickname) {
-        return userRepository.findAllByNickname(nickname).size() == 0;
+        return userRepository.existsByNickname(nickname);
     }
 
     public void confirmUser(VerificationToken token) {

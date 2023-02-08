@@ -1,5 +1,6 @@
 package com.flashcardsapi.controllers;
 
+import com.flashcardsapi.dtos.user.UpdateUserCredentialDTO;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -25,84 +26,39 @@ public class UsersController {
     private final FlashcardsSetsService setsService;
     private final TagsService tagsService;
 
-    // todo: error handling if user wasn't found
     // todo: I can take user id for update email, password or nickname from jwt
     @GetMapping("/{userId}")
     public User getUserById(@Valid @PathVariable Long userId) {
         return userService.getById(userId);
     }
 
-    @PutMapping("/{userId}/password")
-    public User updateUserPassowrd(@PathVariable Long userId, @RequestBody Map<String, String> requestBody) {
-        String newPassowrd = requestBody.get("newPassword");
-        if (newPassowrd == null) {
-            // return ResponseEntity.badRequest().body(null);
-            return null;
-        }
-        User userWithNewPassword = userService.updatePassword(newPassowrd, userId);
-        if (userWithNewPassword == null) {
-            return null;
-            // return ResponseEntity.badRequest().body(null);
-        }
-        return userWithNewPassword;
+    @PutMapping("/password")
+    public User updateUserPassword(@RequestBody @Valid UpdateUserCredentialDTO credentialDTO) {
+        return userService.updatePassword(credentialDTO);
     }
 
-    @PutMapping("{userId}/email")
-    public User updateUserEmail(@PathVariable Long userId, @RequestBody Map<String, String> requestBody) {
-        String newEmail = requestBody.get("newEmail");
-        if (newEmail == null) {
-            // return ResponseEntity.badRequest().body(null);
-            // return null;
-        }
-        User userWithNewEmail = userService.updateEmail(userId, newEmail);
-        if (userWithNewEmail == null) {
-            // return ResponseEntity.badRequest().body(null);
-            return null;
-        }
-        return userWithNewEmail;
+    @PutMapping("/email")
+    public User updateUserEmail(@RequestBody @Valid UpdateUserCredentialDTO credentialDTO) {
+        return userService.updateEmail(credentialDTO);
     }
 
-    @PutMapping("{userId}/nickname")
-    public User updateUserNickname(@PathVariable Long userId, @RequestBody Map<String, String> requestBody) {
-        String newNickname = requestBody.get("newNickname");
-        if (newNickname == null) {
-            // return ResponseEntity.badRequest().body(null);
-            return null;
-        }
-        User userWithNewNickname = userService.updateNickname(userId, newNickname);
-        if (userWithNewNickname == null) {
-            // return ResponseEntity.badRequest().body(null);
-            return null;
-        }
-        return userWithNewNickname;
+    @PutMapping("/nickname")
+    public User updateUserNickname(@RequestBody @Valid UpdateUserCredentialDTO credentialDTO) {
+        return userService.updateNickname(credentialDTO);
     }
 
-    // this endpoint will be used for registration and nickname update
-    // todo: fix. After remove response entity endpoint returns 404 error
     @GetMapping("/nickname/{nickname}")
-    public Map.Entry<String, Boolean> getNicknameAvilability(@PathVariable String nickname) {
-        // String response = "isAvailable: " +
-        // userService.isNicknameAvailable(nickname);
+    public Map.Entry<String, Boolean> getNicknameAvailability(@PathVariable String nickname) {
         return Map.entry("isAvailable", userService.isNicknameAvailable(nickname));
     }
 
     @GetMapping("/{userId}/sets")
     public List<FlashcardsSet> getUserSets(@Valid @PathVariable Long userId) {
-        User user = userService.getById(userId);
-        // todo: replace it
-        if (user == null) {
-            return null;
-        }
-        return setsService.getSetsByUser(user);
+        return setsService.getUserSetsById(userId);
     }
 
     @GetMapping("/{userId}/tags")
     public List<Tag> getUserTags(@Valid @PathVariable long userId) {
-        User user = userService.getById(userId);
-        // todo: replace it
-        if (user == null) {
-            return null;
-        }
-        return tagsService.getTagsByUser(user);
+        return tagsService.getUserTagsById(userId);
     }
 }
