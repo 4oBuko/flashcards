@@ -37,7 +37,6 @@ public class AuthController {
 
         response.addCookie(getRefreshTokenCookie(authenticationUser));
         return tokens;
-        // todo: I can make redirect to refresh point automatically if token isn't valid
     }
 
     // todo: remove response entity

@@ -22,10 +22,6 @@ public class TagsService {
     private TagRepository tagRepository;
     private ColorsService colorsService;
 
-    public List<Tag> getTagsByUser(User user) {
-        return tagRepository.findAllByUser(user);
-    }
-
     public Tag getTagById(long tagId) {
         return tagRepository.findById(tagId).orElse(null);
     }
