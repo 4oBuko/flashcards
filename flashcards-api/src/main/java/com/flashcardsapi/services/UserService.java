@@ -5,6 +5,7 @@ import com.flashcardsapi.dtos.user.UpdateUserCredentialDTO;
 import com.flashcardsapi.exceptions.AlreadyUsedCredentialsException;
 import com.flashcardsapi.exceptions.CustomEntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,6 +30,9 @@ public class UserService implements UserDetailsService {
 
     private EmailService emailService;
 
+    @Value("${email.verification.enabled}")
+    private final boolean emailVerificationEnabled;
+
     public User getById(Long id) throws IllegalArgumentException {
         return userRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
     }
@@ -38,8 +42,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserByEmail(email);
     }
 
+    // todo: add password validation (number of characters and different symbols)
     @Transactional
-    public User registerNewUser(CreateUserDTO createUserDTO) {
+    public void registerNewUser(CreateUserDTO createUserDTO) {
         if (userRepository.existsByEmail(createUserDTO.getEmail())) {
             throw new AlreadyUsedCredentialsException("email is already used");
         } else if (userRepository.existsByNickname(createUserDTO.getNickname())) {
@@ -50,8 +55,13 @@ public class UserService implements UserDetailsService {
             user.setNickname(createUserDTO.getNickname());
             user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
             user.setRegistrationDate(LocalDate.now());
-            user.setConfirmed(true);// todo: change on false after implementing email verification
-            return userRepository.save(user);
+            userRepository.save(user);
+            if (emailVerificationEnabled) {
+                user.setConfirmed(false);
+                emailService.sendVerificationLetter(user);
+            } else {
+                user.setConfirmed(true);
+            }
         }
     }
 
