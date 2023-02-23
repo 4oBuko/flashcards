@@ -16,6 +16,8 @@ import javax.validation.constraints.NotNull;
 
 import java.util.List;
 
+//todo refactor entities
+
 @Entity
 @Getter
 @Setter

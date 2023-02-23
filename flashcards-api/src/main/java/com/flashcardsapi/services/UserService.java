@@ -1,44 +1,66 @@
 package com.flashcardsapi.services;
 
-import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.flashcardsapi.dtos.user.CreateUserDTO;
+import com.flashcardsapi.dtos.user.UpdateUserCredentialDTO;
+import com.flashcardsapi.exceptions.AlreadyUsedCredentialsException;
+import com.flashcardsapi.exceptions.CustomEntityNotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.flashcardsapi.entities.User;
 import com.flashcardsapi.entities.VerificationToken;
 import com.flashcardsapi.repositories.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
 @Service
-@AllArgsConstructor
-public class UserService implements UserDetailsService {
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-    private JwtTokenService jwtTokenService;
-    private EmailService emailService;
+//@AllArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    private final JwtTokenService jwtTokenService;
+
+    private final EmailService emailService;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenService jwtTokenService, EmailService emailService, @Value("${email.verification.enabled}") Boolean emailVerificationEnabled) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenService = jwtTokenService;
+        this.emailService = emailService;
+        this.emailVerificationEnabled = emailVerificationEnabled;
+    }
+
+    private final boolean emailVerificationEnabled;
 
     public User getById(Long id) throws IllegalArgumentException {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findUserByEmail(email);
-        return user;
-    }
-
-    public User registerNewUser(User newUser) {
-        // todo check is email and nickname are available
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        newUser.setRegistrationDate(LocalDate.now());
-        // todo check is
-        newUser.setConfirmed(true);// todo: change on false after implementing email verification
-        newUser = userRepository.save(newUser);
-        return newUser;
+    // todo: add password validation (number of characters and different symbols)
+    @Transactional
+    public void registerNewUser(CreateUserDTO createUserDTO) {
+        if (userRepository.existsByEmail(createUserDTO.getEmail())) {
+            throw new AlreadyUsedCredentialsException("email is already used");
+        } else if (userRepository.existsByNickname(createUserDTO.getNickname())) {
+            throw new AlreadyUsedCredentialsException("nickname is already used");
+        } else {
+            User user = new User();
+            user.setEmail(createUserDTO.getEmail());
+            user.setNickname(createUserDTO.getNickname());
+            user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+            user.setRegistrationDate(LocalDate.now());
+            userRepository.save(user);
+            if (emailVerificationEnabled) {
+                user.setConfirmed(false);
+                emailService.sendVerificationLetter(user);
+            } else {
+                user.setConfirmed(true);
+            }
+        }
     }
 
     public User getUserByToken(String token) {
@@ -49,39 +71,31 @@ public class UserService implements UserDetailsService {
         return getById(userId);
     }
 
-    public User updatePassoword(String newPassword, Long userId) {
-        String encodedNewPassword = passwordEncoder.encode(newPassword);
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            return null;
-        }
+    public User updatePassword(UpdateUserCredentialDTO credentialDTO) {
+        String encodedNewPassword = passwordEncoder.encode(credentialDTO.getCredential());
+        User user = userRepository.findById(credentialDTO.getId()).orElseThrow(CustomEntityNotFoundException::new);
         user.setPassword(encodedNewPassword);
         return userRepository.save(user);
     }
 
-    public User updateEmail(Long userId, String newEmail) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            return null;
-        }
-        user.setEmail(newEmail);
+    public User updateEmail(UpdateUserCredentialDTO credentialDTO) {
+        User user = userRepository.findById(credentialDTO.getId()).orElseThrow(CustomEntityNotFoundException::new);
+        user.setEmail(credentialDTO.getCredential());
         user.setConfirmed(false);
         userRepository.save(user);
         emailService.sendEmailUpdateLetter(user);
         return user;
     }
 
-    public User updateNickname(Long userId, String newNickname) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            return null;
-        }
-        user.setNickname(newNickname);
+    @Transactional
+    public User updateNickname(UpdateUserCredentialDTO credentialDTO) {
+        User user = userRepository.findById(credentialDTO.getId()).orElseThrow(CustomEntityNotFoundException::new);
+        user.setNickname(credentialDTO.getCredential());
         return userRepository.save(user);
     }
 
     public boolean isNicknameAvailable(String nickname) {
-        return userRepository.findAllByNickname(nickname).size() == 0;
+        return userRepository.existsByNickname(nickname);
     }
 
     public void confirmUser(VerificationToken token) {

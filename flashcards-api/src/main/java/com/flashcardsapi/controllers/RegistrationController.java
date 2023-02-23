@@ -1,10 +1,10 @@
 package com.flashcardsapi.controllers;
 
+import com.flashcardsapi.dtos.user.CreateUserDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.flashcardsapi.entities.User;
 import com.flashcardsapi.entities.VerificationToken;
 import com.flashcardsapi.services.EmailService;
 import com.flashcardsapi.services.UserService;
@@ -20,27 +20,22 @@ import javax.validation.Valid;
 @RequestMapping("/register")
 public class RegistrationController { // todo: test all endpoints
     private final UserService userService;
-    private EmailService emailService;
+    private final EmailService emailService;
 
     public RegistrationController(UserService userService, EmailService emailService) {
         this.userService = userService;
         this.emailService = emailService;
     }
 
-    // @Value("${frontend.url}")
+     @Value("${frontend.url}")
     private String frontendUrl;
 
-    // todo: add password validation (number of characters and different symbols)
     @PostMapping()
     @ResponseBody
-    public Map<String,String> registerNewUser(@Valid @RequestBody User newUser) {
+    public Map<String, String> registerNewUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
         Map<String, String> test = new HashMap<>();
-        User registeredUser = userService.registerNewUser(newUser);
-        if (registeredUser != null) {
-            test.put("message", "Registration successful!. check your email for verification letter");
-            return test;
-        }
-        test.put("message", "Registration failed");
+        userService.registerNewUser(createUserDTO);
+        test.put("message", "Registration successful!. check your email for verification letter");
         return test;
     }
 

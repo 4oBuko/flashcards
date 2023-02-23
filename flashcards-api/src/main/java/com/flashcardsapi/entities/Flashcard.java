@@ -25,9 +25,4 @@ public class Flashcard {
     @Column(length = 500)
     private String answer;
 
-    public Flashcard(String question, String answer, Long setId) {
-        this.setId = setId;
-        this.question = question;
-        this.answer = answer;
-    }
 }

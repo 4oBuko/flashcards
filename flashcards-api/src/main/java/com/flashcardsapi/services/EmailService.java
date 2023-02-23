@@ -1,26 +1,34 @@
 package com.flashcardsapi.services;
 
-import lombok.AllArgsConstructor;
+import com.flashcardsapi.utils.ConfirmationLetterBuilder;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.flashcardsapi.entities.User;
 import com.flashcardsapi.entities.VerificationToken;
 import com.flashcardsapi.repositories.VerificationTokenRepository;
 
-import javax.mail.MessagingException;
 
 @Service
-@AllArgsConstructor
 public class EmailService {
     private static final int LETTER_VALIDITY_DAYS = 1;
-    private VerificationTokenRepository tokenRepository;
-    // private final JavaMailSender mailSender;
+    private final VerificationTokenRepository tokenRepository;
+
+    private final JavaMailSender mailSender;
+    private final String username;
+
+
+    public EmailService( @Value("${spring.mail.username}") String username, VerificationTokenRepository tokenRepository, JavaMailSender mailSender) {
+        this.tokenRepository = tokenRepository;
+        this.mailSender = mailSender;
+        this.username = username;
+    }
 
     public VerificationToken getToken(String token) {
         return tokenRepository.findByToken(token).orElse(null);
@@ -28,16 +36,21 @@ public class EmailService {
 
     public boolean verifyToken(String token) {
         VerificationToken verificationToken = tokenRepository.findByToken(token).orElse(null);
-        if (verificationToken == null || verificationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            return false;
-        }
-        return true;
+//        token isn't null and not expired
+        return verificationToken != null && !verificationToken.getExpiresAt().isBefore(LocalDateTime.now());
     }
 
     public void sendVerificationLetter(User user) {
         VerificationToken verificationToken = createTokenByUser(user);
         tokenRepository.save(verificationToken);
-        // todo:get letter from message builder and send it
+
+        String letter = ConfirmationLetterBuilder.generateRegistrationLetter(verificationToken);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(username);
+        message.setTo(verificationToken.getUser().getEmail());
+        message.setSubject("Flashcards Email verification");
+        message.setText(letter);
+        mailSender.send(message);
     }
 
     public void sendEmailUpdateLetter(User user) {
@@ -55,20 +68,5 @@ public class EmailService {
         verificationToken.setCreatedAt(LocalDateTime.now());
         verificationToken.setExpiresAt(LocalDateTime.now().plusDays(LETTER_VALIDITY_DAYS));
         return verificationToken;
-    }
-
-    private void sendEmail(String email, String to, String subject) {
-        // try {
-        // javax.mail.internet.MimeMessage mimeMessage = mailSender.createMimeMessage();
-        // MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,
-        // "utf-8");
-        // mimeMessageHelper.setText(email, true);
-        // mimeMessageHelper.setTo(to);
-        // mimeMessageHelper.setSubject(subject);
-        // mimeMessageHelper.setFrom("");// todo: add email
-        // mailSender.send(mimeMessage);
-        // } catch (MessagingException e) {
-
-        // }
     }
 }

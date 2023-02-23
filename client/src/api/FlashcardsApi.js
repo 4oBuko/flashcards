@@ -1,18 +1,24 @@
-import { API_URLS } from "../config/api-routes.js";
+import { API_URLS } from "@/config/api-routes";
+import { ApiError } from "@/entities/Error";
+import { User } from "@/entities/User";
 
 function sendRequestToApi(body, endpoint, method) {
   let request = createRequest(body, endpoint, method);
   return fetch(request)
     .then(async (response) => {
-      if (!response.ok) {
+      if (response.status === 401) {
         let refreshResponse = await refresh();
         if (!refreshResponse.ok) {
-          return refreshResponse;
+          return new ApiError(response.status, response.body);
         } else {
-          return fetch(createRequest(body, endpoint, method));
+          return fetch(createRequest(body, endpoint, method))
+            .then((response) => response.json())
+            .catch(); //TODO add error handling
         }
+      } else if (!response.ok) {
+        return new ApiError(response.status, response.body);
       } else {
-        return response;
+        return response.json();
       }
     })
     .catch((error) => {
@@ -25,13 +31,12 @@ function createRequest(body, endpoint, method) {
   const token = localStorage.getItem("token");
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", `Bearer ${token}`);
-  const request = new Request(endpoint, {
+  return new Request(endpoint, {
     credentials: "include",
     method: method,
     headers: headers,
-    body: method == "GET" ? null : JSON.stringify(body),
+    body: method === "GET" ? null : JSON.stringify(body),
   });
-  return request;
 }
 
 // user endpoints
@@ -64,9 +69,14 @@ export async function login(email, password) {
     body: JSON.stringify(loginInfo),
   });
   const response = await fetch(request);
-  let object = await response.json();
-  localStorage.setItem("token", object.token);
-  return object;
+
+  if (response.ok) {
+    let body = await response.json();
+    localStorage.setItem("token", body.token);
+    return body;
+  } else {
+    return new ApiError(response.status, "Wrong login data");
+  }
 }
 
 export async function registerNewUser(nickname, email, password) {
@@ -85,33 +95,65 @@ export async function registerNewUser(nickname, email, password) {
   });
 
   const response = await fetch(request);
-  const data = await response.json();
-  return data;
+  return await response.json();
 }
 
 export function getUserById(id) {
-  return sendRequestToApi(null, API_URLS.USER_GET.replace(":id", id), "GET");
+  return sendRequestToApi(
+    null,
+    API_URLS.USER_GET.replace(":id", id),
+    "GET"
+  ).then((response) => {
+    return new User(
+      response.id,
+      response.nickname,
+      response.email,
+      response.registrationDate,
+      response.isConfirmed
+    );
+  });
 }
 
 export function getUserSets(id) {
-  return sendRequestToApi(null, API_URLS.USER_SETS_GET.replace(":id", id), "GET");
+  return sendRequestToApi(
+    null,
+    API_URLS.USER_SETS_GET.replace(":id", id),
+    "GET"
+  );
 }
 
 export function getUserTags(id) {
-  return sendRequestToApi(null, API_URLS.USER_TAGS_GET.replace(":id", id), "GET");
+  return sendRequestToApi(
+    null,
+    API_URLS.USER_TAGS_GET.replace(":id", id),
+    "GET"
+  );
 }
 
 export function changeUserEmail(id) {
-  return sendRequestToApi(null, API_URLS.USER_CHANGE_EMAIL.replace(":id", id), "PUT");
+  return sendRequestToApi(
+    null,
+    API_URLS.USER_CHANGE_EMAIL.replace(":id", id),
+    "PUT"
+  );
 }
 
 export function changeUserNickname(id) {
-  return sendRequestToApi(null, API_URLS.USER_CHANGE_NICKNAME.replace(":id", id), "PUT");
+  return sendRequestToApi(
+    null,
+    API_URLS.USER_CHANGE_NICKNAME.replace(":id", id),
+    "PUT"
+  );
 }
 
 export function changeUserPassword() {
-  return sendRequestToApi(null, API_URLS.USER_CHANGE_PASSWORD.replace(":id", id), "PUT");
+  return sendRequestToApi(
+    null,
+    API_URLS.USER_CHANGE_PASSWORD.replace(":id", id),
+    "PUT"
+  );
 }
+
 // Flashcards set endpoints
 
 export function getSetById(id) {
@@ -127,7 +169,11 @@ export function updateSet(jsonSet) {
 }
 
 export function deleteSetById(id) {
-  return sendRequestToApi(null, API_URLS.SET_DELETE.replace(":id", id), "DELETE");
+  return sendRequestToApi(
+    null,
+    API_URLS.SET_DELETE.replace(":id", id),
+    "DELETE"
+  );
 }
 
 // Tags endpoints
@@ -145,7 +191,11 @@ export function updateTag(jsonSet) {
 }
 
 export function deleteTagById(id) {
-  return sendRequestToApi(null, API_URLS.TAG_DELETE.replace(":id", id), "DELETE");
+  return sendRequestToApi(
+    null,
+    API_URLS.TAG_DELETE.replace(":id", id),
+    "DELETE"
+  );
 }
 
 // languages endpoint

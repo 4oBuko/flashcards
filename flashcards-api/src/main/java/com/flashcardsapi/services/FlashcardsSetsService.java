@@ -17,11 +17,6 @@ public class FlashcardsSetsService {
     private FlashcardsSetRepository flashcardsSetRepository;
     private FlashcardRepository flashcardRepository;
 
-    public List<FlashcardsSet> getSetsByUser(User user) {
-        // todo: check who made the request
-        return flashcardsSetRepository.getFlashcardsSetByUser(user);
-    }
-
     public void deleteSet(FlashcardsSet set) {
         flashcardsSetRepository.delete(set);
     }
@@ -47,5 +42,10 @@ public class FlashcardsSetsService {
     public void deleteSetById(long setId) {
         flashcardRepository.deleteAllBySetId(setId);
         flashcardsSetRepository.deleteById(setId);
+    }
+
+    @Transactional
+    public List<FlashcardsSet> getUserSetsById(Long userId) {
+        return flashcardsSetRepository.findAllByUser_id(userId);
     }
 }

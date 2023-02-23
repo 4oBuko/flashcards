@@ -24,14 +24,4 @@ public class Color {
 
     private String name;
 
-    public Color(String code, String name) {
-        this.code = code;
-        this.name = name;
-    }
-
-    public Color(Long id) {
-        this.id = id;
-    }
-
-    
 }

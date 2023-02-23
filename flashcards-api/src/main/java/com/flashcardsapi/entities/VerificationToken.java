@@ -28,12 +28,6 @@ public class VerificationToken {
 
     private LocalDateTime expiresAt;
 
-    public VerificationToken(User user, String token, LocalDateTime createdAt, LocalDateTime expiresAt) {
-        this.user = user;
-        this.token = token;
-        this.createdAt = createdAt;
-        this.expiresAt = expiresAt;
-    }
 }
 
 

@@ -9,4 +9,6 @@ import com.flashcardsapi.entities.User;
 
 public interface TagRepository extends CrudRepository<Tag, Long> {
     List<Tag> findAllByUser(User user);
+
+    List<Tag> findAllByUser_id(Long userId);
 }
