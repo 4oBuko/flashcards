@@ -23,7 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 public class AuthController {
     private UserService userService;
+
     private AuthenticationManager authenticationManager;
+
     private final JwtTokenService tokenService;
 
     @PostMapping("/login")
@@ -42,7 +44,7 @@ public class AuthController {
     // todo: remove response entity
     @PostMapping("/refresh")
     public ResponseEntity<Map<String, String>> refreshAccessToken(
-            @CookieValue(name = "refreshToken", required = true) String refreshToken, HttpServletResponse response) {
+            @CookieValue(name = "refreshToken") String refreshToken, HttpServletResponse response) {
         ResponseEntity.BodyBuilder unauthorizedBodyBuilder = ResponseEntity.status(HttpStatus.UNAUTHORIZED);
         String notValidTokenMessage = "Token isn't valid";
         // todo: rewrite error handling

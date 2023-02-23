@@ -4,11 +4,7 @@ import com.flashcardsapi.dtos.user.CreateUserDTO;
 import com.flashcardsapi.dtos.user.UpdateUserCredentialDTO;
 import com.flashcardsapi.exceptions.AlreadyUsedCredentialsException;
 import com.flashcardsapi.exceptions.CustomEntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,26 +16,28 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 @Service
-@AllArgsConstructor
-public class UserService implements UserDetailsService {
-    private UserRepository userRepository;
+//@AllArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    private JwtTokenService jwtTokenService;
+    private final JwtTokenService jwtTokenService;
 
-    private EmailService emailService;
+    private final EmailService emailService;
 
-    @Value("${email.verification.enabled}")
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenService jwtTokenService, EmailService emailService, @Value("${email.verification.enabled}") Boolean emailVerificationEnabled) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenService = jwtTokenService;
+        this.emailService = emailService;
+        this.emailVerificationEnabled = emailVerificationEnabled;
+    }
+
     private final boolean emailVerificationEnabled;
 
     public User getById(Long id) throws IllegalArgumentException {
         return userRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findUserByEmail(email);
     }
 
     // todo: add password validation (number of characters and different symbols)
