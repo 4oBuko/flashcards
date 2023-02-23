@@ -36,7 +36,6 @@ public class AuthController {
         User authenticationUser = (User) authentication.getPrincipal();
         Map<String, String> tokens = new HashMap<>();
         tokens.put("token", tokenService.generateToken(authenticationUser));
-
         response.addCookie(getRefreshTokenCookie(authenticationUser));
         return tokens;
     }

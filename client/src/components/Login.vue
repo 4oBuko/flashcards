@@ -19,9 +19,7 @@ export default {
 
   methods: {
     loginUser() {
-      console.log(this.email, this.password);
       login(this.email, this.password).then(data => console.log(data));
-      console.log(getUserById(1));
     },
   },
 };
