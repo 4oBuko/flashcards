@@ -4,6 +4,7 @@
   <input v-model="password" type="password" name="password" id="password"/>
   <br/>
   <button v-on:click="loginUser">Login</button>
+  <p>{{ this.loginResult }}</p>
 </template>
 
 <script>
@@ -14,12 +15,14 @@ export default {
     return {
       email: "",
       password: "",
+      loginResult: ""
     };
   },
 
   methods: {
     loginUser() {
-      login(this.email, this.password).then(data => console.log(data));
+      const result = login(this.email, this.password).then(response => this.loginResult = response.message);
+      console.log(result);
     },
   },
 };
