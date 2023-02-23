@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import {login, getUserById} from "@/api/FlashcardsApi";
+import {login} from "@/api/FlashcardsApi";
 
 export default {
   data() {
@@ -22,7 +22,6 @@ export default {
   methods: {
     loginUser() {
       const result = login(this.email, this.password).then(response => this.loginResult = response.message);
-      console.log(result);
     },
   },
 };
