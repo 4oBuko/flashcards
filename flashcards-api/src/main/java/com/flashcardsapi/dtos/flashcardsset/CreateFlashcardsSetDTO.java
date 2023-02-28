@@ -28,6 +28,9 @@ public class CreateFlashcardsSetDTO {
 
     private String Description;
 
+    @NotNull
+    private List<Long> setTags;
+
     @NotEmpty(message = "set must contain at least one flashcard")
     private List<CreateFlashcardDTO> flashcards;
 

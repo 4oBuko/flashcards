@@ -27,6 +27,9 @@ public class UpdateFlashcardsSetDTO {
     @NotNull
     private Long questionLanguageId;
 
+    @NotNull
+    private List<Long> setTags;
+
     private String Description;
 
     @NotEmpty(message = "set must contain at least one flashcard")
