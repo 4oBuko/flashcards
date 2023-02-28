@@ -1,7 +1,6 @@
 package com.flashcardsapi.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,24 +43,20 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<Map<String, String>> refreshAccessToken(
             @CookieValue(name = "refreshToken") String refreshToken, HttpServletResponse response) {
-        ResponseEntity.BodyBuilder unauthorizedBodyBuilder = ResponseEntity.status(HttpStatus.UNAUTHORIZED);
         String notValidTokenMessage = "Token isn't valid";
-        // todo: rewrite error handling
         Map<String, String> responseBody;
         if (refreshToken == null) {
             responseBody = new HashMap<>();
             responseBody.put("message", "Token isn't present!");
-            return unauthorizedBodyBuilder.body(responseBody);
+            return ResponseEntity.badRequest().body(responseBody);
         }
         responseBody = new HashMap<>();
         responseBody.put("message", notValidTokenMessage);
         if (!tokenService.isTokenValid(refreshToken)) {
-            return unauthorizedBodyBuilder.body(responseBody);
+            return ResponseEntity.badRequest().body(responseBody);
         }
+//        if user by id wasn't found error will be handled in exception handler
         User user = userService.getUserByToken(refreshToken);
-        if (user == null) {
-            return unauthorizedBodyBuilder.body(responseBody);
-        }
         String token = tokenService.generateToken(user);
         responseBody = new HashMap<>();
         responseBody.put("token", token);

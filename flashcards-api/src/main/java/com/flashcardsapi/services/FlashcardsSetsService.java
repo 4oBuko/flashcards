@@ -1,5 +1,6 @@
 package com.flashcardsapi.services;
 
+import com.flashcardsapi.exceptions.CustomEntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +18,6 @@ public class FlashcardsSetsService {
     private FlashcardsSetRepository flashcardsSetRepository;
     private FlashcardRepository flashcardRepository;
 
-    public void deleteSet(FlashcardsSet set) {
-        flashcardsSetRepository.delete(set);
-    }
-
     @Transactional
     public FlashcardsSet updateSet(FlashcardsSet setToUpdate) throws IllegalArgumentException {
         flashcardRepository.saveAll(setToUpdate.getFlashcards());
@@ -35,7 +32,7 @@ public class FlashcardsSetsService {
     }
 
     public FlashcardsSet getSetById(long setId) {
-        return flashcardsSetRepository.findById(setId).orElse(null);
+        return flashcardsSetRepository.findById(setId).orElseThrow(CustomEntityNotFoundException::new);
     }
 
     @Transactional
