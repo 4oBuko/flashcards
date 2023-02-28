@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -28,22 +25,18 @@ public class FlashcardsSet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @NotBlank(message = "name cannot be empty")
     @Column(length = 50)
     private String name;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "question_language_id", referencedColumnName = "id")
     private Language questionLanguage;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "answer_language_id", referencedColumnName = "id")
     private Language answerLanguage;
@@ -51,7 +44,6 @@ public class FlashcardsSet {
     @Column(length = 500)
     private String description;
 
-    @NotEmpty(message = "set must contain at least one flashcard")
     @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private List<Flashcard> flashcards;

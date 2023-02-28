@@ -39,7 +39,6 @@ public class AuthController {
         return tokens;
     }
 
-    // todo: remove response entity
     @PostMapping("/refresh")
     public ResponseEntity<Map<String, String>> refreshAccessToken(
             @CookieValue(name = "refreshToken") String refreshToken, HttpServletResponse response) {
