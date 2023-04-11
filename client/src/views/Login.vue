@@ -1,29 +1,33 @@
 <template>
   <div>
-    <input v-model="email" type="email" name="email" id="email"/>
-    <br/>
-    <input v-model="password" type="password" name="password" id="password"/>
-    <br/>
+    <p>Email</p>
+    <input v-model="email" type="email" name="email" id="email" />
+    <br />
+    <p>Password</p>
+    <input v-model="password" type="password" name="password" id="password" />
+    <br />
     <button v-on:click="loginUser">Login</button>
     <p>{{ this.loginResult }}</p>
   </div>
 </template>
 
 <script>
-import {login} from "@/api/FlashcardsApi";
+import { login } from "@/api/FlashcardsApi";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
-      loginResult: ""
+      loginResult: "",
     };
   },
 
   methods: {
     loginUser() {
-      const result = login(this.email, this.password).then(response => this.loginResult = response.message);
+      const result = login(this.email, this.password).then(
+        (response) => (this.loginResult = response.message)
+      );
     },
   },
 };

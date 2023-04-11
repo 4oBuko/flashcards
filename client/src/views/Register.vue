@@ -1,7 +1,9 @@
 <template>
   <div>
+    <p>Email</p>
     <input v-model="email" type="email" name="email" id="email" />
     <br />
+    <p>Password</p>
     <input
       v-model="password"
       type="password"
@@ -10,6 +12,7 @@
       id="password"
     />
     <br />
+    <p>Nickname</p>
     <input
       v-model="nickname"
       type="text"
@@ -20,6 +23,7 @@
     />
     <br />
     <button v-on:click="registerUser">Register</button>
+    <p>{{ this.registrationMessage }}</p>
   </div>
 </template>
 
@@ -33,6 +37,7 @@ export default {
       nickname: "",
       email: "",
       password: "",
+      registrationMessage: "",
     };
   },
   methods: {
@@ -41,8 +46,10 @@ export default {
         this.nickname,
         this.email,
         this.password
-      );
-      console.log(response);
+      ).then((r) => (this.registrationMessage = r.message));
+      this.nickname = "";
+      this.email = "";
+      this.password = "";
     },
   },
 };
