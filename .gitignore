@@ -1,2 +1,4 @@
 .fleet/
 .pg/
+.idea
+.vscode
