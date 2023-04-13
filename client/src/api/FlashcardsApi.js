@@ -28,9 +28,9 @@ function sendRequestToApi(body, endpoint, method) {
 
 function createRequest(body, endpoint, method) {
   const headers = new Headers();
-  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
   headers.append("Content-Type", "application/json");
-  headers.append("Authorization", `Bearer ${token}`);
+  headers.append("Authorization", `Bearer ${user.token}`);
   return new Request(endpoint, {
     credentials: "include",
     method: method,
@@ -40,79 +40,6 @@ function createRequest(body, endpoint, method) {
 }
 
 // user endpoints
-
-export async function refresh() {
-  const response = await fetch(API_URLS.REFRESH_TOKEN, {
-    credentials: "include",
-    method: "POST",
-  });
-  if (response.ok) {
-    const body = await response.json();
-    localStorage.setItem("token", body.token);
-  }
-  return response;
-}
-
-export async function login(email, password) {
-  let loginInfo = {
-    email: email,
-    password: password,
-  };
-
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  const request = new Request(API_URLS.LOGIN, {
-    credentials: "include",
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify(loginInfo),
-  });
-  const response = await fetch(request);
-
-  if (response.ok) {
-    let body = await response.json();
-    localStorage.setItem("token", body.token);
-    return body;
-  } else {
-    return new ApiError(response.status, "Wrong login data");
-  }
-}
-
-export async function registerNewUser(nickname, email, password) {
-  let registrationInfo = {
-    nickname: nickname,
-    password: password,
-    email: email,
-  };
-
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  const request = new Request(API_URLS.USER_REGISTER, {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify(registrationInfo),
-  });
-
-  const response = await fetch(request);
-  return await response.json();
-}
-
-export function getUserById(id) {
-  return sendRequestToApi(
-    null,
-    API_URLS.USER_GET.replace(":id", id),
-    "GET"
-  ).then((response) => {
-    return new User(
-      response.id,
-      response.nickname,
-      response.email,
-      response.registrationDate,
-      response.isConfirmed
-    );
-  });
-}
 
 export function getUserSets(id) {
   return sendRequestToApi(

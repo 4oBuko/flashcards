@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { registerNewUser } from "@/api/FlashcardsApi";
+import { register } from "@/services/registrationService";
 
 export default {
   name: "Register",
@@ -42,11 +42,14 @@ export default {
   },
   methods: {
     registerUser() {
-      const response = registerNewUser(
-        this.nickname,
-        this.email,
-        this.password
-      ).then((r) => (this.registrationMessage = r.message));
+      register(this.nickname, this.email, this.password)
+        .then((data) => {
+          this.registrationMessage = data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
       this.nickname = "";
       this.email = "";
       this.password = "";

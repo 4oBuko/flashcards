@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { login } from "@/api/FlashcardsApi";
+import { login } from "@/services/authService";
 
 export default {
   data() {
@@ -25,9 +25,9 @@ export default {
 
   methods: {
     loginUser() {
-      const result = login(this.email, this.password).then(
-        (response) => (this.loginResult = response.message)
-      );
+      const result = login(this.email, this.password).catch((error) => {
+        this.loginResult = error;
+      });
     },
   },
 };
