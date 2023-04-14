@@ -15,12 +15,12 @@ const router = createRouter({
   ],
 });
 
-// router.beforeEach((to, from) => {
-//   const publicPages = ["/login", "/register"];
-//   const authRequired = !publicPages.includes(to.path);
-//   const loggedIn = localStorage.getItem("token"); //todo: add login for login
-//   if (authRequired && !loggedIn) return "/login";
-//   if ((to.name === "login" || to.name === "register") && loggedIn) return "/";
-// });
+router.beforeEach((to, from) => {
+  const publicPages = ["/login", "/register"];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem("token");
+  if (authRequired && !loggedIn) return "/login";
+  if ((to.name === "login" || to.name === "register") && loggedIn) return "/";
+});
 
 export default router;

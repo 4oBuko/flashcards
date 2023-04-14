@@ -15,8 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+//todo: should I use _path syntax for these methods?
+//because they are post but don't change data
+//todo: remove JSESSIONID from cookies
 @RestController
 @RequestMapping("auth")
 @AllArgsConstructor
@@ -61,6 +65,17 @@ public class AuthController {
         responseBody.put("token", token);
         response.addCookie(getRefreshTokenCookie(user));
         return ResponseEntity.ok(responseBody);
+    }
+
+    @ResponseBody
+    @PostMapping("/logout")
+    public String logoutUser(HttpServletRequest request, HttpServletResponse response) {
+        Cookie emptyCookie = new Cookie("refreshToken", null);
+        Cookie[] cookies = request.getCookies();
+        emptyCookie.setMaxAge(0);
+        emptyCookie.setHttpOnly(true);
+        response.addCookie(emptyCookie);
+        return "Log out successfully";
     }
 
     private Cookie getRefreshTokenCookie(User user) {
