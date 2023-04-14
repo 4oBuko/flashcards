@@ -1,23 +1,25 @@
 <template>
   <div>
-    {{ flashcardsSet.name }}
+    {{ store.set.name }}
   </div>
 </template>
 <script>
 import SetService from "@/services/SetService";
+import { flashcardsSetStore } from "@/store/flashcardsSetStore";
 
 export default {
   // name: "FlashcardsSet",
   data() {
     return {
+      store: flashcardsSetStore(),
       flashcardsSet: {},
     };
   },
   created() {
     // get id from url
-    SetService.getById(1).then((data) => (this.flashcardsSet = data));
+    this.store.getById(1);
   },
-  methods: {},
+  methods: { flashcardsSetStore },
 };
 </script>
 

@@ -5,12 +5,17 @@ import router from "@/router";
 import { userStore } from "@/store/userStore";
 
 // todo: add option save me
-export function login(email, password) {
+export function login(email, password, stayLoggedIn = false) {
   api
-    .post(API_URLS.LOGIN, {
-      email: email,
-      password: password,
-    })
+    .post(
+      API_URLS.LOGIN,
+      {
+        email: email,
+        password: password,
+        stayLoggedIn: stayLoggedIn,
+      },
+      { withCredentials: true }
+    )
     .then((response) => {
       if (response.data.token) {
         TokenService.setToken(response.data.token);

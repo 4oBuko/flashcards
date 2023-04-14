@@ -38,13 +38,10 @@ instance.interceptors.response.use(
           const config = {
             headers: {},
           };
-          const rs = instance
-            .post("/auth/refresh", {}, config)
-            .then((response) => {
-              TokenService.setToken(response.data.token);
-              return response.data.token;
-            });
-          return instance(originalRequest);
+          instance.post("/auth/refresh", {}, config).then((response) => {
+            TokenService.setToken(response.data.token);
+            return instance.request(originalRequest);
+          });
         } catch (_error) {
           return Promise.reject(_error);
         }

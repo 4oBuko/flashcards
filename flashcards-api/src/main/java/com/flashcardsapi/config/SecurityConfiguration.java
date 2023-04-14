@@ -57,7 +57,7 @@ public class SecurityConfiguration {
                                 .antMatchers("/register/**").permitAll()
                                 .antMatchers("/colors").permitAll()
                                 .anyRequest().authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER));
         return http.build();
     }
 

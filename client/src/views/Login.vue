@@ -6,6 +6,14 @@
     <p>Password</p>
     <input v-model="password" type="password" name="password" id="password" />
     <br />
+    <p>stay logged in</p>
+    <input
+      v-model="stayLoggedIn"
+      type="checkbox"
+      name="stayLoggedIn"
+      id="stayLoggedIn"
+    />
+    <br />
     <button v-on:click="loginUser">Login</button>
     <p>{{ this.loginResult }}</p>
   </div>
@@ -19,13 +27,15 @@ export default {
     return {
       email: "",
       password: "",
+      stayLoggedIn: false,
       loginResult: "",
     };
   },
 
   methods: {
     loginUser() {
-      login(this.email, this.password);
+      console.log(this.stayLoggedIn);
+      login(this.email, this.password, this.stayLoggedIn);
       //     .catch((error) => {
       //   this.loginResult = error;
       // });
