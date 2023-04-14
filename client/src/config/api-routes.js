@@ -1,6 +1,5 @@
 export const API_URL = "http://localhost:8080";
 // todo: how to set api change api url for dev and production
-// TODO rename constants
 export const API_URLS = {
   LOGIN: `${API_URL}/auth/login`,
   REFRESH_TOKEN: `${API_URL}/auth/refresh`,

@@ -13,7 +13,6 @@ instance.interceptors.request.use(
   (config) => {
     const token = TokenService.getToken();
 
-    console.log("url from request", config.url);
     if (token && config.baseURL + config.url !== API_URLS.REFRESH_TOKEN) {
       config.headers["Authorization"] = "Bearer " + token;
     }
@@ -26,7 +25,6 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (res) => {
-    console.log(res.data);
     return res;
   },
   (error) => {
@@ -35,7 +33,6 @@ instance.interceptors.response.use(
       // Access Token was expired
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
-        // console.log(originalRequest._retry);
         try {
           instance.defaults.withCredentials = true;
           const config = {
@@ -44,11 +41,9 @@ instance.interceptors.response.use(
           const rs = instance
             .post("/auth/refresh", {}, config)
             .then((response) => {
-              console.log("token requested, saving token");
               TokenService.setToken(response.data.token);
               return response.data.token;
             });
-          console.log("response from refresh", rs);
           return instance(originalRequest);
         } catch (_error) {
           return Promise.reject(_error);

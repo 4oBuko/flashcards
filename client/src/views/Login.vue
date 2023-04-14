@@ -25,9 +25,10 @@ export default {
 
   methods: {
     loginUser() {
-      const result = login(this.email, this.password).catch((error) => {
-        this.loginResult = error;
-      });
+      login(this.email, this.password);
+      //     .catch((error) => {
+      //   this.loginResult = error;
+      // });
     },
   },
 };
