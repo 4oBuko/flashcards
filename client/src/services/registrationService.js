@@ -1,4 +1,4 @@
-import { API_URLS } from "@/config/api-routes";
+import { ENDPOINTS } from "@/config/api-routes";
 import api from "./axios";
 
 export function register(nickname, email, password) {
@@ -9,7 +9,7 @@ export function register(nickname, email, password) {
   };
 
   return api
-    .post(API_URLS.USER_REGISTER, registrationInfo)
+    .post(ENDPOINTS.USER_REGISTER, registrationInfo)
     .then((response) => {
       if (response.data.message) {
         return response.data.message;

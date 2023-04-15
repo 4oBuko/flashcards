@@ -34,11 +34,10 @@ export default {
 
   methods: {
     loginUser() {
-      console.log(this.stayLoggedIn);
-      login(this.email, this.password, this.stayLoggedIn);
-      //     .catch((error) => {
-      //   this.loginResult = error;
-      // });
+      login(this.email, this.password, this.stayLoggedIn).then((result) => {
+        console.log(result);
+        this.loginResult = result;
+      });
     },
   },
 };

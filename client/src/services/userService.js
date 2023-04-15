@@ -1,10 +1,10 @@
-import { API_URLS } from "@/config/api-routes";
+import { ENDPOINTS } from "@/config/api-routes";
 import { User } from "@/entities/User";
 
 export function getById(id) {
   return sendRequestToApi(
     null,
-    API_URLS.USER_GET.replace(":id", id),
+    ENDPOINTS.USER_GET.replace(":id", id),
     "GET"
   ).then((response) => {
     return new User(
