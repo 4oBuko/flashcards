@@ -1,4 +1,4 @@
-import api from "./axios";
+import api from "../axios/axios";
 import { ENDPOINTS } from "@/config/api-routes";
 
 class SetService {

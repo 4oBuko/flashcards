@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import instance from "@/services/axios";
+import instance from "@/axios/axios";
 import { ENDPOINTS } from "@/config/api-routes";
 
 export const flashcardsSetStore = defineStore("flashcards", {

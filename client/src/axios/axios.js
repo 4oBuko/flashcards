@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_URL, ENDPOINTS } from "@/config/api-routes";
-import TokenService from "@/services/TokenService";
+import TokenService from "@/services/tokenService";
 import { ApiError } from "@/entities/Error";
 
 const instance = axios.create({

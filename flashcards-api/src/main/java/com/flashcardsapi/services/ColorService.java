@@ -11,7 +11,7 @@ import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
-public class ColorsService {
+public class ColorService {
     private ColorRepository colorRepository;
 
     public List<Color> getAllColors() {

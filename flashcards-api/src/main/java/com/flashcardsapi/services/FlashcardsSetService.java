@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class FlashcardsSetsService {
+public class FlashcardsSetService {
 
     private FlashcardsSetRepository flashcardsSetRepository;
     private FlashcardRepository flashcardRepository;

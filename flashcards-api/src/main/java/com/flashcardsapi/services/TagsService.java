@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TagsService {
     private final static Logger LOG = LoggerFactory.getLogger(TagsService.class);
     private TagRepository tagRepository;
-    private ColorsService colorsService;
+    private ColorService colorService;
 
     public Tag getTagById(long tagId) {
         return tagRepository.findById(tagId).orElse(null);
@@ -35,7 +35,7 @@ public class TagsService {
     }
 
     public Tag createNewTag(String name, long colorId, User user) throws NullPointerException {
-        Color color = colorsService.getColorById(colorId);
+        Color color = colorService.getColorById(colorId);
         if (color == null) {
             throw new NullPointerException();
         }
@@ -49,7 +49,7 @@ public class TagsService {
             throw new IllegalArgumentException();
         }
         if (!tagToUpdate.getColor().getId().equals(newColorId)) {
-            tagToUpdate.setColor(colorsService.getColorById(newColorId));
+            tagToUpdate.setColor(colorService.getColorById(newColorId));
         }
         if (!tagToUpdate.getName().equals(newName)) {
             tagToUpdate.setName(newName);

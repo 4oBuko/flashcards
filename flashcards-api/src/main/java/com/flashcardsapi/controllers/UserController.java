@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.*;
 import com.flashcardsapi.entities.FlashcardsSet;
 import com.flashcardsapi.entities.Tag;
 import com.flashcardsapi.entities.User;
-import com.flashcardsapi.services.FlashcardsSetsService;
+import com.flashcardsapi.services.FlashcardsSetService;
 import com.flashcardsapi.services.TagsService;
 import com.flashcardsapi.services.UserService;
 
 @RestController
 @RequestMapping("/users")
 @AllArgsConstructor
-public class UsersController {
+public class UserController {
 
     private final UserService userService;
-    private final FlashcardsSetsService setsService;
+    private final FlashcardsSetService setsService;
     private final TagsService tagsService;
 
     // todo: I can take user id for update email, password or nickname from jwt

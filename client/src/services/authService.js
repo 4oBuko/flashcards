@@ -1,6 +1,6 @@
 import { ENDPOINTS } from "@/config/api-routes";
-import api from "./axios";
-import TokenService from "@/services/TokenService";
+import api from "../axios/axios";
+import TokenService from "@/services/tokenService";
 import router from "@/router";
 import { userStore } from "@/store/userStore";
 import { ApiError } from "@/entities/Error";

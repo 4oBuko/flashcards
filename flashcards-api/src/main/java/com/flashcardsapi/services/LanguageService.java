@@ -11,7 +11,7 @@ import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
-public class LanguagesService {
+public class LanguageService {
 
     private LanguageRepository languageRepository;
 

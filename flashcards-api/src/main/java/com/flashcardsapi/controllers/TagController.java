@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("tags")
 @AllArgsConstructor
-public class TagsController {
+public class TagController {
 
     private TagsService tagsService;
 

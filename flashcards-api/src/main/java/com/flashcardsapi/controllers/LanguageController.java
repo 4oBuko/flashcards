@@ -5,19 +5,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flashcardsapi.entities.Color;
-import com.flashcardsapi.services.ColorsService;
+import com.flashcardsapi.entities.Language;
+import com.flashcardsapi.services.LanguageService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("colors")
+@RequestMapping("languages")
 @AllArgsConstructor
-public class ColorsController {
-    private ColorsService colorsService;
+public class LanguageController {
+    private LanguageService languageService;
 
     @GetMapping()
-    public List<Color> getAllColors() {
-        return colorsService.getAllColors();
+    public List<Language> getAllLanguages() {
+        return languageService.getAllLanguages();
     }
 }
