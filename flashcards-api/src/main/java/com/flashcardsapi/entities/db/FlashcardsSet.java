@@ -1,7 +1,8 @@
-package com.flashcardsapi.entities;
+package com.flashcardsapi.entities.db;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import lombok.AllArgsConstructor;
@@ -44,6 +45,7 @@ public class FlashcardsSet {
     @Column(length = 500)
     private String description;
 
+    @JsonManagedReference
     @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "set_id", referencedColumnName = "id")
     private List<Flashcard> flashcards;

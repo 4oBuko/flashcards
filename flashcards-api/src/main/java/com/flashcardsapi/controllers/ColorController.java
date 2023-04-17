@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flashcardsapi.entities.Color;
+import com.flashcardsapi.entities.db.Color;
 import com.flashcardsapi.services.ColorService;
 
 import java.util.List;

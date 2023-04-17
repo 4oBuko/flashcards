@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-import com.flashcardsapi.entities.User;
+import com.flashcardsapi.entities.db.User;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

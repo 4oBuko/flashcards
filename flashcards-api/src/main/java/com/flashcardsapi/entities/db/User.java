@@ -1,4 +1,4 @@
-package com.flashcardsapi.entities;
+package com.flashcardsapi.entities.db;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

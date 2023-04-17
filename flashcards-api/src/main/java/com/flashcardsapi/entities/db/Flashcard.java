@@ -1,5 +1,6 @@
-package com.flashcardsapi.entities;
+package com.flashcardsapi.entities.db;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +18,10 @@ public class Flashcard {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name="set_id")
-    private Long setId;
+    @JsonBackReference
+    @ManyToOne()
+    @JoinColumn(name = "set_id", nullable = false)
+    private FlashcardsSet set;
 
     @Column(length = 500)
     private String question;

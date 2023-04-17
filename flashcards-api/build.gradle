@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.4'//todo: move to spring boot 3.0.0+
+    id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id 'java'
     id 'io.freefair.lombok' version '6.5.1'
@@ -8,7 +8,6 @@ plugins {
 group = 'com.chornobuk'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
-// todo: move to java 19
 repositories {
     mavenCentral()
 }

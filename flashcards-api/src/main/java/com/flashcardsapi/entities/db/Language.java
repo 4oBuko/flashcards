@@ -1,4 +1,4 @@
-package com.flashcardsapi.entities;
+package com.flashcardsapi.entities.db;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,17 +11,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-public class Color {
+@AllArgsConstructor
+public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    private String code;
-
     private String name;
 
 }

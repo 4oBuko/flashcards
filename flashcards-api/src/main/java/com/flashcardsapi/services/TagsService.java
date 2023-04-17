@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.flashcardsapi.entities.Color;
-import com.flashcardsapi.entities.Tag;
-import com.flashcardsapi.entities.User;
+import com.flashcardsapi.entities.db.Color;
+import com.flashcardsapi.entities.db.Tag;
+import com.flashcardsapi.entities.db.User;
 import com.flashcardsapi.repositories.TagRepository;
 
 import lombok.AllArgsConstructor;

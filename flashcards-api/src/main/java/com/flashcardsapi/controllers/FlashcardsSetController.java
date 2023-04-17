@@ -1,5 +1,6 @@
 package com.flashcardsapi.controllers;
 
+import com.flashcardsapi.dtos.flashcardsset.CreateFlashcardsSetDTO;
 import lombok.AllArgsConstructor;
 
 import javax.validation.Valid;
@@ -8,8 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import com.flashcardsapi.entities.FlashcardsSet;
-import com.flashcardsapi.entities.User;
+import com.flashcardsapi.entities.db.FlashcardsSet;
 import com.flashcardsapi.services.FlashcardsSetService;
 import com.flashcardsapi.services.UserService;
 
@@ -21,16 +21,15 @@ public class FlashcardsSetController {
 
     private UserService userService;
 
+
     @GetMapping("/{setId}")
     public FlashcardsSet getSetById(@PathVariable long setId) {
         return flashcardsSetService.getSetById(setId);
     }
 
     @PostMapping()
-    public FlashcardsSet addNewSet(@Valid @RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
-        long userId = (long) principal.getClaims().get("id");
-        User testUser = userService.getById(userId);
-        return flashcardsSetService.addNewSet(newSet, testUser);
+    public FlashcardsSet addNewSet(@Valid @RequestBody CreateFlashcardsSetDTO newSet, @AuthenticationPrincipal Jwt jwt) {
+        return flashcardsSetService.addNewSet(newSet, jwt);
     }
 
     @PutMapping()

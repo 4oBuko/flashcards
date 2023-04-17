@@ -10,9 +10,9 @@ import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.flashcardsapi.entities.FlashcardsSet;
-import com.flashcardsapi.entities.Tag;
-import com.flashcardsapi.entities.User;
+import com.flashcardsapi.entities.db.FlashcardsSet;
+import com.flashcardsapi.entities.db.Tag;
+import com.flashcardsapi.entities.db.User;
 import com.flashcardsapi.services.FlashcardsSetService;
 import com.flashcardsapi.services.TagsService;
 import com.flashcardsapi.services.UserService;

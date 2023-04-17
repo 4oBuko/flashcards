@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 public class CreateFlashcardsSetDTO {
-    private Long userId;
+
     @NotBlank(message = "name cannot be empty")
     private String name;
 
@@ -29,10 +29,10 @@ public class CreateFlashcardsSetDTO {
     private String Description;
 
     @NotNull
-    private List<Long> setTags;
+    private List<Long> tagsId;
 
     @NotEmpty(message = "set must contain at least one flashcard")
     private List<CreateFlashcardDTO> flashcards;
 
-//    private boolean isPublic;
+    private boolean isPublic;
 }

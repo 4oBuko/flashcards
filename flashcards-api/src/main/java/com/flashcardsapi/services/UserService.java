@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.flashcardsapi.entities.User;
-import com.flashcardsapi.entities.VerificationToken;
+import com.flashcardsapi.entities.db.User;
+import com.flashcardsapi.entities.db.VerificationToken;
 import com.flashcardsapi.repositories.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 

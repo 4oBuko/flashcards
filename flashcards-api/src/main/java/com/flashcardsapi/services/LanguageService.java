@@ -3,7 +3,7 @@ package com.flashcardsapi.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.flashcardsapi.entities.Language;
+import com.flashcardsapi.entities.db.Language;
 import com.flashcardsapi.repositories.LanguageRepository;
 
 import java.util.List;

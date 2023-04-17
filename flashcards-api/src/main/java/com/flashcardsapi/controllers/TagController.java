@@ -7,8 +7,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import com.flashcardsapi.entities.Tag;
-import com.flashcardsapi.entities.User;
+import com.flashcardsapi.entities.db.Tag;
+import com.flashcardsapi.entities.db.User;
 import com.flashcardsapi.services.TagsService;
 import com.flashcardsapi.services.UserService;
 

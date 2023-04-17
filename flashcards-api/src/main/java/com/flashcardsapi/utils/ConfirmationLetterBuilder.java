@@ -1,8 +1,6 @@
 package com.flashcardsapi.utils;
 
-import org.springframework.beans.factory.annotation.Value;
-
-import com.flashcardsapi.entities.VerificationToken;
+import com.flashcardsapi.entities.db.VerificationToken;
 
 public class ConfirmationLetterBuilder {
 

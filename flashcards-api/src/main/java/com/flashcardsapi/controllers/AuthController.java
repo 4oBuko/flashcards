@@ -1,6 +1,5 @@
 package com.flashcardsapi.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flashcardsapi.dtos.LoginDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import com.flashcardsapi.entities.User;
+import com.flashcardsapi.entities.db.User;
 import com.flashcardsapi.services.JwtTokenService;
 import com.flashcardsapi.services.UserService;
 import org.springframework.web.util.WebUtils;
@@ -21,8 +20,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//todo: should I use _path syntax for these methods?
-//because they are post but don't change data
 @RestController
 @RequestMapping("auth")
 @AllArgsConstructor
@@ -30,8 +27,6 @@ public class AuthController {
     private UserService userService;
 
     private AuthenticationManager authenticationManager;
-
-    private ObjectMapper mapper;
 
     private final JwtTokenService tokenService;
     @PostMapping("/login")

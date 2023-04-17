@@ -10,8 +10,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.flashcardsapi.entities.User;
-import com.flashcardsapi.entities.VerificationToken;
+import com.flashcardsapi.entities.db.User;
+import com.flashcardsapi.entities.db.VerificationToken;
 import com.flashcardsapi.repositories.VerificationTokenRepository;
 
 

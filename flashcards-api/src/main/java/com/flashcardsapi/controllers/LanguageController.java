@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flashcardsapi.entities.Language;
+import com.flashcardsapi.entities.db.Language;
 import com.flashcardsapi.services.LanguageService;
 
 import java.util.List;

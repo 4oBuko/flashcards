@@ -3,7 +3,7 @@ package com.flashcardsapi.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.flashcardsapi.entities.Color;
+import com.flashcardsapi.entities.db.Color;
 import com.flashcardsapi.repositories.ColorRepository;
 
 import java.util.List;

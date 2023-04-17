@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.flashcardsapi.entities.VerificationToken;
+import com.flashcardsapi.entities.db.VerificationToken;
 import com.flashcardsapi.services.EmailService;
 import com.flashcardsapi.services.UserService;
 
@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/register")
-public class RegistrationController { // todo: test all endpoints
+public class RegistrationController {
     private final UserService userService;
     private final EmailService emailService;
 

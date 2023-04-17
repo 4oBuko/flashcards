@@ -1,4 +1,4 @@
-package com.flashcardsapi.entities;
+package com.flashcardsapi.entities.db;
 
 import lombok.Getter;
 import lombok.Setter;

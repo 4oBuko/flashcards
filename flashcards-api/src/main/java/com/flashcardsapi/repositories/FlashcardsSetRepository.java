@@ -2,7 +2,7 @@ package com.flashcardsapi.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flashcardsapi.entities.FlashcardsSet;
+import com.flashcardsapi.entities.db.FlashcardsSet;
 
 import java.util.List;
 
