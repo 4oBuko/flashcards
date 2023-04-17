@@ -35,8 +35,7 @@ export default {
   methods: {
     loginUser() {
       login(this.email, this.password, this.stayLoggedIn).then((result) => {
-        console.log(result);
-        this.loginResult = result;
+        this.loginResult = result.message;
       });
     },
   },

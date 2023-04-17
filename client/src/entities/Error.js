@@ -1,9 +1,9 @@
 export class ApiError {
-    code;
-    message;
+  status;
+  message;
 
-    constructor(code, message) {
-        this.code = code;
-        this.message = message;
-    }
+  constructor(status, message) {
+    this.status = status;
+    this.message = message;
+  }
 }

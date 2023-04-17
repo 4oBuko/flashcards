@@ -26,13 +26,11 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (res) => {
-    // todo: create a wrapper for successful request
     return res;
   },
   (error) => {
     const originalRequest = error.config;
     if (originalRequest.url !== "/auth/login" && error.response) {
-      console.log("request url", originalRequest.url);
       // Access Token was expired
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
@@ -46,13 +44,14 @@ instance.interceptors.response.use(
             return instance.request(originalRequest);
           });
         } catch (_error) {
-          return Promise.reject(_error);
+          return new ApiError(
+            _error.response.status,
+            "Session expired. Please login again"
+          );
         }
-      } else {
-        return new ApiError(error.response.status, error.response.data);
       }
     }
-    return Promise.reject(error);
+    return new ApiError(error.response.status, error.response.data.message);
   }
 );
 export default instance;

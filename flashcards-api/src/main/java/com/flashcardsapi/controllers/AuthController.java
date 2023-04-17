@@ -34,7 +34,6 @@ public class AuthController {
     private ObjectMapper mapper;
 
     private final JwtTokenService tokenService;
-//todo: add handler for failed login and return text message
     @PostMapping("/login")
     public Map<String, String> loginUser(@RequestBody LoginDTO dto, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

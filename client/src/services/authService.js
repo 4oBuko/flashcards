@@ -5,9 +5,8 @@ import router from "@/router";
 import { userStore } from "@/store/userStore";
 import { ApiError } from "@/entities/Error";
 
-// todo: add option save me
 export function login(email, password, stayLoggedIn = false) {
-  api
+  return api
     .post(
       "/auth/login",
       {
@@ -18,16 +17,13 @@ export function login(email, password, stayLoggedIn = false) {
       { withCredentials: true }
     )
     .then((response) => {
-      console.log("status", response.status);
-      if (response.data.token) {
+      if (response.status === 200) {
         TokenService.setToken(response.data.token);
         router.push("/");
+        return { message: "login successful" };
+      } else if (response.status === 401) {
+        return response;
       }
-    })
-    .catch((err) => {
-      console.log(err.response.status);
-      console.log(err.response.data);
-      return new ApiError(err.response.status, err.response.data); //todo: return message about failed login
     });
 }
 
