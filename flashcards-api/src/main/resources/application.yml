@@ -1,0 +1,32 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smpt:
+          auth: true
+          starttls:
+            enable: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/flashcards
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: strict
+email:
+  verification:
+    enabled: false
+rsa:
+  private-key: classpath:keys/private.pem
+  public-key: classpath:keys/public.pem
+frontend:
+  url: ${FRONT_END_URL}
