@@ -60,6 +60,7 @@ public class TagsService {
 
     @Transactional
     public List<Tag> getUserTagsById(Long userId) {
+        //        todo: if user id isn't equal with user id in jwt return public tags of user by id
         return tagRepository.findAllByUser_id(userId);
     }
 }

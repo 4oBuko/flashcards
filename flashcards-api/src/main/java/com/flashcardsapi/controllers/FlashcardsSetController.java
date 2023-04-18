@@ -1,6 +1,7 @@
 package com.flashcardsapi.controllers;
 
 import com.flashcardsapi.dtos.flashcardsset.CreateFlashcardsSetDTO;
+import com.flashcardsapi.dtos.flashcardsset.UpdateFlashcardsSetDTO;
 import lombok.AllArgsConstructor;
 
 import javax.validation.Valid;
@@ -23,8 +24,8 @@ public class FlashcardsSetController {
 
 
     @GetMapping("/{setId}")
-    public FlashcardsSet getSetById(@PathVariable long setId) {
-        return flashcardsSetService.getSetById(setId);
+    public FlashcardsSet getSetById(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
+        return flashcardsSetService.getSetById(setId, jwt);
     }
 
     @PostMapping()
@@ -33,19 +34,13 @@ public class FlashcardsSetController {
     }
 
     @PutMapping()
-    public FlashcardsSet updateSet(@RequestBody FlashcardsSet setToUpdate) {
-        try {
-            return flashcardsSetService.updateSet(setToUpdate);
-        } catch (IllegalArgumentException e) {
-            // todo: remove try/catch block with exception handler
-            return null;
-        }
+    public FlashcardsSet updateSet(@Valid @RequestBody  UpdateFlashcardsSetDTO dto, @AuthenticationPrincipal Jwt jwt) {
+        return flashcardsSetService.updateSet(dto, jwt);
     }
 
     @DeleteMapping("/{setId}")
-    public String deleteSetById(@PathVariable long setId) {
-        flashcardsSetService.deleteSetById(setId);
-        // todo: check if the user can delete this tag
+    public String deleteSetById(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
+        flashcardsSetService.deleteSetById(setId, jwt);
         return "tag was successfully deleted";
     }
 }

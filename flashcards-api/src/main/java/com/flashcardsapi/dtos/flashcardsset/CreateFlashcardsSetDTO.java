@@ -1,6 +1,6 @@
 package com.flashcardsapi.dtos.flashcardsset;
 
-import com.flashcardsapi.dtos.flashcard.CreateFlashcardDTO;
+import com.flashcardsapi.entities.db.Flashcard;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,11 +28,8 @@ public class CreateFlashcardsSetDTO {
 
     private String Description;
 
-    @NotNull
-    private List<Long> tagsId;
-
     @NotEmpty(message = "set must contain at least one flashcard")
-    private List<CreateFlashcardDTO> flashcards;
+    private List<Flashcard> flashcards;
 
     private boolean isPublic;
 }

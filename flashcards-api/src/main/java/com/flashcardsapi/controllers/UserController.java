@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import com.flashcardsapi.entities.db.FlashcardsSet;
@@ -33,18 +35,18 @@ public class UserController {
     }
 
     @PutMapping("/password")
-    public User updateUserPassword(@RequestBody @Valid UpdateUserCredentialDTO credentialDTO) {
-        return userService.updatePassword(credentialDTO);
+    public User updateUserPassword(@RequestBody @Valid UpdateUserCredentialDTO credentialDTO, @AuthenticationPrincipal Jwt jwt) {
+        return userService.updatePassword(credentialDTO, jwt);
     }
 
     @PutMapping("/email")
-    public User updateUserEmail(@RequestBody @Valid UpdateUserCredentialDTO credentialDTO) {
-        return userService.updateEmail(credentialDTO);
+    public User updateUserEmail(@RequestBody @Valid UpdateUserCredentialDTO credentialDTO, @AuthenticationPrincipal Jwt jwt) {
+        return userService.updateEmail(credentialDTO,jwt);
     }
 
     @PutMapping("/nickname")
-    public User updateUserNickname(@RequestBody @Valid UpdateUserCredentialDTO credentialDTO) {
-        return userService.updateNickname(credentialDTO);
+    public User updateUserNickname(@RequestBody @Valid UpdateUserCredentialDTO credentialDTO, @AuthenticationPrincipal Jwt jwt) {
+        return userService.updateNickname(credentialDTO, jwt);
     }
 
     @GetMapping("/nickname/{nickname}")
@@ -53,12 +55,12 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/sets")
-    public List<FlashcardsSet> getUserSets(@Valid @PathVariable Long userId) {
-        return setsService.getUserSetsById(userId);
+    public List<FlashcardsSet> getUserSets(@Valid @PathVariable Long userId, @AuthenticationPrincipal Jwt jwt) {
+        return setsService.getUserSetsById(userId, jwt);
     }
 
     @GetMapping("/{userId}/tags")
-    public List<Tag> getUserTags(@Valid @PathVariable long userId) {
+    public List<Tag> getUserTags(@Valid @PathVariable long userId, @AuthenticationPrincipal Jwt jwt) {
         return tagsService.getUserTagsById(userId);
     }
 }
