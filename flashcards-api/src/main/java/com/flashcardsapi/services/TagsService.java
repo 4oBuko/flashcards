@@ -2,9 +2,13 @@ package com.flashcardsapi.services;
 
 import java.util.List;
 
+import com.flashcardsapi.entities.JwtPayload;
+import com.flashcardsapi.utils.JwtPayloadReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import com.flashcardsapi.entities.db.Color;
@@ -60,7 +64,11 @@ public class TagsService {
 
     @Transactional
     public List<Tag> getUserTagsById(Long userId) {
-        //        todo: if user id isn't equal with user id in jwt return public tags of user by id
-        return tagRepository.findAllByUser_id(userId);
+        return tagRepository.findAllByUser_id(userId).stream().filter(Tag::isPublic).toList();
+    }
+
+    public List<Tag> getUserTags( @AuthenticationPrincipal Jwt jwt) {
+        JwtPayload payload = JwtPayloadReader.getPayload(jwt);
+        return tagRepository.findAllByUser_id(payload.getUserId());
     }
 }

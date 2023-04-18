@@ -14,6 +14,8 @@ import com.flashcardsapi.entities.db.FlashcardsSet;
 import com.flashcardsapi.services.FlashcardsSetService;
 import com.flashcardsapi.services.UserService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("sets")
 @AllArgsConstructor
@@ -26,6 +28,11 @@ public class FlashcardsSetController {
     @GetMapping("/{setId}")
     public FlashcardsSet getSetById(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
         return flashcardsSetService.getSetById(setId, jwt);
+    }
+
+    @GetMapping()
+    public List<FlashcardsSet> getUserSets( @AuthenticationPrincipal Jwt jwt) {
+        return flashcardsSetService.getUsersSets(jwt);
     }
 
     @PostMapping()

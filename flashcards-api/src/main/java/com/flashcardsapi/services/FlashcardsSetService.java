@@ -49,10 +49,9 @@ public class FlashcardsSetService {
         }
 
         List<Tag> thirdPartyTags = fromDb.getTags().stream().filter(tag -> !tag.getUser().getId().equals(payload.getUserId())).toList();
-        if(thirdPartyTags.isEmpty()) {
+        if (thirdPartyTags.isEmpty()) {
             fromDb.setPublic(dto.isPublic());
-        }
-        else if(!dto.isPublic()) {
+        } else if (!dto.isPublic()) {
             throw new AlreadyUsedCredentialsException("You cannot make this set private, because it is used by other users");
         }
 
@@ -105,16 +104,20 @@ public class FlashcardsSetService {
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         if (set.getUser().getId().equals(payload.getUserId())) {
             flashcardsSetRepository.deleteById(setId);
-        }
-        else {
+        } else {
             throw new CustomAccessDeniedException("Access denied. You are not the author of this set");
         }
         flashcardsSetRepository.deleteById(setId);
     }
 
-    @Transactional
+
     public List<FlashcardsSet> getUserSetsById(Long userId, Jwt jwt) {
-//        todo: if user id isn't equal with user id in jwt return public sets of user by id
-        return flashcardsSetRepository.findAllByUser_id(userId);
+        List<FlashcardsSet> sets = flashcardsSetRepository.findAllByUser_id(userId);
+        return sets.stream().filter(FlashcardsSet::isPublic).toList();
+    }
+
+    public List<FlashcardsSet> getUsersSets(Jwt jwt) {
+        JwtPayload jwtPayload = JwtPayloadReader.getPayload(jwt);
+        return flashcardsSetRepository.findAllByUser_id(jwtPayload.getUserId());
     }
 }

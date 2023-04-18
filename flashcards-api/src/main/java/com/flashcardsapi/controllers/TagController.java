@@ -1,5 +1,6 @@
 package com.flashcardsapi.controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,11 @@ public class TagController {
     public Tag getTagById(@PathVariable long tagId) {
         return tagsService.getTagById(tagId);
     }
+
+     @GetMapping()
+     public List<Tag> getUserTags( @AuthenticationPrincipal Jwt jwt) {
+        return tagsService.getUserTags(jwt);
+     }
 
     @PostMapping()
     public ResponseEntity<Tag> addNewTag(@RequestBody Map<String, String> data, @AuthenticationPrincipal Jwt principal) {
