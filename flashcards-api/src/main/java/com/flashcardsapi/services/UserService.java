@@ -111,4 +111,8 @@ public class UserService {
         user.setConfirmed(true);
         userRepository.save(user);
     }
+
+    public User getByNickname(String nickname) {
+        return userRepository.findByNickname(nickname).orElseThrow(CustomEntityNotFoundException::new);
+    }
 }

@@ -12,9 +12,9 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    const token = TokenService.getToken();
-
-    if (token && config.baseURL + config.url !== ENDPOINTS.REFRESH_TOKEN) {
+    const isValid = TokenService.isTokenValid();
+    if (isValid && config.url !== ENDPOINTS.REFRESH_TOKEN) {
+      const token = TokenService.getToken();
       config.headers["Authorization"] = "Bearer " + token;
     }
     return config;
@@ -28,9 +28,12 @@ instance.interceptors.response.use(
   (res) => {
     return res;
   },
-  (error) => {
+  async (error) => {
     const originalRequest = error.config;
-    if (originalRequest.url !== "/auth/login" && error.response) {
+    if (
+      originalRequest.url !== "/auth/login" &&
+      error.response.status === 401
+    ) {
       // Access Token was expired
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
@@ -39,9 +42,9 @@ instance.interceptors.response.use(
           const config = {
             headers: {},
           };
-          instance.post("/auth/refresh", {}, config).then((response) => {
+          await instance.post("/auth/refresh", {}, config).then((response) => {
             TokenService.setToken(response.data.token);
-            return instance.request(originalRequest);
+            // return instance.request(originalRequest);
           });
         } catch (_error) {
           return new ApiError(
@@ -50,6 +53,7 @@ instance.interceptors.response.use(
           );
         }
       }
+      return instance.request(originalRequest);
     }
     return new ApiError(error.response.status, error.response.data.message);
   }

@@ -29,9 +29,14 @@ public class UserController {
     private final TagsService tagsService;
 
     // todo: I can take user id for update email, password or nickname from jwt
-    @GetMapping("/{userId}")
+    @GetMapping("/id/{userId}")
     public User getUserById(@Valid @PathVariable Long userId) {
         return userService.getById(userId);
+    }
+
+    @GetMapping("/{nickname}")
+    public User getByNickname(@PathVariable String nickname) {
+        return userService.getByNickname(nickname);
     }
 
     @PutMapping("/password")

@@ -1,14 +1,27 @@
 import { defineStore } from "pinia";
+import instance from "@/axios/axios";
+import { ENDPOINTS } from "@/config/api-routes";
+import tokenService from "@/services/tokenService";
+import userService from "@/services/userService";
 
-export const userStore = defineStore({
-  state: () => {
-    user: {
-    }
-  },
+export const userStore = defineStore("userStore", {
+  state: () => ({
+    user: {},
+  }),
   actions: {
     getByNickname(nickname) {},
     logout() {
       this.user = {};
+    },
+    loadUser() {
+      const payload = tokenService.getTokenPayload();
+      instance
+        .get(
+          ENDPOINTS.USER_GET_BY_NICKNAME.replace(":nickname", payload.nickname)
+        )
+        .then((response) => {
+          this.user = response.data;
+        });
     },
     update() {
       // todo set parameters for update
