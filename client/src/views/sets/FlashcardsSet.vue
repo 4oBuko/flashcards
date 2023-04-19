@@ -4,7 +4,6 @@
   </div>
 </template>
 <script>
-import SetService from "@/services/setService";
 import { flashcardsSetStore } from "@/store/flashcardsSetStore";
 
 export default {
