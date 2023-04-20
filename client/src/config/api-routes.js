@@ -1,5 +1,4 @@
-export const API_URL = "http://localhost:8080";
-// todo: how to set api change api url for dev and production
+export const API_URL = import.meta.env.VITE_API_DOMAIN;
 export const ENDPOINTS = {
   LOGIN: `/auth/login`,
   REFRESH_TOKEN: `/auth/refresh`,
