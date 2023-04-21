@@ -73,7 +73,6 @@ public class UserService {
         return getById(userId);
     }
 
-//    todo: refactor updating methods
     public User updatePassword(UpdateUserCredentialDTO credentialDTO, Jwt jwt) {
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         String encodedNewPassword = passwordEncoder.encode(credentialDTO.getCredential());
@@ -86,9 +85,11 @@ public class UserService {
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         User user = userRepository.findById(payload.getUserId()).orElseThrow(CustomEntityNotFoundException::new);
         user.setEmail(credentialDTO.getCredential());
-        user.setConfirmed(false);
+        if (emailVerificationEnabled) {
+            user.setConfirmed(false);
+            emailService.sendEmailUpdateLetter(user);
+        }
         userRepository.save(user);
-        emailService.sendEmailUpdateLetter(user);
         return user;
     }
 
@@ -96,8 +97,11 @@ public class UserService {
     public User updateNickname(UpdateUserCredentialDTO credentialDTO, Jwt jwt) {
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         User user = userRepository.findById(payload.getUserId()).orElseThrow(CustomEntityNotFoundException::new);
-        user.setNickname(credentialDTO.getCredential());
-        return userRepository.save(user);
+        if (isNicknameAvailable(credentialDTO.getCredential())) {
+            user.setNickname(credentialDTO.getCredential());
+            return userRepository.save(user);
+        }
+        throw new AlreadyUsedCredentialsException("Nickname is already used");
     }
 
     public boolean isNicknameAvailable(String nickname) {
@@ -107,7 +111,6 @@ public class UserService {
     public void confirmUser(VerificationToken token) {
         User user = token.getUser();
         user.setConfirmed(true);
-        // I can delete token after using
         user.setConfirmed(true);
         userRepository.save(user);
     }

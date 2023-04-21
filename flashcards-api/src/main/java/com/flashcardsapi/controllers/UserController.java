@@ -28,7 +28,6 @@ public class UserController {
     private final FlashcardsSetService setsService;
     private final TagsService tagsService;
 
-    // todo: I can take user id for update email, password or nickname from jwt
     @GetMapping("/id/{userId}")
     public User getUserById(@Valid @PathVariable Long userId) {
         return userService.getById(userId);
