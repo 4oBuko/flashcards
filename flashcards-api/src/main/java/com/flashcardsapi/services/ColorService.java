@@ -1,5 +1,6 @@
 package com.flashcardsapi.services;
 
+import com.flashcardsapi.exceptions.CustomEntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class ColorService {
                 .toList();
     }
 
-    public Color getColorById(long id) throws IllegalArgumentException {
-        return colorRepository.findById(id).orElse(null);
+    public Color getColorById(long id) {
+        return colorRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
     }
 }

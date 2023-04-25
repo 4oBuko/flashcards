@@ -27,7 +27,7 @@ public class FlashcardsSetController {
 
     @GetMapping("/{setId}")
     public FlashcardsSet getSetById(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
-        return flashcardsSetService.getSetById(setId, jwt);
+        return flashcardsSetService.getById(setId, jwt);
     }
 
     @GetMapping()
@@ -37,17 +37,17 @@ public class FlashcardsSetController {
 
     @PostMapping()
     public FlashcardsSet addNewSet(@Valid @RequestBody CreateFlashcardsSetDTO newSet, @AuthenticationPrincipal Jwt jwt) {
-        return flashcardsSetService.addNewSet(newSet, jwt);
+        return flashcardsSetService.create(newSet, jwt);
     }
 
     @PutMapping()
     public FlashcardsSet updateSet(@Valid @RequestBody  UpdateFlashcardsSetDTO dto, @AuthenticationPrincipal Jwt jwt) {
-        return flashcardsSetService.updateSet(dto, jwt);
+        return flashcardsSetService.update(dto, jwt);
     }
 
     @DeleteMapping("/{setId}")
     public String deleteSetById(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
-        flashcardsSetService.deleteSetById(setId, jwt);
+        flashcardsSetService.deleteById(setId, jwt);
         return "tag was successfully deleted";
     }
 }

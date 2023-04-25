@@ -38,7 +38,7 @@ public class UserService {
 
     private final boolean emailVerificationEnabled;
 
-    public User getById(Long id) throws IllegalArgumentException {
+    public User getById(Long id) {
         return userRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
     }
 

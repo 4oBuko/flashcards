@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +27,7 @@ public class FlashcardsSetService {
     private LanguageRepository languageRepository;
 
     @Transactional
-    public FlashcardsSet updateSet(UpdateFlashcardsSetDTO dto, Jwt jwt) {
+    public FlashcardsSet update(UpdateFlashcardsSetDTO dto, Jwt jwt) {
         FlashcardsSet fromDb = flashcardsSetRepository.findById(dto.getId()).orElseThrow(CustomEntityNotFoundException::new);
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
 
@@ -64,7 +65,7 @@ public class FlashcardsSetService {
     }
 
     @Transactional
-    public FlashcardsSet addNewSet(CreateFlashcardsSetDTO dto, Jwt jwt) {
+    public FlashcardsSet create(CreateFlashcardsSetDTO dto, Jwt jwt) {
         FlashcardsSet set = new FlashcardsSet();
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
 
@@ -87,8 +88,8 @@ public class FlashcardsSetService {
         return flashcardsSetRepository.save(set);
     }
 
-    public FlashcardsSet getSetById(long setId, Jwt jwt) {
-        FlashcardsSet set = flashcardsSetRepository.findById(setId).orElseThrow(CustomEntityNotFoundException::new);
+    public FlashcardsSet getById(long id, Jwt jwt) {
+        FlashcardsSet set = flashcardsSetRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
 //        return error if set is private and user isn't author of the set
         if (set.isPublic() || set.getUser().getId().equals(payload.getUserId())) {
@@ -99,25 +100,36 @@ public class FlashcardsSetService {
     }
 
     @Transactional
-    public void deleteSetById(long setId, Jwt jwt) {
-        FlashcardsSet set = flashcardsSetRepository.findById(setId).orElseThrow(CustomEntityNotFoundException::new);
+    public void deleteById(long id, Jwt jwt) {
+        FlashcardsSet set = flashcardsSetRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         if (set.getUser().getId().equals(payload.getUserId())) {
-            flashcardsSetRepository.deleteById(setId);
+            flashcardsSetRepository.deleteById(id);
         } else {
             throw new CustomAccessDeniedException("Access denied. You are not the author of this set");
         }
-        flashcardsSetRepository.deleteById(setId);
+        flashcardsSetRepository.deleteById(id);
     }
 
 
-    public List<FlashcardsSet> getUserSetsById(Long userId, Jwt jwt) {
-        List<FlashcardsSet> sets = flashcardsSetRepository.findAllByUser_id(userId);
-        return sets.stream().filter(FlashcardsSet::isPublic).toList();
+    public List<FlashcardsSet> getAllByUserId(Long id, Jwt jwt) {
+        JwtPayload payload = JwtPayloadReader.getPayload(jwt);
+        List<FlashcardsSet> sets = flashcardsSetRepository.findAllByUser_id(id);
+        return sets.stream()
+                .filter(set -> set.isPublic() || set.getUser().getId().equals(payload.getUserId()))
+                .toList();
     }
 
     public List<FlashcardsSet> getUsersSets(Jwt jwt) {
         JwtPayload jwtPayload = JwtPayloadReader.getPayload(jwt);
         return flashcardsSetRepository.findAllByUser_id(jwtPayload.getUserId());
+    }
+
+    @Transactional
+    public List<FlashcardsSet> getById(List<Long> id) {
+        Iterable<FlashcardsSet> iterable = flashcardsSetRepository.findAllById(id);
+        List<FlashcardsSet> list = new LinkedList<>();
+        iterable.forEach(list::add);
+        return list;
     }
 }

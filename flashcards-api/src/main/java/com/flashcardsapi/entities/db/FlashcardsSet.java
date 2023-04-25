@@ -14,6 +14,7 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -51,10 +52,12 @@ public class FlashcardsSet {
     @Column(columnDefinition = "jsonb")
     private List<Flashcard> flashcards;
 
-    @ManyToMany
-    @JoinTable(name = "flashcards_set_tag", joinColumns = @JoinColumn(name = "flashcards_set_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "flashcards_set_tag",
+            joinColumns = @JoinColumn(name = "flashcards_set_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     @JsonIgnoreProperties(value = "flashcards")
-    private List<Tag> tags;
+    private List<Tag> tags = new ArrayList<>();
 
     private boolean isPublic;
 

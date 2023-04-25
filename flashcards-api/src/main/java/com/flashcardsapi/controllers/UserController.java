@@ -16,7 +16,7 @@ import com.flashcardsapi.entities.db.FlashcardsSet;
 import com.flashcardsapi.entities.db.Tag;
 import com.flashcardsapi.entities.db.User;
 import com.flashcardsapi.services.FlashcardsSetService;
-import com.flashcardsapi.services.TagsService;
+import com.flashcardsapi.services.TagService;
 import com.flashcardsapi.services.UserService;
 
 @RestController
@@ -26,7 +26,7 @@ public class UserController {
 
     private final UserService userService;
     private final FlashcardsSetService setsService;
-    private final TagsService tagsService;
+    private final TagService tagService;
 
     @GetMapping("/id/{userId}")
     public User getUserById(@Valid @PathVariable Long userId) {
@@ -60,11 +60,11 @@ public class UserController {
 
     @GetMapping("/{userId}/sets")
     public List<FlashcardsSet> getUserSets(@Valid @PathVariable Long userId, @AuthenticationPrincipal Jwt jwt) {
-        return setsService.getUserSetsById(userId, jwt);
+        return setsService.getAllByUserId(userId, jwt);
     }
 
     @GetMapping("/{userId}/tags")
     public List<Tag> getUserTags(@Valid @PathVariable long userId, @AuthenticationPrincipal Jwt jwt) {
-        return tagsService.getUserTagsById(userId);
+        return tagService.getAllByUserId(userId);
     }
 }

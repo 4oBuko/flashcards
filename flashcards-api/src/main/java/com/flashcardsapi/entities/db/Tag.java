@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -30,18 +31,15 @@ public class Tag {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private Long userId;
-
     @Column(length = 50, nullable = false)
     private String name;
 
     private boolean isPublic;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+
+    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = "tags")
-    private List<FlashcardsSet> sets;
+    private List<FlashcardsSet> sets = new ArrayList<>();
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
