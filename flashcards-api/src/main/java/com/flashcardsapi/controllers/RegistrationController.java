@@ -43,8 +43,8 @@ public class RegistrationController {
             userService.confirmUser(verificationToken);
             return new ConfirmationResult(true, "verified successfully!");
         } else {
-//            todo: how to get new token if this was expired?
-            return new ConfirmationResult(false, "verification failed! Try to get new token");
+            emailService.sendVerificationLetter(verificationToken.getUser());
+            return new ConfirmationResult(false, "verification failed! Check your email for new verification letter!");
         }
     }
 }
