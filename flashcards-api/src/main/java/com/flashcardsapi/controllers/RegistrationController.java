@@ -1,7 +1,11 @@
 package com.flashcardsapi.controllers;
 
 import com.flashcardsapi.dtos.user.CreateUserDTO;
+import com.flashcardsapi.entities.ConfirmationResult;
+import com.flashcardsapi.exceptions.CustomAccessDeniedException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
+@Log4j2
 @RequestMapping("/register")
 public class RegistrationController {
     private final UserService userService;
@@ -40,23 +45,14 @@ public class RegistrationController {
     }
 
     @GetMapping("/confirm")
-    public void verifyEmail(HttpServletResponse servletResponse, @RequestParam String token) {
-        String message = "message: ";
+    public ConfirmationResult verifyEmail(@RequestParam String token) {
         VerificationToken verificationToken = emailService.getToken(token);
-        if (emailService.verifyToken(token) && verificationToken != null) {
+        if (emailService.verifyToken(token)) {
             userService.confirmUser(verificationToken);
-            servletResponse.setStatus(HttpServletResponse.SC_OK);
-            message += "\"verified successufully!\"";
+            return new ConfirmationResult(true, "verified successfully!");
         } else {
-            servletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            message += "\"verification failed! New verification letter was sent!\"";
-        }
-        try {
-            servletResponse.sendRedirect(frontendUrl);
-            servletResponse.getWriter().write(message);
-            servletResponse.getWriter().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+//            todo: how to get new token if this was expired?
+            return new ConfirmationResult(false, "verification failed! Try to get new token");
         }
     }
 }

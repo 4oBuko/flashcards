@@ -111,7 +111,6 @@ public class UserService {
     public void confirmUser(VerificationToken token) {
         User user = token.getUser();
         user.setConfirmed(true);
-        user.setConfirmed(true);
         userRepository.save(user);
     }
 

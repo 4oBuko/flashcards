@@ -1,12 +1,11 @@
 package com.flashcardsapi.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
+import lombok.AllArgsConstructor;
+
 @AllArgsConstructor
-public class ErrorResponseMessage {
+public class ConfirmationResult {
+    private boolean confirmed;
+
     private String message;
 }

@@ -1,5 +1,6 @@
 package com.flashcardsapi.services;
 
+import com.flashcardsapi.exceptions.CustomEntityNotFoundException;
 import com.flashcardsapi.utils.ConfirmationLetterBuilder;
 
 import java.time.LocalDateTime;
@@ -35,9 +36,8 @@ public class EmailService {
     }
 
     public boolean verifyToken(String token) {
-        VerificationToken verificationToken = tokenRepository.findByToken(token).orElse(null);
-//        token isn't null and not expired
-        return verificationToken != null && !verificationToken.getExpiresAt().isBefore(LocalDateTime.now());
+        VerificationToken verificationToken = tokenRepository.findByToken(token).orElseThrow(CustomEntityNotFoundException::new);
+        return !verificationToken.getExpiresAt().isBefore(LocalDateTime.now());
     }
 
     public void sendVerificationLetter(User user) {
@@ -56,8 +56,6 @@ public class EmailService {
     public void sendEmailUpdateLetter(User user) {
         VerificationToken verificationToken = createTokenByUser(user);
         tokenRepository.save(verificationToken);
-        // todo: I can delete this method and use only one
-        // todo: get letter from message builder and send it
     }
 
     private VerificationToken createTokenByUser(User user) {

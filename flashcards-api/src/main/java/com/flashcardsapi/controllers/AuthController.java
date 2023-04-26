@@ -29,6 +29,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     private final JwtTokenService tokenService;
+
     @PostMapping("/login")
     public Map<String, String> loginUser(@RequestBody LoginDTO dto, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
