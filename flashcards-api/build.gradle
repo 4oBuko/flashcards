@@ -23,6 +23,7 @@ dependencies {
     implementation 'org.springframework.security:spring-security-oauth2-resource-server:5.7.4'
     implementation 'org.springframework.security:spring-security-oauth2-jose:5.7.4'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.passay:passay:1.6.3'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

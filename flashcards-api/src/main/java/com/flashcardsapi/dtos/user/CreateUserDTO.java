@@ -1,5 +1,6 @@
 package com.flashcardsapi.dtos.user;
 
+import com.flashcardsapi.annotations.ValidPassword;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class CreateUserDTO {
     @NotBlank(message = "nickname cannot be empty")
     private String nickname;
 
+    @ValidPassword
     @NotBlank(message = "password cannot be empty")
     private String password;
 }

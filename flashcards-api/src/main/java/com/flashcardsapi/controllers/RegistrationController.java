@@ -2,10 +2,7 @@ package com.flashcardsapi.controllers;
 
 import com.flashcardsapi.dtos.user.CreateUserDTO;
 import com.flashcardsapi.entities.ConfirmationResult;
-import com.flashcardsapi.exceptions.CustomAccessDeniedException;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +10,9 @@ import com.flashcardsapi.entities.db.VerificationToken;
 import com.flashcardsapi.services.EmailService;
 import com.flashcardsapi.services.UserService;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
@@ -31,9 +26,6 @@ public class RegistrationController {
         this.userService = userService;
         this.emailService = emailService;
     }
-
-     @Value("${frontend.url}")
-    private String frontendUrl;
 
     @PostMapping()
     @ResponseBody

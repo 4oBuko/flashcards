@@ -4,7 +4,6 @@ import com.flashcardsapi.entities.db.VerificationToken;
 
 public class ConfirmationLetterBuilder {
 
-    // @Value("${domain.name}")//todo:add domain
     private final static String DOMAIN ="http://localhost:8080/register/confirm";
 
     public static String generateRegistrationLetter(VerificationToken token) {

@@ -42,7 +42,6 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
     }
 
-    // todo: add password validation (number of characters and different symbols)
     @Transactional
     public void registerNewUser(CreateUserDTO createUserDTO) {
         if (userRepository.existsByEmail(createUserDTO.getEmail())) {

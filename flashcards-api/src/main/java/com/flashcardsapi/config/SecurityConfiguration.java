@@ -6,10 +6,10 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,10 +31,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private final RsaKeyProperties keyProperties;
+
+
+    private final String clientUrl;
+
+    public SecurityConfiguration(RsaKeyProperties keyProperties, @Value("${frontend.url") String clientUrl) {
+        this.keyProperties = keyProperties;
+        this.clientUrl = clientUrl;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -51,7 +58,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.cors()
                 .and()
-                .csrf(csrf -> csrf.disable())
+                .csrf().disable()
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .authorizeRequests(
                         auth -> auth.antMatchers("/auth/**").permitAll()
@@ -82,7 +89,7 @@ public class SecurityConfiguration {
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowedMethods(List.of("*"));
         // set allowed origin because creadentials are allowed
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+        corsConfiguration.setAllowedOrigins(List.of(clientUrl));
         corsConfiguration.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
