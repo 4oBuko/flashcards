@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import instance from "@/axios/axios";
 import { ENDPOINTS } from "@/config/api-routes";
 import tokenService from "@/services/tokenService";
-import userService from "@/services/userService";
 
 export const userStore = defineStore("userStore", {
   state: () => ({

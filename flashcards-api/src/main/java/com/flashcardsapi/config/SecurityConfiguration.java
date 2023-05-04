@@ -38,7 +38,7 @@ public class SecurityConfiguration {
 
     private final String clientUrl;
 
-    public SecurityConfiguration(RsaKeyProperties keyProperties, @Value("${frontend.url") String clientUrl) {
+    public SecurityConfiguration(RsaKeyProperties keyProperties, @Value("${frontend.url}") String clientUrl) {
         this.keyProperties = keyProperties;
         this.clientUrl = clientUrl;
     }

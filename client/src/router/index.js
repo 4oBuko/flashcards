@@ -4,6 +4,7 @@ import Home from "@/views/Home.vue";
 import Register from "@/views/Register.vue";
 import FlashcardsSet from "@/views/sets/FlashcardsSet.vue";
 import CreateSet from "@/views/sets/create/CreateSet.vue";
+import CreateTag from "@/views/tags/CreateTag.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,6 +14,7 @@ const router = createRouter({
     { path: "/register", name: "register", component: Register },
     { path: "/sets", name: "sets", component: FlashcardsSet },
     { path: "/sets/new", name: "create-set", component: CreateSet },
+    { path: "/tags/new", name: "create-tag", component: CreateTag },
     { path: "/*", redirect: "/" },
   ],
 });

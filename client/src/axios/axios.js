@@ -13,7 +13,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const isValid = TokenService.isTokenValid();
-    if (isValid && config.url !== ENDPOINTS.REFRESH_TOKEN) {
+    if (isValid) {
       const token = TokenService.getToken();
       config.headers["Authorization"] = "Bearer " + token;
     }

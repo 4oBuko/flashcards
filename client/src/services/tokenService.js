@@ -8,8 +8,11 @@ class TokenService {
   }
 
   isTokenValid() {
-    const payload = this.getTokenPayload();
-    return Date.now() / 1000 < payload.exp;
+    if (localStorage.getItem("token") != null) {
+      const payload = this.getTokenPayload();
+      return Date.now() / 1000 < payload.exp;
+    }
+    return false;
   }
 
   getTokenPayload() {
