@@ -5,7 +5,8 @@ import { ENDPOINTS } from "@/config/api-routes";
 export const flashcardsSetStore = defineStore("flashcards", {
   state: () => ({
     set: {},
-    sets: {},
+    sets: [],
+    userSets: [],
   }),
   actions: {
     getById(id) {
@@ -14,5 +15,10 @@ export const flashcardsSetStore = defineStore("flashcards", {
       });
     },
     update(updatedSet) {},
+    getUserSets() {
+      instance.get(ENDPOINTS.OWN_SETS_GET).then((response) => {
+        this.userSets = response.data;
+      });
+    },
   },
 });

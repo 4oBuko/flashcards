@@ -20,11 +20,13 @@ export const ENDPOINTS = {
   USER_TAGS_GET: `/users/:id/tags`,
 
   TAG_GET: `/tags/:id`,
+  OWN_TAGS_GET: "/tags",
   TAG_CREATE: `/tags/`,
   TAG_UPDATE: `/tags/`,
   TAG_DELETE: `/tags/:id`,
 
   SET_GET: `/sets/:id`,
+  OWN_SETS_GET: "/sets",
   SET_CREATE: `/sets/`,
   SET_UPDATE: `/sets/`,
   SET_DELETE: `/sets/:id`,

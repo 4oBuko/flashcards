@@ -84,13 +84,8 @@
   </div>
 </template>
 <script>
-import FlashcardForm from "@/views/sets/create/FlashcardForm.vue";
-
 export default {
   name: "CreateSet",
-  components: {
-    FlashcardForm,
-  },
   created() {
     this.addMoreCards();
     //   todo get languages from storage
