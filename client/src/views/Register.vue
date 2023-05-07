@@ -31,7 +31,7 @@
 import { register } from "@/services/registrationService";
 
 export default {
-  name: "Register",
+  setName: "Register",
   data() {
     return {
       nickname: "",

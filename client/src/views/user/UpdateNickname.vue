@@ -17,7 +17,7 @@ export default {
             isAvailable: ""
         }
     },
-    name: "UpdateNickname",
+    setName: "UpdateNickname",
     methods: {
         checkAvailability() {
 

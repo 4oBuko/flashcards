@@ -50,19 +50,19 @@
 </template>
 
 <script>
-import { colorsStore } from "@/store/colorsStore";
+import { colorStore } from "@/store/colorStore";
 import { flashcardsSetStore } from "@/store/flashcardsSetStore";
 import tagService from "@/services/tagService";
 
 export default {
-  name: "CreateTag",
+  setName: "CreateTag",
   created() {
     this.colors.loadColors();
     this.setsStore.getUserSets();
   },
   data() {
     return {
-      colors: colorsStore(),
+      colors: colorStore(),
       setsStore: flashcardsSetStore(),
       tagName: "",
       isPublic: false,

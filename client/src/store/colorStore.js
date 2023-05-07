@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import instance from "@/axios/axios";
 import { ENDPOINTS } from "@/config/api-routes";
 
-export const colorsStore = defineStore("colorsStore", {
+export const colorStore = defineStore("colorStore", {
   state: () => ({
     colors: [],
   }),

@@ -10,7 +10,7 @@ export default {
   created() {
     this.store.loadUser();
   },
-  name: "Home.vue",
+  setName: "Home.vue",
   methods: { logout },
   data() {
     return {

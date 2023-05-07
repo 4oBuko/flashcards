@@ -7,6 +7,7 @@
       id="setName"
       maxlength="50"
       minlength="1"
+      v-model="setName"
     />
     <br />
     <p>description</p>
@@ -16,17 +17,34 @@
       cols="30"
       rows="10"
       maxlength="200"
+      v-model="description"
     ></textarea>
     <br />
     <p>Questions language</p>
-    <select>
-      <option value="non">question languages</option>
-    </select>
+    <fieldset>
+      <div v-for="language in languageStore.languages">
+        <p>{{ language.name }}</p>
+        <input
+          type="radio"
+          :value="language"
+          v-model="questionLanguage"
+          value="{{language.name}}"
+        />
+      </div>
+    </fieldset>
     <br />
     <p>Answer language</p>
-    <select>
-      <option value="non">answer languages</option>
-    </select>
+    <fieldset>
+      <div v-for="language in languageStore.languages">
+        <p>{{ language.name }}</p>
+        <input
+          type="radio"
+          :value="language"
+          v-model="answerLanguage"
+          value="{{language.name}}"
+        />
+      </div>
+    </fieldset>
     <br />
     <p>is Public</p>
     <div>
@@ -84,20 +102,25 @@
   </div>
 </template>
 <script>
+import setService from "@/services/setService";
+import { languageStore } from "@/store/languageStore";
+
 export default {
-  name: "CreateSet",
+  setName: "CreateSet",
   created() {
     this.addMoreCards();
-    //   todo get languages from storage
+    // todo: load languages after first load of the app
+    this.languageStore.loadLanguages();
   },
   data() {
     return {
-      name: "",
+      setName: "",
       description: "",
-      questionLanguage: "",
-      answerLanguage: "",
+      questionLanguage: {},
+      answerLanguage: {},
       flashcards: [],
       isPublic: false,
+      languageStore: languageStore(),
     };
   },
   methods: {
@@ -130,16 +153,17 @@ export default {
     },
 
     createSet() {
-      //   remove empty elements
-      this.flashcards.forEach((f) => {
-        f.question = f.question.trim();
-        f.answer = f.answer.trim();
-        return f;
-      });
-      const filledCards = this.flashcards.filter((f) => f.question && f.answer);
-      if (filledCards.length >= 1) {
+      this.removeEmptyCards();
+      if (this.flashcards.length >= 1) {
+        setService.createNew(
+          this.setName,
+          this.questionLanguage,
+          this.answerLanguage,
+          this.description,
+          this.flashcards,
+          this.isPublic
+        );
       }
-      console.log(filledCards);
     },
     removeFlashcard(index) {
       if (this.flashcards.length - 1 === index) {
@@ -148,6 +172,14 @@ export default {
         this.flashcards.splice(index, 1);
       }
       this.flashcards.forEach((f, i) => (f.index = i));
+    },
+    removeEmptyCards() {
+      this.flashcards.forEach((f) => {
+        f.question = f.question.trim();
+        f.answer = f.answer.trim();
+        return f;
+      });
+      this.flashcards = this.flashcards.filter((f) => f.question && f.answer);
     },
   },
 };

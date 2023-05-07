@@ -9,12 +9,12 @@ import CreateTag from "@/views/tags/CreateTag.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "/", name: "home", component: Home },
-    { path: "/login", name: "login", component: Login },
-    { path: "/register", name: "register", component: Register },
-    { path: "/sets", name: "sets", component: FlashcardsSet },
-    { path: "/sets/new", name: "create-set", component: CreateSet },
-    { path: "/tags/new", name: "create-tag", component: CreateTag },
+    { path: "/", setName: "home", component: Home },
+    { path: "/login", setName: "login", component: Login },
+    { path: "/register", setName: "register", component: Register },
+    { path: "/sets", setName: "sets", component: FlashcardsSet },
+    { path: "/sets/new", setName: "create-set", component: CreateSet },
+    { path: "/tags/new", setName: "create-tag", component: CreateTag },
     { path: "/*", redirect: "/" },
   ],
 });

@@ -26,7 +26,7 @@ public class CreateFlashcardsSetDTO {
     @NotNull
     private Long questionLanguageId;
 
-    private String Description;
+    private String description;
 
     @NotEmpty(message = "set must contain at least one flashcard")
     private List<Flashcard> flashcards;
