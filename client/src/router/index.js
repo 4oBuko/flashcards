@@ -20,7 +20,7 @@ const router = createRouter({
     { path: "/", name: "home", component: Home },
     { path: "/login", name: "login", component: Login },
     { path: "/register", name: "register", component: Register },
-    { path: "users/:id", name: "user-profile", component: Profile },
+    { path: "/users/:id", name: "user-profile", component: Profile },
     {
       path: "/settings/account",
       name: "account-settings",
@@ -29,10 +29,10 @@ const router = createRouter({
 
     { path: "/sets", name: "sets", component: MySets },
     { path: "/sets/new", name: "create-set", component: CreateSet },
-    { path: "sets/:id", name: "flashcards-set", component: FlashcardsSet },
-    { path: "sets/:id/edit", name: "edit-set", component: EditSet },
+    { path: "/sets/:id", name: "flashcards-set", component: FlashcardsSet },
+    { path: "/sets/:id/edit", name: "edit-set", component: EditSet },
 
-    { path: "tags", name: "tags", component: MyTags },
+    { path: "/tags", name: "tags", component: MyTags },
     { path: "/tags/new", name: "create-tag", component: CreateTag },
     { path: "/tags/:id", name: "view-tag", component: Tag },
     { path: "/tags/:id/edit", name: "edit-tag", component: EditTag },
