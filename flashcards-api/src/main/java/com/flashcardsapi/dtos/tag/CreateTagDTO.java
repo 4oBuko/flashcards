@@ -15,15 +15,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateTagDTO {
-    @NotBlank
+
+    @NotBlank(message = "tag must have name")
     private String name;
 
-    @NotNull
     private boolean isPublic;
 
-    @NotNull
+    @NotNull(message = "tag must have sets")
     private List<Long> sets;
 
-    @NotNull
+    @NotNull(message = "tag must have color")
     private Long colorId;
 }

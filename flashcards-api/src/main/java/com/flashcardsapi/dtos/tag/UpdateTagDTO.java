@@ -12,16 +12,15 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdateTagDTO {
 
-    @NotNull
+    @NotNull(message = "tag must have name")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "tag must have name")
     private String name;
 
-    @NotNull
     private boolean isPublic;
 
-    @NotNull
+    @NotNull(message = "tag must have color")
     private Long colorId;
 
     @NotNull

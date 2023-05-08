@@ -17,16 +17,16 @@ import java.util.List;
 @Setter
 public class UpdateFlashcardsSetDTO {
 
-    @NotNull
+    @NotNull(message = "set id of the updated set")
     private Long id;
 
     @NotBlank(message = "name cannot be empty")
     private String name;
 
-    @NotNull
+    @NotNull(message = "answer language cannot be null")
     private Long answerLanguageId;
 
-    @NotNull
+    @NotNull(message = "question language cannot be null")
     private Long questionLanguageId;
 
     private String Description;

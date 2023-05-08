@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateUserCredentialDTO {
-    @NotBlank
+    @NotBlank(message = "credential cannot be null")
     @JsonIgnore
     private String credential;
 

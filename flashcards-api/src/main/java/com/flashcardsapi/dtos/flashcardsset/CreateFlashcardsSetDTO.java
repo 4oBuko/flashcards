@@ -20,10 +20,10 @@ public class CreateFlashcardsSetDTO {
     @NotBlank(message = "name cannot be empty")
     private String name;
 
-    @NotNull
+    @NotNull(message = "answer language cannot be null")
     private Long answerLanguageId;
 
-    @NotNull
+    @NotNull(message = "question language cannot be null")
     private Long questionLanguageId;
 
     private String description;
