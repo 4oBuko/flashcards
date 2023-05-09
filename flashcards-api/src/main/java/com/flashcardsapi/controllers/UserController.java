@@ -53,11 +53,6 @@ public class UserController {
         return userService.updateNickname(credentialDTO, jwt);
     }
 
-    @GetMapping("/nickname/{nickname}")
-    public Map.Entry<String, Boolean> getNicknameAvailability(@PathVariable String nickname) {
-        return Map.entry("isAvailable", userService.isNicknameAvailable(nickname));
-    }
-
     @GetMapping("/{userId}/sets")
     public List<FlashcardsSet> getUserSets(@Valid @PathVariable Long userId, @AuthenticationPrincipal Jwt jwt) {
         return setsService.getAllByUserId(userId, jwt);

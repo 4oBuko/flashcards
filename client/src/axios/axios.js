@@ -32,6 +32,9 @@ instance.interceptors.response.use(
     const originalRequest = error.config;
     if (
       originalRequest.url !== "/auth/login" &&
+      !originalRequest.url.startsWith(
+        ENDPOINTS.CHECK_NICKNAME.replace("/:nickname", "")
+      ) &&
       error.response.status === 401
     ) {
       // Access Token was expired

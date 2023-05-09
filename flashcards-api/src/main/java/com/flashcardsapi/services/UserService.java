@@ -104,7 +104,7 @@ public class UserService {
     }
 
     public boolean isNicknameAvailable(String nickname) {
-        return userRepository.existsByNickname(nickname);
+        return !userRepository.existsByNickname(nickname);
     }
 
     public void confirmUser(VerificationToken token) {

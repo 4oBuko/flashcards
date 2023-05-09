@@ -4,7 +4,7 @@ export const ENDPOINTS = {
   REFRESH_TOKEN: `/auth/refresh`,
   LOGOUT: `/auth/logout`,
 
-  CHECK_NICKNAME: `/users/nickname/:nickname`,
+  CHECK_NICKNAME: `/nicknames/:nickname`,
 
   COLORS_GET: `/colors`,
 

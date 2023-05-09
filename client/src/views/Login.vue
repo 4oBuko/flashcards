@@ -17,6 +17,7 @@
         inputId="stayLoggedIn"
         name="stayLoggedIn"
         :value="true"
+        binary
       />
       <label for="stayLoggedIn"> Stay logged in </label>
     </div>

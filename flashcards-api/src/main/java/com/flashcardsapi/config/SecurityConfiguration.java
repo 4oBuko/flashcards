@@ -65,6 +65,7 @@ public class SecurityConfiguration {
                                 .antMatchers("/languages").permitAll()
                                 .antMatchers("/register/**").permitAll()
                                 .antMatchers("/colors").permitAll()
+                                .antMatchers("/nicknames/**").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER));
         return http.build();
