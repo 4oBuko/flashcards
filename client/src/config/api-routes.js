@@ -31,3 +31,12 @@ export const ENDPOINTS = {
   SET_UPDATE: `/sets/`,
   SET_DELETE: `/sets/:id`,
 };
+
+export const PUBLIC_ENDPOINTS = [
+  ENDPOINTS.USER_REGISTER,
+  ENDPOINTS.LOGIN,
+  ENDPOINTS.CHECK_NICKNAME.substring(
+    0,
+    ENDPOINTS.CHECK_NICKNAME.lastIndexOf("/")
+  ),
+];

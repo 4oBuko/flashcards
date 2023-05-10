@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL, ENDPOINTS } from "@/config/api-routes";
+import { API_URL, ENDPOINTS, PUBLIC_ENDPOINTS } from "@/config/api-routes";
 import TokenService from "@/services/tokenService";
 import { ApiError } from "@/entities/Error";
 
@@ -30,13 +30,8 @@ instance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    if (
-      originalRequest.url !== "/auth/login" &&
-      !originalRequest.url.startsWith(
-        ENDPOINTS.CHECK_NICKNAME.replace("/:nickname", "")
-      ) &&
-      error.response.status === 401
-    ) {
+    const isPublicPage = PUBLIC_ENDPOINTS.includes(originalRequest.url);
+    if (!isPublicPage && error.response.status === 401) {
       // Access Token was expired
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
