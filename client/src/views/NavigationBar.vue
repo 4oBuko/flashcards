@@ -3,7 +3,7 @@ import { logout } from "@/services/authService";
 import router from "@/router";
 import { useUserStore } from "@/store/useUserStore";
 import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
-import { mapStores } from "pinia";
+import { mapActions, mapState, mapStores } from "pinia";
 import { useTagStore } from "@/store/useTagStore";
 
 export default {
@@ -14,14 +14,23 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useUserStore, useFlashcardsSetStore, useTagStore),
+    ...mapState(useUserStore, ["user"]),
+    ...mapState(useTagStore, ["userTags"]),
+    ...mapState(useFlashcardsSetStore, ["userSets"]),
   },
   mounted() {
-    this.flashcardsStore.getUserSets();
-    this.tagStore.getUserTags();
+    this.getUserSets();
+    this.getUserTags();
     this.getTreeTableNodes().then((data) => (this.nodes = data));
   },
+  watch: {
+    userTags(newTags, oldTags) {
+      this.getTreeTableNodes().then((data) => (this.nodes = data));
+    },
+  },
   methods: {
+    ...mapActions(useTagStore, ["getUserTags"]),
+    ...mapActions(useFlashcardsSetStore, ["getUserSets"]),
     expandAll() {
       for (let node of this.nodes) {
         this.expandNode(node);
@@ -53,7 +62,7 @@ export default {
         {
           key: "1",
           label: "Profile",
-          path: `users/${this.userStore.user.id}`, //todo: get user id and add to the url
+          path: `users/${this.user.id}`, //todo: get user id and add to the url
           data: "Movies Folder",
           icon: "pi pi-fw pi-user",
         },
@@ -63,7 +72,7 @@ export default {
           path: "/sets",
           data: "Documents Folder",
           icon: "pi pi-fw pi-inbox",
-          children: this.flashcardsStore.userSets.map((set, index) => {
+          children: this.userSets.map((set, index) => {
             return {
               key: this.key + `-${index}`,
               label: set.name,
@@ -78,11 +87,11 @@ export default {
           path: "/tags",
           data: "Events Folder",
           icon: "pi pi-fw pi-calendar",
-          children: this.tagStore.userTags.map((tag, index) => {
+          children: this.userTags.map((tag, index) => {
             return {
               key: `3-${index}`,
               label: tag.name,
-              icon: "pi pi-circle-fill",
+              icon: "pi pi-circle-fill blue",
               path: `tags/${tag.id}`,
             };
           }),

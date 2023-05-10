@@ -17,6 +17,7 @@ import ToggleButton from "primevue/togglebutton";
 import Tree from "primevue/tree";
 import Menu from "primevue/menu";
 import Toast from "primevue/toast";
+import Badge from "primevue/badge";
 
 const app = createApp(App);
 const pinia = createPinia();
