@@ -2,7 +2,7 @@ import { ENDPOINTS } from "@/config/api-routes";
 import api from "../axios/axios";
 import TokenService from "@/services/tokenService";
 import router from "@/router";
-import { userStore } from "@/store/userStore";
+import { useUserStore } from "@/store/useUserStore";
 import { ApiError } from "@/entities/Error";
 
 export function login(email, password, stayLoggedIn = false) {
@@ -31,6 +31,6 @@ export function logout() {
   localStorage.removeItem("token");
   api.defaults.withCredentials = true;
   api.post(ENDPOINTS.LOGOUT);
-  userStore.logout;
+  useUserStore.logout;
   router.push("/login");
 }

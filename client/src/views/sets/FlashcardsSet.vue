@@ -4,13 +4,13 @@
   </div>
 </template>
 <script>
-import { flashcardsSetStore } from "@/store/flashcardsSetStore";
+import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
 
 export default {
   // name: "FlashcardsSet",
   data() {
     return {
-      store: flashcardsSetStore(),
+      store: useFlashcardsSetStore(),
       flashcardsSet: {},
     };
   },
@@ -18,7 +18,7 @@ export default {
     // get id from url
     this.store.getById(1);
   },
-  methods: { flashcardsSetStore },
+  methods: { flashcardsSetStore: useFlashcardsSetStore },
 };
 </script>
 

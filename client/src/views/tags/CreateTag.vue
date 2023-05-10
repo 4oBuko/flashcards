@@ -51,7 +51,7 @@
 
 <script>
 import { colorStore } from "@/store/colorStore";
-import { flashcardsSetStore } from "@/store/flashcardsSetStore";
+import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
 import tagService from "@/services/tagService";
 
 export default {
@@ -63,7 +63,7 @@ export default {
   data() {
     return {
       colors: colorStore(),
-      setsStore: flashcardsSetStore(),
+      setsStore: useFlashcardsSetStore(),
       tagName: "",
       isPublic: false,
       tagSets: [],

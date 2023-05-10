@@ -15,6 +15,8 @@ import Password from "primevue/password";
 import Checkbox from "primevue/checkbox";
 import ToggleButton from "primevue/togglebutton";
 import Tree from "primevue/tree";
+import Menu from "primevue/menu";
+import Toast from "primevue/toast";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -31,3 +33,5 @@ app.component("Password", Password);
 app.component("Checkbox", Checkbox);
 app.component("ToggleButton", ToggleButton);
 app.component("Tree", Tree);
+app.component("Toast", Toast);
+app.component("Menu", Menu);

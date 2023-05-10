@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import instance from "@/axios/axios";
 import { ENDPOINTS } from "@/config/api-routes";
 
-export const flashcardsSetStore = defineStore("flashcards", {
+export const useFlashcardsSetStore = defineStore("flashcards", {
   state: () => ({
     set: {},
     sets: [],

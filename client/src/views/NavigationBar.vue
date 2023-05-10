@@ -1,0 +1,157 @@
+<script>
+import { logout } from "@/services/authService";
+import router from "@/router";
+import { useUserStore } from "@/store/useUserStore";
+import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
+import { mapStores } from "pinia";
+import { useTagStore } from "@/store/useTagStore";
+
+export default {
+  data() {
+    return {
+      nodes: null,
+      expandedKeys: {},
+    };
+  },
+  computed: {
+    ...mapStores(useUserStore, useFlashcardsSetStore, useTagStore),
+  },
+  mounted() {
+    this.flashcardsStore.getUserSets();
+    this.tagStore.getUserTags();
+    this.getTreeTableNodes().then((data) => (this.nodes = data));
+  },
+  methods: {
+    expandAll() {
+      for (let node of this.nodes) {
+        this.expandNode(node);
+      }
+
+      this.expandedKeys = { ...this.expandedKeys };
+    },
+    collapseAll() {
+      this.expandedKeys = {};
+    },
+    expandNode(node) {
+      this.expandedKeys[node.key] = true;
+
+      if (node.children && node.children.length) {
+        for (let child of node.children) {
+          this.expandNode(child);
+        }
+      }
+    },
+    getTreeNodesData() {
+      return [
+        {
+          key: "0",
+          label: "Search",
+          path: "/search",
+          data: "Movies Folder",
+          icon: "pi pi-search",
+        },
+        {
+          key: "1",
+          label: "Profile",
+          path: `users/${this.userStore.user.id}`, //todo: get user id and add to the url
+          data: "Movies Folder",
+          icon: "pi pi-fw pi-user",
+        },
+        {
+          key: "2",
+          label: "Sets",
+          path: "/sets",
+          data: "Documents Folder",
+          icon: "pi pi-fw pi-inbox",
+          children: this.flashcardsStore.userSets.map((set, index) => {
+            return {
+              key: this.key + `-${index}`,
+              label: set.name,
+              icon: "pi pi-circle",
+              path: `sets/${set.id}`,
+            };
+          }),
+        },
+        {
+          key: "3",
+          label: "Tags",
+          path: "/tags",
+          data: "Events Folder",
+          icon: "pi pi-fw pi-calendar",
+          children: this.tagStore.userTags.map((tag, index) => {
+            return {
+              key: `3-${index}`,
+              label: tag.name,
+              icon: "pi pi-circle-fill",
+              path: `tags/${tag.id}`,
+            };
+          }),
+        },
+        {
+          key: "4",
+          label: "Likes",
+          path: "/likes", //todo: add likes page
+          data: "Movies Folder",
+          icon: "pi pi-fw pi-star-fill",
+          children: [
+            {
+              key: "4-0",
+              icon: "pi pi-fw pi-star-fill",
+              label: "Sets",
+              data: "Pacino Movies",
+              children: [],
+            },
+            {
+              key: "4-1",
+              icon: "pi pi-fw pi-star-fill",
+              label: "Tags",
+              data: "Pacino Movies",
+              children: [],
+            },
+          ],
+        },
+        {
+          key: "5",
+          name: "logout",
+          label: "Log Out",
+          data: "Movies Folder",
+          icon: "pi pi-sign-out",
+        },
+      ];
+    },
+    getTreeTableNodes() {
+      return Promise.resolve(this.getTreeNodesData());
+    },
+    onNodeSelect(node) {
+      console.log(node);
+      if (node.name === "logout") {
+        logout();
+      } else {
+        router.push(node.path);
+      }
+    },
+    onNodeUnselect(node) {},
+    onNodeExpand(node) {},
+    onNodeCollapse(node) {},
+  },
+};
+</script>
+
+<template>
+  <div class="card flex justify-content-start w-3 h-100%">
+    <Toast />
+    <Tree
+      v-model:selectionKeys="selectedKey"
+      :value="nodes"
+      selectionMode="single"
+      :metaKeySelection="false"
+      @nodeSelect="onNodeSelect"
+      @nodeUnselect="onNodeUnselect"
+      @nodeExpand="onNodeExpand"
+      @nodeCollapse="onNodeCollapse"
+      class="w-full md:w-30rem"
+    ></Tree>
+  </div>
+</template>
+
+<style scoped></style>

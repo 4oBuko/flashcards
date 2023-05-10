@@ -1,11 +1,10 @@
 <template>
-  <Button v-on:click="logout" label="Log out" />
   <NavigationBar />
 </template>
 
 <script>
 import { logout } from "@/services/authService";
-import { userStore } from "@/store/userStore";
+import { useUserStore } from "@/store/useUserStore";
 import NavigationBar from "@/views/NavigationBar.vue";
 
 export default {
@@ -19,7 +18,7 @@ export default {
   methods: { logout },
   data() {
     return {
-      store: userStore(),
+      store: useUserStore(),
     };
   },
 };

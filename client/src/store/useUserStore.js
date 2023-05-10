@@ -3,7 +3,7 @@ import instance from "@/axios/axios";
 import { ENDPOINTS } from "@/config/api-routes";
 import tokenService from "@/services/tokenService";
 
-export const userStore = defineStore("userStore", {
+export const useUserStore = defineStore("user", {
   state: () => ({
     user: {},
   }),
