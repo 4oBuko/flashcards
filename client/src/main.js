@@ -18,6 +18,7 @@ import Tree from "primevue/tree";
 import Menu from "primevue/menu";
 import Toast from "primevue/toast";
 import Badge from "primevue/badge";
+import NavigationBar from "@/views/NavigationBar.vue";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -25,7 +26,6 @@ const pinia = createPinia();
 app.use(router);
 app.use(pinia);
 app.use(PrimeVue, { ripple: true });
-app.mount("#app");
 
 // ui components
 app.component("Button", Button);
@@ -36,3 +36,10 @@ app.component("ToggleButton", ToggleButton);
 app.component("Tree", Tree);
 app.component("Toast", Toast);
 app.component("Menu", Menu);
+
+const customComponents = ["Toast", "Tree"];
+app.config.compilerOptions.isCustomElement = (tag) => {
+  return customComponents.includes(tag);
+};
+
+app.mount("#app");

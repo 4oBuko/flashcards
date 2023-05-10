@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-column align-items-center m-auto h-screen gap-4">
+    <!--      todo: flex-1 class style-->
     <h1 class="text-4xl text-center">Register</h1>
     <div class="p-float-label">
       <InputText type="email" id="email" class="" v-model="email" />

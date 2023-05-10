@@ -1,5 +1,4 @@
 <script>
-import { logout } from "@/services/authService";
 import router from "@/router";
 import { useUserStore } from "@/store/useUserStore";
 import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
@@ -21,16 +20,21 @@ export default {
   mounted() {
     this.getUserSets();
     this.getUserTags();
+    this.loadUser();
     this.getTreeTableNodes().then((data) => (this.nodes = data));
   },
   watch: {
     userTags(newTags, oldTags) {
       this.getTreeTableNodes().then((data) => (this.nodes = data));
     },
+    user(newUser, oldUser) {
+      this.getTreeTableNodes().then((data) => (this.nodes = data));
+    },
   },
   methods: {
     ...mapActions(useTagStore, ["getUserTags"]),
     ...mapActions(useFlashcardsSetStore, ["getUserSets"]),
+    ...mapActions(useUserStore, ["loadUser", "logout"]),
     expandAll() {
       for (let node of this.nodes) {
         this.expandNode(node);
@@ -51,7 +55,7 @@ export default {
       }
     },
     getTreeNodesData() {
-      return [
+      const data = [
         {
           key: "0",
           label: "Search",
@@ -119,22 +123,42 @@ export default {
             },
           ],
         },
-        {
+      ];
+      if (Object.entries(this.user).length === 0) {
+        data.push({
+          key: "5",
+          name: "login",
+          label: "Login",
+          data: "Movies Folder",
+          icon: "pi pi-sign-in",
+          path: "/login",
+        });
+        data.push({
+          key: "6",
+          name: "register",
+          label: "Register",
+          data: "Movies Folder",
+          icon: "pi pi-user-plus",
+          path: "/register",
+        });
+      } else {
+        data.push({
           key: "5",
           name: "logout",
           label: "Log Out",
           data: "Movies Folder",
           icon: "pi pi-sign-out",
-        },
-      ];
+        });
+      }
+      return data;
     },
     getTreeTableNodes() {
       return Promise.resolve(this.getTreeNodesData());
     },
     onNodeSelect(node) {
-      console.log(node);
+      console.log(JSON.stringify(node.label));
       if (node.name === "logout") {
-        logout();
+        this.logout();
       } else {
         router.push(node.path);
       }

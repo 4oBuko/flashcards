@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex flex-column align-items-center justify-content-center h-screen gap-4"
-  >
+  <div class="flex flex-column align-items-center m-auto h-screen gap-4">
     <h1 class="text-4xl text-center">Login</h1>
     <div class="p-float-label">
       <InputText id="email" class="" v-model="email" />
@@ -21,20 +19,21 @@
       />
       <label for="stayLoggedIn"> Stay logged in </label>
     </div>
-    <div class="w-2 gap-2 flex justify-content-center">
-      <Button class="w-5" v-on:click="loginUser" label="Login" />
+    <div class="gap-2 flex">
+      <Button class="" v-on:click="loginUser" label="Login" />
       <Button
-        class="w-5"
+        class=""
         v-on:click="$router.push('/register')"
         label="Register"
       />
     </div>
+    <p>{{ this.loginResult }}</p>
   </div>
-  <p>{{ this.loginResult }}</p>
 </template>
 
 <script>
-import { login } from "@/services/authService";
+import { mapActions } from "pinia";
+import { useUserStore } from "@/store/useUserStore";
 
 export default {
   data() {
@@ -47,10 +46,13 @@ export default {
   },
 
   methods: {
+    ...mapActions(useUserStore, ["login"]),
     loginUser() {
-      login(this.email, this.password, this.stayLoggedIn).then((result) => {
-        this.loginResult = result.message;
-      });
+      this.login(this.email, this.password, this.stayLoggedIn).then(
+        (result) => {
+          this.loginResult = result.message;
+        }
+      );
     },
   },
 };

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { API_URL, ENDPOINTS, PUBLIC_ENDPOINTS } from "@/config/api-routes";
 import TokenService from "@/services/tokenService";
-import { ApiError } from "@/entities/Error";
 
 const instance = axios.create({
   baseURL: API_URL,
@@ -45,15 +44,19 @@ instance.interceptors.response.use(
             // return instance.request(originalRequest);
           });
         } catch (_error) {
-          return new ApiError(
-            _error.response.status,
-            "Session expired. Please login again"
-          );
+          return {
+            status: _error.response.status,
+            message: "Session expired. Please login again",
+          };
         }
       }
       return instance.request(originalRequest);
     }
-    return new ApiError(error.response.status, error.response.data.message);
+
+    return {
+      status: error.response.status,
+      message: error.response.data.message,
+    };
   }
 );
 export default instance;
