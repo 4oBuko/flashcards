@@ -1,5 +1,6 @@
 package com.flashcardsapi.dtos.flashcardsset;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.flashcardsapi.entities.db.Flashcard;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,5 +35,6 @@ public class UpdateFlashcardsSetDTO {
     @NotEmpty(message = "set must contain at least one flashcard")
     private List<Flashcard> flashcards;
 
+    @JsonAlias("isPublic")
     private boolean isPublic;
 }

@@ -1,5 +1,6 @@
 package com.flashcardsapi.dtos.tag;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class CreateTagDTO {
     @NotBlank(message = "tag must have name")
     private String name;
 
+    @JsonAlias("isPublic")
     private boolean isPublic;
 
     @NotNull(message = "tag must have sets")

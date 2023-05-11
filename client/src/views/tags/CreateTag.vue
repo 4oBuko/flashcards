@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="flex flex-column gap-2">
-      <div>Make set public</div>
+      <div>Make tag public</div>
       <InputSwitch v-model="isPublic" />
     </div>
     <Button v-on:click="createNewTag" label="Create" />
@@ -60,11 +60,6 @@ export default {
   },
   methods: {
     createNewTag() {
-      const tagData = {
-        name: this.tagName,
-        isPublic: this.isPublic,
-        sets: [...this.tagSets],
-      };
       tagService.createNewTag(
         this.tagName,
         this.tagSets,

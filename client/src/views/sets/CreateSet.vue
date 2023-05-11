@@ -1,104 +1,65 @@
 <template>
-  <div>
-    <p>name</p>
-    <input
-      type="text"
-      name="setName"
-      id="setName"
-      maxlength="50"
-      minlength="1"
-      v-model="setName"
-    />
-    <br />
-    <p>description</p>
-    <textarea
-      name="description"
-      id="description"
-      cols="30"
-      rows="10"
-      maxlength="200"
-      v-model="description"
-    ></textarea>
-    <br />
-    <p>Questions language</p>
-    <fieldset>
-      <div v-for="language in languageStore.languages">
-        <p>{{ language.name }}</p>
-        <input
-          type="radio"
-          :value="language"
-          v-model="questionLanguage"
-          value="{{language.name}}"
-        />
-      </div>
-    </fieldset>
-    <br />
-    <p>Answer language</p>
-    <fieldset>
-      <div v-for="language in languageStore.languages">
-        <p>{{ language.name }}</p>
-        <input
-          type="radio"
-          :value="language"
-          v-model="answerLanguage"
-          value="{{language.name}}"
-        />
-      </div>
-    </fieldset>
-    <br />
-    <p>is Public</p>
-    <div>
-      <fieldset>
-        <p>Yes</p>
-        <input
-          type="radio"
-          name="isPublic"
-          id="public"
-          v-model="isPublic"
-          :value="true"
-        />
-        <p>No</p>
-        <input
-          type="radio"
-          name="isPublic"
-          id="notPublic"
-          v-model="isPublic"
-          :value="false"
-        />
-      </fieldset>
+  <div class="flex m-auto align-items-center flex-column gap-4">
+    <h1 class="text-4xl text-center">New set</h1>
+    <div class="p-float-label">
+      <InputText type="email" id="setName" class="" v-model="setName" />
+      <label for="setName">Name</label>
     </div>
-    <div>
-      <p>Cards</p>
-
-      <div
-        v-for="(flashcard, index) in flashcards"
-        v-bind:key="flashcard"
-        style="display: flex; align-items: stretch"
-      >
-        <button v-on:click="removeFlashcard(index)">d</button>
-        <p>Question</p>
-        <input
-          type="text"
-          name="cardQuestion"
-          v-model="flashcard.question"
-          id="card-question"
-        />
-        <p>Answer</p>
-        <input
-          type="text"
-          name="cardAnswer"
-          v-model="flashcard.answer"
-          id="card-answer"
-        />
-        <br />
-      </div>
-      <button v-on:click="addMoreCards">add more</button>
+    <span class="p-float-label">
+      <Textarea v-model="description" rows="5" cols="20" />
+      <label>Description</label>
+    </span>
+    <div class="p-float-label">
+      <Dropdown
+        v-model="questionLanguage"
+        inputId="dd-city"
+        :options="languageStore.languages"
+        optionLabel="name"
+        placeholder="Question language"
+        class="w-full md:w-14rem"
+      />
+      <label for="dd-city">Question language</label>
     </div>
-    <br />
-  </div>
-  <div>
-    <button v-on:click="createSet">create</button>
-    <button>cancel</button>
+    <div class="p-float-label">
+      <Dropdown
+        v-model="answerLanguage"
+        inputId="dd-city"
+        :options="languageStore.languages"
+        optionLabel="name"
+        placeholder="Answer language"
+        class="w-full md:w-14rem"
+      />
+      <label for="dd-city">Answer language</label>
+    </div>
+    <div class="flex flex-column gap-4">
+      <h2 class="text-2xl text-center">Cards</h2>
+      <div v-for="(flashcard, index) in flashcards" class="flex flex-row gap-3">
+        <div class="p-float-label">
+          <InputText id="setName" class="" v-model="flashcard.question" />
+          <label for="setName">Question</label>
+        </div>
+        <div class="p-float-label">
+          <InputText id="setName" class="" v-model="flashcard.answer" />
+          <label for="setName">Answer</label>
+        </div>
+        <Button
+          v-on:click="removeFlashcard(index)"
+          icon="pi pi-trash"
+          aria-label="Submit"
+        />
+      </div>
+      <Button
+        v-on:click="addMoreCards"
+        icon="pi pi-plus"
+        class="w-12"
+        aria-label="Submit"
+      />
+    </div>
+    <div class="flex flex-column align-items-center gap-2">
+      <div>Make set public</div>
+      <InputSwitch v-model="isPublic" />
+    </div>
+    <Button v-on:click="createSet" label="Create" />
   </div>
 </template>
 <script>

@@ -1,5 +1,6 @@
 package com.flashcardsapi.dtos.tag;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -18,6 +19,7 @@ public class UpdateTagDTO {
     @NotBlank(message = "tag must have name")
     private String name;
 
+    @JsonAlias("isPublic")
     private boolean isPublic;
 
     @NotNull(message = "tag must have color")

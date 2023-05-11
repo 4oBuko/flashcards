@@ -21,6 +21,7 @@ import Badge from "primevue/badge";
 import NavigationBar from "@/views/NavigationBar.vue";
 import InputSwitch from "primevue/inputswitch";
 import Dropdown from "primevue/dropdown";
+import Textarea from "primevue/textarea";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -40,6 +41,7 @@ app.component("Toast", Toast);
 app.component("Menu", Menu);
 app.component("InputSwitch", InputSwitch);
 app.component("Dropdown", Dropdown);
+app.component("Textarea", Textarea);
 
 const customComponents = ["Toast", "Tree"];
 app.config.compilerOptions.isCustomElement = (tag) => {
