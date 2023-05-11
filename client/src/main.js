@@ -19,6 +19,8 @@ import Menu from "primevue/menu";
 import Toast from "primevue/toast";
 import Badge from "primevue/badge";
 import NavigationBar from "@/views/NavigationBar.vue";
+import InputSwitch from "primevue/inputswitch";
+import Dropdown from "primevue/dropdown";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -36,6 +38,8 @@ app.component("ToggleButton", ToggleButton);
 app.component("Tree", Tree);
 app.component("Toast", Toast);
 app.component("Menu", Menu);
+app.component("InputSwitch", InputSwitch);
+app.component("Dropdown", Dropdown);
 
 const customComponents = ["Toast", "Tree"];
 app.config.compilerOptions.isCustomElement = (tag) => {
