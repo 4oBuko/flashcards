@@ -64,7 +64,7 @@
 </template>
 <script>
 import setService from "@/services/setService";
-import { languageStore } from "@/store/languageStore";
+import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default {
   setName: "CreateSet",
@@ -81,36 +81,18 @@ export default {
       answerLanguage: {},
       flashcards: [],
       isPublic: false,
-      languageStore: languageStore(),
+      languageStore: useLanguageStore(),
     };
   },
   methods: {
     addMoreCards() {
-      this.flashcards.push({
-        question: "",
-        answer: "",
-        index: this.flashcards.length,
-      });
-      this.flashcards.push({
-        question: "",
-        answer: "",
-        index: this.flashcards.length,
-      });
-      this.flashcards.push({
-        question: "",
-        answer: "",
-        index: this.flashcards.length,
-      });
-      this.flashcards.push({
-        question: "",
-        answer: "",
-        index: this.flashcards.length,
-      });
-      this.flashcards.push({
-        question: "",
-        answer: "",
-        index: this.flashcards.length,
-      });
+      for (let i = 0; i < 5; i++) {
+        this.flashcards.push({
+          question: "",
+          answer: "",
+          index: this.flashcards.length,
+        });
+      }
     },
 
     createSet() {

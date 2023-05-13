@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import instance from "@/axios/axios";
 import { ENDPOINTS } from "@/config/api-routes";
 
-export const languageStore = defineStore("languageStore", {
+export const useLanguageStore = defineStore("languageStore", {
   state: () => ({
     languages: [],
   }),

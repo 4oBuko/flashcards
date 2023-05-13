@@ -66,7 +66,7 @@ export default {
         {
           key: "1",
           label: "Profile",
-          path: `users/${this.user.id}`, //todo: get user id and add to the url
+          path: `users/${this.user.id}`,
           data: "Movies Folder",
           icon: "pi pi-fw pi-user",
         },
@@ -103,7 +103,7 @@ export default {
         {
           key: "4",
           label: "Likes",
-          path: "/likes", //todo: add likes page
+          path: "/likes",
           data: "Movies Folder",
           icon: "pi pi-fw pi-star-fill",
           children: [

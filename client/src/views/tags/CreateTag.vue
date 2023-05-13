@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { colorStore } from "@/store/colorStore";
+import { useColorStore } from "@/store/useColorStore";
 import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
 import tagService from "@/services/tagService";
 import { ref } from "vue";
@@ -50,7 +50,7 @@ export default {
   },
   data() {
     return {
-      colors: colorStore(),
+      colors: useColorStore(),
       setsStore: useFlashcardsSetStore(),
       tagName: "",
       isPublic: false,

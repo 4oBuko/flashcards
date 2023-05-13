@@ -12,7 +12,8 @@ import Profile from "@/views/user/Profile.vue";
 import EditUser from "@/views/user/EditUser.vue";
 import MySets from "@/views/sets/MySets.vue";
 import MyTags from "@/views/tags/MyTags.vue";
-import Search from "@/views/Search.vue";
+import Search from "@/views/search/Search.vue";
+import Likes from "@/views/likes/Likes.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,7 @@ const router = createRouter({
     { path: "/tags/:id/edit", name: "edit-tag", component: EditTag },
 
     { path: "/search", name: "search", component: Search },
+    { path: "/likes", name: "likes", component: Likes },
 
     { path: "/*", redirect: "/" },
   ],
