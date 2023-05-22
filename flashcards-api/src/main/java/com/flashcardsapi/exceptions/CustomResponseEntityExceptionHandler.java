@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        System.out.println(ex.getLocalizedMessage());
         StringBuilder errorMessage = new StringBuilder();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errorMessage.append(error.getDefaultMessage()).append(";");

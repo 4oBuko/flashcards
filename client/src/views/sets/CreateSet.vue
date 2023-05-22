@@ -70,7 +70,6 @@ export default {
   setName: "CreateSet",
   created() {
     this.addMoreCards();
-    // todo: load languages after first load of the app
     this.languageStore.loadLanguages();
   },
   data() {

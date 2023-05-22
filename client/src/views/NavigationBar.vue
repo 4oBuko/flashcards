@@ -4,7 +4,7 @@ import { useUserStore } from "@/store/useUserStore";
 import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
 import { mapActions, mapState, mapStores } from "pinia";
 import { useTagStore } from "@/store/useTagStore";
-
+// todo: remove nested sets and tags because they are redundant
 export default {
   data() {
     return {
@@ -156,7 +156,6 @@ export default {
       return Promise.resolve(this.getTreeNodesData());
     },
     onNodeSelect(node) {
-      console.log(JSON.stringify(node.label));
       if (node.name === "logout") {
         this.logout();
       } else {
