@@ -41,16 +41,9 @@ public class Tag {
     @JsonIgnoreProperties(value = "tags")
     private List<FlashcardsSet> sets = new ArrayList<>();
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "color_id", referencedColumnName = "id", nullable = false)
     private Color color;
-
-    public Tag(User user, String name, Color color) {
-        this.user = user;
-        this.name = name;
-        this.color = color;
-    }
 
     @JsonGetter(value = "userId")
     public Long getUserId() {

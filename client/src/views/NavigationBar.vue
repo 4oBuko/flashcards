@@ -2,9 +2,8 @@
 import router from "@/router";
 import { useUserStore } from "@/store/useUserStore";
 import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
-import { mapActions, mapState, mapStores } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { useTagStore } from "@/store/useTagStore";
-// todo: remove nested sets and tags because they are redundant
 export default {
   data() {
     return {
@@ -76,14 +75,6 @@ export default {
           path: "/sets",
           data: "Documents Folder",
           icon: "pi pi-fw pi-inbox",
-          children: this.userSets.map((set, index) => {
-            return {
-              key: this.key + `-${index}`,
-              label: set.name,
-              icon: "pi pi-circle",
-              path: `sets/${set.id}`,
-            };
-          }),
         },
         {
           key: "3",
@@ -91,14 +82,6 @@ export default {
           path: "/tags",
           data: "Events Folder",
           icon: "pi pi-fw pi-calendar",
-          children: this.userTags.map((tag, index) => {
-            return {
-              key: `3-${index}`,
-              label: tag.name,
-              icon: "pi pi-circle-fill blue",
-              path: `tags/${tag.id}`,
-            };
-          }),
         },
         {
           key: "4",

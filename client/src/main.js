@@ -48,7 +48,6 @@ app.component("Textarea", Textarea);
 app.component("Carousel", Carousel);
 app.component("DataView", DataView);
 app.component("Toolbar", Toolbar);
-// app.component("Tag", Tag);
 
 const customComponents = ["Toast", "Tree"];
 app.config.compilerOptions.isCustomElement = (tag) => {

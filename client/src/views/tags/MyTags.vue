@@ -1,17 +1,73 @@
 <script>
 import router from "@/router";
+import { mapActions, mapState, mapStores } from "pinia";
+import { useTagStore } from "@/store/useTagStore";
 
 export default {
   methods: {
+    ...mapActions(useTagStore, ["getUserTags"]),
     newTag() {
       router.push("tags/new");
     },
+    openTag(id) {
+      router.push(`tags/${id}`);
+    },
+  },
+  computed: {
+    ...mapState(useTagStore, ["userTags"]),
+  },
+  mounted() {
+    this.getUserTags();
   },
 };
 </script>
 
 <template>
-  <Button v-on:click="newTag">New Tag</Button>
+  <div class="flex flex-column flex-1">
+    <Toolbar>
+      <template #end>
+        <Button
+          v-on:click="newTag"
+          label="New"
+          icon="pi pi-plus"
+          class="mr-2"
+        />
+      </template>
+    </Toolbar>
+    <DataView :value="userTags" paginator :rows="5">
+      <template #list="slotProps">
+        <div class="col-12">
+          <div
+            class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4"
+          >
+            <div
+              v-on:click="openTag(slotProps.data.id)"
+              class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
+            >
+              <div class="flex flex-row align-items-center gap-3">
+                <div
+                  class="box"
+                  :style="{ 'background-color': slotProps.data.color.code }"
+                ></div>
+                <div class="text-2xl font-bold text-900">
+                  {{ slotProps.data.name }}
+                </div>
+              </div>
+              <div
+                class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </DataView>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.box {
+  height: 20px;
+  width: 20px;
+  //margin-right: 5px;
+}
+</style>
