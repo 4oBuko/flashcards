@@ -65,7 +65,7 @@ export default {
         {
           key: "1",
           label: "Profile",
-          path: `users/${this.user.id}`,
+          path: `/users/${this.user.id}`,
           data: "Movies Folder",
           icon: "pi pi-fw pi-user",
         },

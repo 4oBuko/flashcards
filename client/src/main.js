@@ -17,14 +17,14 @@ import ToggleButton from "primevue/togglebutton";
 import Tree from "primevue/tree";
 import Menu from "primevue/menu";
 import Toast from "primevue/toast";
-import Badge from "primevue/badge";
 import InputSwitch from "primevue/inputswitch";
 import Dropdown from "primevue/dropdown";
 import Textarea from "primevue/textarea";
 import Carousel from "primevue/carousel";
 import DataView from "primevue/dataview";
-import Divider from "primevue/divider";
 import Toolbar from "primevue/toolbar";
+import Avatar from "primevue/avatar";
+import Divider from "primevue/divider";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -48,6 +48,8 @@ app.component("Textarea", Textarea);
 app.component("Carousel", Carousel);
 app.component("DataView", DataView);
 app.component("Toolbar", Toolbar);
+app.component("Avatar", Avatar);
+// app.component("Divider", Divider);
 
 const customComponents = ["Toast", "Tree"];
 app.config.compilerOptions.isCustomElement = (tag) => {

@@ -55,8 +55,13 @@ export const useUserStore = defineStore("user", {
           }
         });
     },
-    update() {
-      // todo set parameters for update
+    changeNickname(nickname) {
+      instance
+        .put(ENDPOINTS.USER_CHANGE_NICKNAME, { newNickname: nickname })
+        .then((response) => {
+          this.user = response.data;
+          this.logout();
+        });
     },
   },
 });

@@ -13,9 +13,9 @@ export const ENDPOINTS = {
   USER_REGISTER: `/register`,
   USER_GET: `/users/id/:id`,
   USER_GET_BY_NICKNAME: "/users/:nickname",
-  USER_CHANGE_EMAIL: `/users/:id/email`,
-  USER_CHANGE_NICKNAME: `/users/:id/nickname`,
-  USER_CHANGE_PASSWORD: `/users/:id/password`,
+  USER_CHANGE_EMAIL: `/users/email`,
+  USER_CHANGE_NICKNAME: `/users/nickname`,
+  USER_CHANGE_PASSWORD: `/users/password`,
   USER_SETS_GET: `/users/:id/sets`,
   USER_TAGS_GET: `/users/:id/tags`,
 
