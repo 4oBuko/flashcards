@@ -8,6 +8,7 @@ import com.flashcardsapi.dtos.tag.CreateTagDTO;
 import com.flashcardsapi.dtos.tag.UpdateTagDTO;
 import com.flashcardsapi.entities.JwtPayload;
 import com.flashcardsapi.entities.db.FlashcardsSet;
+import com.flashcardsapi.exceptions.AlreadyUsedCredentialsException;
 import com.flashcardsapi.exceptions.CustomAccessDeniedException;
 import com.flashcardsapi.exceptions.CustomEntityNotFoundException;
 import com.flashcardsapi.utils.JwtPayloadReader;
@@ -109,5 +110,36 @@ public class TagService {
     public List<Tag> getUserTags(@AuthenticationPrincipal Jwt jwt) {
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         return tagRepository.findAllByUser_id(payload.getUserId());
+    }
+
+    public void likeTag(long tagId, Jwt jwt) {
+        JwtPayload payload = JwtPayloadReader.getPayload(jwt);
+        User user = userService.getById(payload.getUserId());
+        Tag tag = tagRepository.findById(tagId).orElseThrow(CustomEntityNotFoundException::new);
+//        if(tag.getUser().getId().equals(payload.getUserId())) {
+//            throw new AlreadyUsedCredentialsException("You cannot add your tag to favorites");
+//        }
+        if (tagRepository.existsById(tagId)) {
+            user.getLikedTags().add(tagId);
+            userService.updateFavorites(user);
+        } else {
+            throw new CustomEntityNotFoundException("Tag by id doesn't exist");
+        }
+    }
+
+    public void unlikeTag(long tagId, Jwt jwt) {
+        JwtPayload payload = JwtPayloadReader.getPayload(jwt);
+        User user = userService.getById(payload.getUserId());
+        user.getLikedTags().remove(tagId);
+        userService.updateFavorites(user);
+    }
+
+    public List<Tag> getUserLikes(Jwt jwt) {
+        JwtPayload payload = JwtPayloadReader.getPayload(jwt);
+        User user = userService.getById(payload.getUserId());
+        Iterable<Tag> iterable = tagRepository.findAllById(user.getLikedTags());
+        List<Tag> likedTags = new ArrayList<>();
+        iterable.forEach(likedTags::add);
+        return likedTags;
     }
 }

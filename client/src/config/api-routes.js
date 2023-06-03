@@ -24,12 +24,16 @@ export const ENDPOINTS = {
   TAG_CREATE: `/tags/`,
   TAG_UPDATE: `/tags/`,
   TAG_DELETE: `/tags/:id`,
+  TAG_LIKE: `/tags/:id/like`,
+  GET_LIKED_TAGS: `/tags/likes`,
 
   SET_GET: `/sets/:id`,
   OWN_SETS_GET: "/sets",
   SET_CREATE: `/sets/`,
   SET_UPDATE: `/sets/`,
   SET_DELETE: `/sets/:id`,
+  SET_LIKE: `/sets/:id/like`,
+  GET_LIKED_SETS: `/sets/likes`,
 };
 
 export const PUBLIC_ENDPOINTS = [

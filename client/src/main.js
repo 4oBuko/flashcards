@@ -4,7 +4,8 @@ import router from "@/router";
 import { createPinia } from "pinia";
 import PrimeVue from "primevue/config";
 
-import "primevue/resources/themes/lara-dark-purple/theme.css";
+// import "primevue/resources/themes/lara-dark-purple/theme.css";
+import "primevue/resources/themes/lara-light-purple/theme.css";
 import "primevue/resources/primevue.css";
 import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";

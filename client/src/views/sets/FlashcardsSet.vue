@@ -10,10 +10,19 @@
       <template #end>
         <!--          todo: show only for sets of other users and change heart icon if it's liked-->
         <Button
-          v-on:click="likeSet"
+          v-if="!liked"
+          v-on:click="pressLike"
           aria-label="Like"
           icon="pi pi-heart"
           class="mr-2"
+        />
+        <Button
+          v-else
+          v-on:click="pressLike"
+          aria-label="Like"
+          icon="pi pi-heart-fill"
+          class="mr-2"
+          outlined
         />
       </template>
       <template #start>
@@ -27,7 +36,7 @@
         />
         <!--          todo: show description when user  -->
         <Button
-          v-on:click="swapValues"
+          v-on:click="likeSet"
           aria-label="Like"
           icon="pi pi-arrow-right-arrow-left"
           class="mr-2"
@@ -73,6 +82,7 @@
 <script>
 import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
 import { mapActions, mapState } from "pinia";
+import { useUserStore } from "@/store/useUserStore";
 
 export default {
   data() {
@@ -89,15 +99,27 @@ export default {
 
   methods: {
     ...mapActions(useFlashcardsSetStore, ["getById"]),
+    ...mapActions(useUserStore, ["likeSet", "unlikeSet", "loadUser"]),
     showAnswer(card) {
       card.showAnswer = !card.showAnswer;
     },
-    likeSet() {},
+    pressLike() {
+      console.log(this.set.id);
+      if (this.liked) {
+        this.unlikeSet(this.set.id);
+      } else {
+        this.likeSet(this.set.id);
+      }
+    },
     shuffleCards() {},
     swapValues() {},
   },
   computed: {
     ...mapState(useFlashcardsSetStore, ["set"]),
+    ...mapState(useUserStore, ["user"]),
+    liked() {
+      return this.user.likedSets.includes(this.set.id);
+    },
   },
 };
 </script>

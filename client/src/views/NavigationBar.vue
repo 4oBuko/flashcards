@@ -94,6 +94,7 @@ export default {
               key: "4-0",
               icon: "pi pi-fw pi-star-fill",
               label: "Sets",
+              path: "/likes/sets",
               data: "Pacino Movies",
               children: [],
             },
@@ -101,6 +102,7 @@ export default {
               key: "4-1",
               icon: "pi pi-fw pi-star-fill",
               label: "Tags",
+              path: "/likes/sets",
               data: "Pacino Movies",
               children: [],
             },
@@ -153,7 +155,7 @@ export default {
 </script>
 
 <template>
-  <div class="card flex justify-content-start w-3 h-100%">
+  <div class="card flex justify-content-start w-3 h-screen">
     <Toast />
     <Tree
       v-model:selectionKeys="selectedKey"

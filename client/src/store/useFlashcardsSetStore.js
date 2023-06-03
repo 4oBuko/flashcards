@@ -7,6 +7,7 @@ export const useFlashcardsSetStore = defineStore("flashcards", {
     set: {},
     sets: [],
     userSets: [],
+    likes: [],
   }),
   actions: {
     getById(id) {
@@ -18,6 +19,13 @@ export const useFlashcardsSetStore = defineStore("flashcards", {
     getUserSets() {
       instance.get(ENDPOINTS.OWN_SETS_GET).then((response) => {
         this.userSets = response.data;
+      });
+    },
+    getLikes() {
+      console.log("request sent");
+      instance.get(ENDPOINTS.GET_LIKED_SETS).then((response) => {
+        console.log(response.data);
+        this.likes = response.data;
       });
     },
   },

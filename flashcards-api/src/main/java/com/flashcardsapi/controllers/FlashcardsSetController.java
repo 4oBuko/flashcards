@@ -50,4 +50,21 @@ public class FlashcardsSetController {
         flashcardsSetService.deleteById(setId, jwt);
         return "tag was successfully deleted";
     }
+
+    @PostMapping("/{setId}/like")
+    public String likeTag(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
+        flashcardsSetService.likeSet(setId, jwt);
+        return "tag was added to favorite list";
+    }
+
+    @DeleteMapping("/{setId}/like")
+    public String unlikeTag(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
+        flashcardsSetService.unlikeSet(setId, jwt);
+        return "tag was removed from your favorite";
+    }
+
+    @GetMapping("/likes")
+    public List<FlashcardsSet> getLikes(@AuthenticationPrincipal Jwt jwt) {
+        return flashcardsSetService.getUserLikes(jwt);
+    }
 }

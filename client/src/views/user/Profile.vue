@@ -17,7 +17,9 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-column">
+  <div
+    class="flex flex-column align-items-center justify-content-center flex-1"
+  >
     <div class="flex flex-row">
       <Avatar :label="this.user.nickname[0]" class="mr-2" size="xlarge" />
       <h1>{{ this.user.nickname }}</h1>

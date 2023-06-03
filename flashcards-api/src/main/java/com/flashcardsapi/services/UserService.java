@@ -49,6 +49,7 @@ public class UserService {
         } else if (userRepository.existsByNickname(createUserDTO.getNickname())) {
             throw new AlreadyUsedCredentialsException("nickname is already used");
         } else {
+//            todo: add empty likes lists
             User user = new User();
             user.setEmail(createUserDTO.getEmail());
             user.setNickname(createUserDTO.getNickname());
@@ -115,5 +116,9 @@ public class UserService {
 
     public User getByNickname(String nickname) {
         return userRepository.findByNickname(nickname).orElseThrow(CustomEntityNotFoundException::new);
+    }
+
+    public User updateFavorites(User user) {
+        return userRepository.save(user);
     }
 }

@@ -14,6 +14,7 @@ import MySets from "@/views/sets/MySets.vue";
 import MyTags from "@/views/tags/MyTags.vue";
 import Search from "@/views/search/Search.vue";
 import Likes from "@/views/likes/Likes.vue";
+import LikedSets from "@/views/likes/LikedSets.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +41,7 @@ const router = createRouter({
 
     { path: "/search", name: "search", component: Search },
     { path: "/likes", name: "likes", component: Likes },
+    { path: "/likes/sets", name: "likes", component: LikedSets },
 
     { path: "/*", redirect: "/" },
   ],

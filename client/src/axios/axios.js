@@ -12,7 +12,8 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const isValid = TokenService.isTokenValid();
-    if (isValid) {
+    const publicEndpoint = PUBLIC_ENDPOINTS.includes(config.url);
+    if (isValid && !publicEndpoint) {
       const token = TokenService.getToken();
       config.headers["Authorization"] = "Bearer " + token;
     }
@@ -29,9 +30,10 @@ instance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    const isPublicPage = PUBLIC_ENDPOINTS.includes(originalRequest.url);
-    if (!isPublicPage && error.response.status === 401) {
+    const publicEndpoint = PUBLIC_ENDPOINTS.includes(originalRequest.url);
+    if (!publicEndpoint && error.response.status === 401) {
       // Access Token was expired
+      // todo: maybe I don't need 401 code check here
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {

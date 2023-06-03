@@ -63,5 +63,21 @@ export const useUserStore = defineStore("user", {
           this.logout();
         });
     },
+    likeTag(tagId) {},
+    unlikeTag(tagId) {},
+    likeSet(setId) {
+      instance
+        .post(ENDPOINTS.SET_LIKE.replace(":id", setId))
+        .then((response) => {
+          this.loadUser();
+        });
+    },
+    unlikeSet(setId) {
+      instance
+        .delete(ENDPOINTS.SET_LIKE.replace(":id", setId))
+        .then((response) => {
+          this.loadUser();
+        });
+    },
   },
 });

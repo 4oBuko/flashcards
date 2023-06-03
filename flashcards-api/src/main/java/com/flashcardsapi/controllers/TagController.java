@@ -26,14 +26,14 @@ public class TagController {
     private UserService userService;
 
     @GetMapping("/{tagId}")
-    public Tag getTagById(@PathVariable long tagId,  @AuthenticationPrincipal Jwt jwt) {
+    public Tag getTagById(@PathVariable long tagId, @AuthenticationPrincipal Jwt jwt) {
         return tagService.getTagById(tagId, jwt);
     }
 
-     @GetMapping()
-     public List<Tag> getUserTags(@AuthenticationPrincipal Jwt jwt) {
+    @GetMapping()
+    public List<Tag> getUserTags(@AuthenticationPrincipal Jwt jwt) {
         return tagService.getUserTags(jwt);
-     }
+    }
 
     @PostMapping()
     public Tag addNewTag(@RequestBody @Valid CreateTagDTO dto, @AuthenticationPrincipal Jwt jwt) {
@@ -46,8 +46,25 @@ public class TagController {
     }
 
     @DeleteMapping("/{tagId}")
-    public String deleteTagById(@PathVariable long tagId,  @AuthenticationPrincipal Jwt jwt) {
+    public String deleteTagById(@PathVariable long tagId, @AuthenticationPrincipal Jwt jwt) {
         tagService.deleteById(tagId, jwt);
         return "tag was deleted";
+    }
+
+    @PostMapping("/{tagId}/like")
+    public String likeTag(@PathVariable long tagId, @AuthenticationPrincipal Jwt jwt) {
+        tagService.likeTag(tagId, jwt);
+        return "tag was added to favorite list";
+    }
+
+    @DeleteMapping("/{tagId}/like")
+    public String unlikeTag(@PathVariable long tagId, @AuthenticationPrincipal Jwt jwt) {
+        tagService.unlikeTag(tagId, jwt);
+        return "tag was removed from your favorite";
+    }
+
+    @GetMapping("/likes")
+    public List<Tag> getLikes(@AuthenticationPrincipal Jwt jwt) {
+        return tagService.getUserLikes(jwt);
     }
 }

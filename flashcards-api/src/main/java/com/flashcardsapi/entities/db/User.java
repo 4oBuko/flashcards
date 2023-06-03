@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,6 +18,7 @@ import javax.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -22,6 +26,8 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,6 +47,14 @@ public class User implements UserDetails {
 
     @JsonIgnore
     private boolean isConfirmed;
+
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    private Set<Long> likedTags;
+
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    private Set<Long> likedSets;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

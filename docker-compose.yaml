@@ -1,4 +1,5 @@
 services:
+  #todo: rename container
   postgres-brt:
     container_name: flashcards-db
     image: postgres:alpine
@@ -7,8 +8,21 @@ services:
       - "5432:5432"
     volumes:
       - .pg/storage:/var/lib/postgresql/data
-    # add code for db initialization 
+#            - ./data:/var/lib/postgresql/data
+      # todo:add code for db initialization
       # - ./flashcards-api/src/main/resources/data.sql:/docker-entrypoint-initdb.d/data.sql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: flashcards
+  postgres-test:
+    container_name: flashcards-db-test
+    image: postgres:alpine
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./.pg-test-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
