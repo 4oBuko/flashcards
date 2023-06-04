@@ -11,6 +11,7 @@ import com.flashcardsapi.entities.db.FlashcardsSet;
 import com.flashcardsapi.exceptions.AlreadyUsedCredentialsException;
 import com.flashcardsapi.exceptions.CustomAccessDeniedException;
 import com.flashcardsapi.exceptions.CustomEntityNotFoundException;
+import com.flashcardsapi.repositories.FlashcardsSetRepository;
 import com.flashcardsapi.utils.JwtPayloadReader;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -35,6 +36,8 @@ public class TagService {
     private UserService userService;
 
     private FlashcardsSetService setService;
+
+    private FlashcardsSetRepository setsRepository;
 
     public Tag getTagById(long id, Jwt jwt) {
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
@@ -68,12 +71,12 @@ public class TagService {
                 .filter(set -> set.isPublic() || set.getUser().getId().equals(payload.getUserId()))
                 .peek(set -> set.getTags().add(tag))
                 .toList();
-
         tag.setSets(sets);
         tag.setUser(user);
         tag.setPublic(dto.isPublic());
         tag.setName(dto.getName());
         tag.setColor(color);
+        setsRepository.saveAll(sets);
         return tagRepository.save(tag);
     }
 
@@ -96,6 +99,7 @@ public class TagService {
             tag.setSets(sets);
             tag.setName(dto.getName());
             tag.setPublic(dto.isPublic());
+            setsRepository.saveAll(sets);
             return tagRepository.save(tag);
         } else {
             throw new CustomAccessDeniedException("Access denied. Your are not the author of this tag!");

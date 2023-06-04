@@ -1,5 +1,5 @@
 .fleet/
 .pg/
-pg-test-data/
+.pg-test-data/
 .idea
 .vscode

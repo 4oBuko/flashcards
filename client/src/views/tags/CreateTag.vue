@@ -23,7 +23,7 @@
           v-model="tagSets"
           :inputId="set.id"
           name="category"
-          :value="set.name"
+          :value="set.id"
         />
         <label :for="set.key">{{ set.name }}</label>
       </div>

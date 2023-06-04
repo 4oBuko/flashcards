@@ -22,9 +22,7 @@ export const useFlashcardsSetStore = defineStore("flashcards", {
       });
     },
     getLikes() {
-      console.log("request sent");
       instance.get(ENDPOINTS.GET_LIKED_SETS).then((response) => {
-        console.log(response.data);
         this.likes = response.data;
       });
     },

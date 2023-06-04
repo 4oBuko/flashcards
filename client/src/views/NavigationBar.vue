@@ -102,7 +102,7 @@ export default {
               key: "4-1",
               icon: "pi pi-fw pi-star-fill",
               label: "Tags",
-              path: "/likes/sets",
+              path: "/likes/tags",
               data: "Pacino Movies",
               children: [],
             },

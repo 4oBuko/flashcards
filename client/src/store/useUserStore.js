@@ -63,8 +63,20 @@ export const useUserStore = defineStore("user", {
           this.logout();
         });
     },
-    likeTag(tagId) {},
-    unlikeTag(tagId) {},
+    likeTag(tagId) {
+      instance
+        .post(ENDPOINTS.TAG_LIKE.replace(":id", tagId))
+        .then((response) => {
+          this.loadUser();
+        });
+    },
+    unlikeTag(tagId) {
+      instance
+        .delete(ENDPOINTS.TAG_LIKE.replace(":id", tagId))
+        .then((response) => {
+          this.loadUser();
+        });
+    },
     likeSet(setId) {
       instance
         .post(ENDPOINTS.SET_LIKE.replace(":id", setId))

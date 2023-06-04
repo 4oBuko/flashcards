@@ -8,7 +8,6 @@
     </div>
     <Toolbar class="mx-7">
       <template #end>
-        <!--          todo: show only for sets of other users and change heart icon if it's liked-->
         <Button
           v-if="!liked"
           v-on:click="pressLike"
@@ -115,6 +114,7 @@ export default {
     swapValues() {},
   },
   computed: {
+    // todo: don't show edit buttons if user is not the author
     ...mapState(useFlashcardsSetStore, ["set"]),
     ...mapState(useUserStore, ["user"]),
     liked() {
