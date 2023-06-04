@@ -8,12 +8,12 @@ import TokenService from "@/services/tokenService";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    user: {},
+    user: undefined,
   }),
   actions: {
     getByNickname(nickname) {},
     logout() {
-      this.user = {};
+      this.user = undefined;
       localStorage.removeItem("token");
       instance.defaults.withCredentials = true;
       instance.post(ENDPOINTS.LOGOUT);
@@ -48,7 +48,8 @@ export const useUserStore = defineStore("user", {
         .then((response) => {
           if (response.status === 200) {
             TokenService.setToken(response.data.token);
-            router.push("/");
+            this.loadUser();
+            router.push("/sets");
             return { message: "login successful" };
           } else if (response.status === 401) {
             return response;
@@ -91,5 +92,8 @@ export const useUserStore = defineStore("user", {
           this.loadUser();
         });
     },
+  },
+  getters: {
+    loggedIn: (state) => state.user !== undefined,
   },
 });

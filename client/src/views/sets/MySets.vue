@@ -23,7 +23,7 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-column flex-1">
+  <div class="flex flex-column flex-1 h-screen">
     <Toolbar>
       <template #end>
         <Button
@@ -53,13 +53,6 @@ export default {
                 <div class="text-color-secondary">
                   {{ slotProps.data.questionLanguage.name }} ->
                   {{ slotProps.data.answerLanguage.name }}
-                </div>
-                <div class="text-color-secondary">
-                  {{
-                    slotProps.data.description.length > 75
-                      ? slotProps.data.description.substring(0, 75) + "..."
-                      : slotProps.data.description
-                  }}
                 </div>
               </div>
               <div

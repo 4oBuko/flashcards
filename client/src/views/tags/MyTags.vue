@@ -34,7 +34,7 @@ export default {
         />
       </template>
     </Toolbar>
-    <DataView :value="userTags" paginator :rows="5">
+    <DataView :value="userTags" paginator :rows="4" class="">
       <template #list="slotProps">
         <div class="col-12">
           <div

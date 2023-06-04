@@ -27,6 +27,7 @@
       <template #start>
         <!--          todo: shuffle enabled and disabled-->
         <!--          todo: I can show it as outilined button-->
+        <!--        todo: just add answer/question text on top of the card-->
         <Button
           v-on:click="shuffleCards"
           label="Shuffle cards"
