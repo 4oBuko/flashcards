@@ -18,15 +18,23 @@
     </div>
     <div class="w-12 flex flex-column gap-3">
       <h2 class="text-2xl">Sets</h2>
-      <div v-for="set in setsStore.userSets" class="">
-        <Checkbox
-          v-model="tagSets"
-          :inputId="set.id"
-          name="category"
-          :value="set.id"
-        />
-        <label :for="set.key">{{ set.name }}</label>
-      </div>
+      <MultiSelect
+        v-model="tagSets"
+        :options="userSets"
+        optionValue="id"
+        optionLabel="name"
+        placeholder="Select Sets"
+        class="w-full md:w-20rem"
+      />
+      <!--      <div v-for="set in setsStore.userSets" class="">-->
+      <!--        <Checkbox-->
+      <!--          v-model="tagSets"-->
+      <!--          :inputId="set.id"-->
+      <!--          name="category"-->
+      <!--          :value="set.id"-->
+      <!--        />-->
+      <!--        <label :for="set.key">{{ set.name }}</label>-->
+      <!--      </div>-->
     </div>
     <div class="flex flex-column gap-2">
       <div>Make tag public</div>
@@ -41,12 +49,18 @@ import { useColorStore } from "@/store/useColorStore";
 import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
 import tagService from "@/services/tagService";
 import { ref } from "vue";
+import { mapActions, mapState } from "pinia";
+import { useTagStore } from "@/store/useTagStore";
+import router from "@/router";
 
 export default {
   setName: "CreateTag",
   created() {
     this.colors.loadColors();
     this.setsStore.getUserSets();
+  },
+  beforeMount() {
+    this.getUserSets();
   },
   data() {
     return {
@@ -59,16 +73,15 @@ export default {
     };
   },
   methods: {
+    ...mapActions(useTagStore, ["createNew", "getUserTags"]),
+    ...mapActions(useFlashcardsSetStore, ["getUserSets"]),
     createNewTag() {
-      tagService.createNewTag(
-        this.tagName,
-        this.tagSets,
-        this.isPublic,
-        this.tagColor
-      );
+      this.createNew(this.tagName, this.tagSets, this.isPublic, this.tagColor);
     },
   },
-  computed: {},
+  computed: {
+    ...mapState(useFlashcardsSetStore, ["userSets"]),
+  },
 };
 </script>
 

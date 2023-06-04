@@ -24,6 +24,7 @@ import java.util.Objects;
 public class FlashcardsSetService {
 
     private FlashcardsSetRepository flashcardsSetRepository;
+    private TagRepository tagRepository;
     private UserService userService;
     private LanguageRepository languageRepository;
 
@@ -105,11 +106,15 @@ public class FlashcardsSetService {
         FlashcardsSet set = flashcardsSetRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         if (set.getUser().getId().equals(payload.getUserId())) {
+            List<Tag> tags = set.getTags();
+            for(Tag tag:  tags) {
+                tag.getSets().remove(set);
+            }
+            tagRepository.saveAll(tags);
             flashcardsSetRepository.deleteById(id);
         } else {
             throw new CustomAccessDeniedException("Access denied. You are not the author of this set");
         }
-        flashcardsSetRepository.deleteById(id);
     }
 
 

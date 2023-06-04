@@ -3,6 +3,7 @@ package com.flashcardsapi.services;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.flashcardsapi.dtos.tag.CreateTagDTO;
 import com.flashcardsapi.dtos.tag.UpdateTagDTO;
@@ -53,31 +54,41 @@ public class TagService {
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         Tag tag = tagRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
         if (tag.getUser().getId().equals(payload.getUserId())) {
+            List<FlashcardsSet> sets = tag.getSets();
+            for(FlashcardsSet set : sets) {
+                set.getTags().remove(tag);
+            }
+            setsRepository.saveAll(sets);
             tagRepository.deleteById(id);
         } else {
             throw new CustomAccessDeniedException("Access denied. You are not the author of this tag");
         }
     }
 
-    @Transactional
+//    @Transactional
     public Tag create(CreateTagDTO dto, Jwt jwt) {
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         Color color = colorService.getColorById(dto.getColorId());
         User user = userService.getById(payload.getUserId());
-
-
         Tag tag = new Tag();
         List<FlashcardsSet> sets = setService.getById(dto.getSets()).stream()
                 .filter(set -> set.isPublic() || set.getUser().getId().equals(payload.getUserId()))
-                .peek(set -> set.getTags().add(tag))
                 .toList();
-        tag.setSets(sets);
+
+        List<FlashcardsSet> updatedSets = new ArrayList<>();
+        for(FlashcardsSet set : sets) {
+            set.getTags().add(tag);
+            updatedSets.add(set);
+        }
+        tag.setSets(updatedSets);
         tag.setUser(user);
         tag.setPublic(dto.isPublic());
         tag.setName(dto.getName());
         tag.setColor(color);
-        setsRepository.saveAll(sets);
-        return tagRepository.save(tag);
+
+        Tag newTag = tagRepository.save(tag);
+        setsRepository.saveAll(updatedSets);
+        return newTag;
     }
 
     @Transactional

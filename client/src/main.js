@@ -26,6 +26,13 @@ import DataView from "primevue/dataview";
 import Toolbar from "primevue/toolbar";
 import Avatar from "primevue/avatar";
 import Divider from "primevue/divider";
+import ConfirmPopup from "primevue/confirmpopup";
+import ConfirmDialog from "primevue/confirmdialog";
+import ConfirmationService from "primevue/confirmationservice";
+import ToastService from "primevue/toastservice";
+import DialogService from "primevue/dialogservice";
+import ScrollPanel from "primevue/scrollpanel";
+import MultiSelect from "primevue/multiselect";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -33,7 +40,9 @@ const pinia = createPinia();
 app.use(router);
 app.use(pinia);
 app.use(PrimeVue, { ripple: true });
-
+app.use(ConfirmationService);
+app.use(ToastService);
+app.use(DialogService);
 // ui components
 app.component("Button", Button);
 app.component("InputText", InputText);
@@ -50,7 +59,10 @@ app.component("Carousel", Carousel);
 app.component("DataView", DataView);
 app.component("Toolbar", Toolbar);
 app.component("Avatar", Avatar);
-// app.component("Divider", Divider);
+app.component("Toast", Toast);
+app.component("ConfirmDialog", ConfirmDialog);
+app.component("ConfirmPopup", ConfirmPopup);
+app.component("MultiSelect", MultiSelect);
 
 const customComponents = ["Toast", "Tree"];
 app.config.compilerOptions.isCustomElement = (tag) => {

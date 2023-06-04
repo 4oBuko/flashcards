@@ -16,7 +16,7 @@ export default {
   computed: {
     ...mapState(useTagStore, ["userTags"]),
   },
-  mounted() {
+  beforeMount() {
     this.getUserTags();
   },
 };
@@ -34,7 +34,7 @@ export default {
         />
       </template>
     </Toolbar>
-    <DataView :value="userTags" paginator :rows="4" class="">
+    <DataView :value="userTags" paginator :rows="5" class="">
       <template #list="slotProps">
         <div class="col-12">
           <div
@@ -51,6 +51,13 @@ export default {
                 ></div>
                 <div class="text-2xl font-bold text-900">
                   {{ slotProps.data.name }}
+                </div>
+                <div class="text-color-secondary">
+                  {{
+                    `contains ${slotProps.data.sets.length} ${
+                      slotProps.data.sets.length === 1 ? "set" : "sets"
+                    }`
+                  }}
                 </div>
               </div>
               <div

@@ -52,7 +52,7 @@ public class FlashcardsSet {
     @Column(columnDefinition = "jsonb")
     private List<Flashcard> flashcards;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(name = "flashcards_set_tag",
             joinColumns = @JoinColumn(name = "flashcards_set_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))

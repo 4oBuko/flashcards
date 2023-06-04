@@ -37,7 +37,7 @@ public class Tag {
     private boolean isPublic;
 
 
-    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tags")
     @JsonIgnoreProperties(value = "tags")
     private List<FlashcardsSet> sets = new ArrayList<>();
 

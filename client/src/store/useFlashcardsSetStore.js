@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import instance from "@/axios/axios";
 import { ENDPOINTS } from "@/config/api-routes";
+import api from "@/axios/axios";
+import router from "@/router";
 
 export const useFlashcardsSetStore = defineStore("flashcards", {
   state: () => ({
@@ -25,6 +27,36 @@ export const useFlashcardsSetStore = defineStore("flashcards", {
       instance.get(ENDPOINTS.GET_LIKED_SETS).then((response) => {
         this.likes = response.data;
       });
+    },
+    createNew(
+      name,
+      questionLanguage,
+      answerLanguage,
+      description,
+      cards,
+      isPublic
+    ) {
+      return api
+        .post(ENDPOINTS.SET_CREATE, {
+          name: name,
+          questionLanguageId: questionLanguage.id,
+          answerLanguageId: answerLanguage.id,
+          description: description,
+          flashcards: cards,
+          isPublic: isPublic,
+        })
+        .then((response) => {
+          this.set = response.data;
+          router.push(`/sets/${this.set.id}`);
+        });
+    },
+    delete(id) {
+      instance
+        .delete(ENDPOINTS.SET_DELETE.replace(":id", id))
+        .then((response) => {
+          this.set = {};
+          this.getUserSets();
+        });
     },
   },
 });

@@ -13,7 +13,7 @@
       <Dropdown
         v-model="questionLanguage"
         inputId="dd-city"
-        :options="languageStore.languages"
+        :options="languages"
         optionLabel="name"
         placeholder="Question language"
         class="w-full md:w-14rem"
@@ -24,7 +24,7 @@
       <Dropdown
         v-model="answerLanguage"
         inputId="dd-city"
-        :options="languageStore.languages"
+        :options="languages"
         optionLabel="name"
         placeholder="Answer language"
         class="w-full md:w-14rem"
@@ -65,12 +65,14 @@
 <script>
 import setService from "@/services/setService";
 import { useLanguageStore } from "@/store/useLanguageStore";
+import { mapActions, mapState } from "pinia";
+import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";
 
 export default {
   setName: "CreateSet",
-  created() {
+  beforeMount() {
     this.addMoreCards();
-    this.languageStore.loadLanguages();
+    this.loadLanguages();
   },
   data() {
     return {
@@ -80,10 +82,11 @@ export default {
       answerLanguage: {},
       flashcards: [],
       isPublic: false,
-      languageStore: useLanguageStore(),
     };
   },
   methods: {
+    ...mapActions(useFlashcardsSetStore, ["createNew"]),
+    ...mapActions(useLanguageStore, ["loadLanguages"]),
     addMoreCards() {
       for (let i = 0; i < 5; i++) {
         this.flashcards.push({
@@ -97,7 +100,7 @@ export default {
     createSet() {
       this.removeEmptyCards();
       if (this.flashcards.length >= 1) {
-        setService.createNew(
+        this.createNew(
           this.setName,
           this.questionLanguage,
           this.answerLanguage,
@@ -123,6 +126,9 @@ export default {
       });
       this.flashcards = this.flashcards.filter((f) => f.question && f.answer);
     },
+  },
+  computed: {
+    ...mapState(useLanguageStore, ["languages"]),
   },
 };
 </script>
