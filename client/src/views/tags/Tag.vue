@@ -16,13 +16,23 @@ export default {
   beforeMount() {
     const tagId = this.$route.params.id;
     this.getTag(tagId);
-    // this.loadUser();
   },
   methods: {
     ...mapActions(useTagStore, ["getTag", "delete"]),
     ...mapActions(useUserStore, ["likeTag", "unlikeTag", "loadUser"]),
-    shuffleCards() {},
-    swapValues() {},
+    shuffleCards() {
+      this.tag.flashcards.sort((a, b) => Math.random() - 0.5);
+      this.tag.flashcards.forEach((card) => {
+        card.showAnswer = false;
+      });
+    },
+    swapValues() {
+      this.tag.flashcards.forEach((card) => {
+        let temp = card.question;
+        card.question = card.answer;
+        card.answer = temp;
+      });
+    },
     showAnswer(card) {
       card.showAnswer = !card.showAnswer;
     },
@@ -116,7 +126,7 @@ export default {
         />
         <!--          todo: show description when user  -->
         <Button
-          @click="confirm1"
+          @click="swapValues"
           aria-label="Like"
           icon="pi pi-arrow-right-arrow-left"
           class="mr-2"
@@ -129,12 +139,26 @@ export default {
           v-on:click="showAnswer(slotProps.data)"
           class="border-1 surface-border border-round m-2 text-center py-5 px-3 surface-300"
         >
-          <div class="h-25rem flex align-items-center">
-            <!--              todo I can use prime vue scroll panel here-->
-            <h4 v-if="slotProps.data.showAnswer" class="mt-0 mb-3 m-auto">
+          <div
+            class="h-25rem flex align-items-center justify-content-center flex-column"
+            v-if="slotProps.data.showAnswer"
+          >
+            <h5 class="mt-0 mb-3 m-auto text-color-secondary">
+              {{ "answer" }}
+            </h5>
+            <h4 class="mt-0 mb-3 m-auto">
               {{ slotProps.data.answer }}
             </h4>
-            <h4 v-if="!slotProps.data.showAnswer" class="mt-0 mb-3 m-auto">
+          </div>
+          <div
+            class="h-25rem flex align-items-center justify-content-center flex-column"
+            v-else
+          >
+            <!--              todo I can use prime vue scroll panel here-->
+            <h5 class="mt-0 mb-3 m-auto text-color-secondary">
+              {{ "question" }}
+            </h5>
+            <h4 class="mt-0 mb-3 m-auto">
               {{ slotProps.data.question }}
             </h4>
           </div>

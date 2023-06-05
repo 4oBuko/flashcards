@@ -38,7 +38,7 @@
         />
         <!--          todo: show description when user  -->
         <Button
-          v-on:click="likeSet"
+          v-on:click="swapValues"
           aria-label="Like"
           icon="pi pi-arrow-right-arrow-left"
           class="mr-2"
@@ -51,12 +51,26 @@
           v-on:click="showAnswer(slotProps.data)"
           class="border-1 surface-border border-round m-2 text-center py-5 px-3 surface-300"
         >
-          <div class="h-25rem flex align-items-center">
-            <!--              todo I can use prime vue scroll panel here-->
-            <h4 v-if="slotProps.data.showAnswer" class="mt-0 mb-3 m-auto">
+          <div
+            class="h-25rem flex align-items-center justify-content-center flex-column"
+            v-if="slotProps.data.showAnswer"
+          >
+            <h5 class="mt-0 mb-3 m-auto text-color-secondary">
+              {{ "answer" }}
+            </h5>
+            <h4 class="mt-0 mb-3 m-auto">
               {{ slotProps.data.answer }}
             </h4>
-            <h4 v-if="!slotProps.data.showAnswer" class="mt-0 mb-3 m-auto">
+          </div>
+          <div
+            class="h-25rem flex align-items-center justify-content-center flex-column"
+            v-else
+          >
+            <!--              todo I can use prime vue scroll panel here-->
+            <h5 class="mt-0 mb-3 m-auto text-color-secondary">
+              {{ "question" }}
+            </h5>
+            <h4 class="mt-0 mb-3 m-auto">
               {{ slotProps.data.question }}
             </h4>
           </div>
@@ -110,7 +124,13 @@ export default {
     ...mapActions(useFlashcardsSetStore, ["getById", "delete"]),
     ...mapActions(useUserStore, ["likeSet", "unlikeSet", "loadUser"]),
     showAnswer(card) {
-      card.showAnswer = !card.showAnswer;
+      this.set.flashcards.forEach((c) => {
+        if (JSON.stringify(card) !== JSON.stringify(c)) {
+          c.showAnswer = false;
+        } else {
+          card.showAnswer = !card.showAnswer;
+        }
+      });
     },
     pressLike() {
       if (this.liked) {
@@ -119,8 +139,19 @@ export default {
         this.likeSet(this.set.id);
       }
     },
-    shuffleCards() {},
-    swapValues() {},
+    shuffleCards() {
+      this.set.flashcards.sort((a, b) => Math.random() - 0.5);
+      this.set.flashcards.forEach((card) => {
+        card.showAnswer = false;
+      });
+    },
+    swapValues() {
+      this.set.flashcards.forEach((card) => {
+        let temp = card.question;
+        card.question = card.answer;
+        card.answer = temp;
+      });
+    },
     deleteSet() {
       this.delete(this.set.id);
       router.push("/sets");
