@@ -51,13 +51,7 @@ public class FlashcardsSetService {
             dto.getFlashcards().get(i).setIndex(i);
         }
 
-        List<Tag> thirdPartyTags = fromDb.getTags().stream().filter(tag -> !tag.getUser().getId().equals(payload.getUserId())).toList();
-        if (thirdPartyTags.isEmpty()) {
-            fromDb.setPublic(dto.isPublic());
-        } else if (!dto.isPublic()) {
-            throw new AlreadyUsedCredentialsException("You cannot make this set private, because it is used by other users");
-        }
-
+        fromDb.setPublic(dto.isPublic());
         fromDb.setName(dto.getName());
         fromDb.setPublic(dto.isPublic());
         fromDb.setDescription(dto.getDescription());

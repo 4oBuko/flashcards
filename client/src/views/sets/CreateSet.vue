@@ -63,7 +63,6 @@
   </div>
 </template>
 <script>
-import setService from "@/services/setService";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { mapActions, mapState } from "pinia";
 import { useFlashcardsSetStore } from "@/store/useFlashcardsSetStore";

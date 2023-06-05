@@ -69,6 +69,7 @@
         class="ml-7"
         icon="pi pi-file-edit"
         severity="warning"
+        v-on:click="editSet"
         outlined
       />
       <Button
@@ -123,6 +124,9 @@ export default {
     deleteSet() {
       this.delete(this.set.id);
       router.push("/sets");
+    },
+    editSet() {
+      router.push(`/sets/${this.set.id}/edit`);
     },
     confirm1(event) {
       this.confirm.require({

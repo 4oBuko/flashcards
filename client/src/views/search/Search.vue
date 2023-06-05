@@ -1,7 +1,7 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import { useSearchStore } from "@/store/useSearchStore";
-
+// todo: show tags and sets in search
 export default {
   data() {
     return {

@@ -8,19 +8,37 @@ import { getAuthenticated, getNotAuthenticated } from "@/views/menu/menuItems";
 
 export default {
   data() {
-    return {};
+    return {
+      menuItems: [],
+    };
   },
   computed: {
     ...mapState(useUserStore, ["loggedIn", "user"]),
     ...mapState(useTagStore, ["userTags"]),
     ...mapState(useFlashcardsSetStore, ["userSets"]),
-    menuItems() {
+  },
+  watch: {
+    user(newUser, old) {
+      if (newUser) {
+        this.initMenu();
+      }
+    },
+  },
+  beforeMount() {
+    this.getUserSets();
+    this.getUserTags();
+    this.initMenu();
+  },
+
+  methods: {
+    ...mapActions(useTagStore, ["getUserTags"]),
+    ...mapActions(useFlashcardsSetStore, ["getUserSets"]),
+    ...mapActions(useUserStore, ["loadUser", "logout"]),
+    initMenu() {
       let items = [];
-      if (this.loggedIn) {
-        console.log("kon");
+      if (this.user) {
         items = getAuthenticated(this.user);
       } else {
-        console.log("non");
         items = getNotAuthenticated();
       }
       items.forEach((item) => {
@@ -30,18 +48,8 @@ export default {
           item.command = () => router.push(item.path);
         }
       });
-      return items;
+      this.menuItems = items;
     },
-  },
-  watch: {},
-  mounted() {
-    this.getUserSets();
-    this.getUserTags();
-  },
-  methods: {
-    ...mapActions(useTagStore, ["getUserTags"]),
-    ...mapActions(useFlashcardsSetStore, ["getUserSets"]),
-    ...mapActions(useUserStore, ["loadUser", "logout"]),
   },
 };
 </script>

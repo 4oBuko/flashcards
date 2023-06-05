@@ -17,7 +17,6 @@ export const useFlashcardsSetStore = defineStore("flashcards", {
         this.set = response.data;
       });
     },
-    update(updatedSet) {},
     getUserSets() {
       instance.get(ENDPOINTS.OWN_SETS_GET).then((response) => {
         this.userSets = response.data;
@@ -56,6 +55,13 @@ export const useFlashcardsSetStore = defineStore("flashcards", {
         .then((response) => {
           this.set = {};
           this.getUserSets();
+        });
+    },
+    update(updatedSet) {
+      instance
+        .put(ENDPOINTS.SET_UPDATE.replace(":id", updatedSet.id), updatedSet)
+        .then((response) => {
+          this.set = response.data;
         });
     },
   },
