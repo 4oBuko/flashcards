@@ -165,7 +165,7 @@ export default {
         </div>
       </template>
     </Carousel>
-    <div class="flex">
+    <div v-if="tag.userId === user.id" class="flex">
       <Button
         aria-label="edit"
         class="ml-7"

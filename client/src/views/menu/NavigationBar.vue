@@ -19,9 +19,7 @@ export default {
   },
   watch: {
     user(newUser, old) {
-      if (newUser) {
-        this.initMenu();
-      }
+      this.initMenu();
     },
   },
   beforeMount() {
