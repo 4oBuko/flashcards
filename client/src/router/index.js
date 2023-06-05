@@ -1,6 +1,5 @@
 import Login from "@/views/Login.vue";
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/views/Home.vue";
 import Register from "@/views/Register.vue";
 import FlashcardsSet from "@/views/sets/FlashcardsSet.vue";
 import CreateSet from "@/views/sets/CreateSet.vue";
