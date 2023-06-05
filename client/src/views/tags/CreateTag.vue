@@ -26,15 +26,6 @@
         placeholder="Select Sets"
         class="w-full md:w-20rem"
       />
-      <!--      <div v-for="set in setsStore.userSets" class="">-->
-      <!--        <Checkbox-->
-      <!--          v-model="tagSets"-->
-      <!--          :inputId="set.id"-->
-      <!--          name="category"-->
-      <!--          :value="set.id"-->
-      <!--        />-->
-      <!--        <label :for="set.key">{{ set.name }}</label>-->
-      <!--      </div>-->
     </div>
     <div class="flex flex-column gap-2">
       <div>Make tag public</div>

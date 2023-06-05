@@ -2,6 +2,7 @@ package com.flashcardsapi.services;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,7 @@ public class TagService {
         Tag tag = tagRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
         if (tag.getUser().getId().equals(payload.getUserId())) {
             List<FlashcardsSet> sets = tag.getSets();
-            for(FlashcardsSet set : sets) {
+            for (FlashcardsSet set : sets) {
                 set.getTags().remove(tag);
             }
             setsRepository.saveAll(sets);
@@ -65,7 +66,7 @@ public class TagService {
         }
     }
 
-//    @Transactional
+    //    @Transactional
     public Tag create(CreateTagDTO dto, Jwt jwt) {
         JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         Color color = colorService.getColorById(dto.getColorId());
@@ -76,7 +77,7 @@ public class TagService {
                 .toList();
 
         List<FlashcardsSet> updatedSets = new ArrayList<>();
-        for(FlashcardsSet set : sets) {
+        for (FlashcardsSet set : sets) {
             set.getTags().add(tag);
             updatedSets.add(set);
         }
@@ -97,21 +98,34 @@ public class TagService {
         Tag tag = tagRepository.findById(dto.getId()).orElseThrow(CustomEntityNotFoundException::new);
         if (tag.getUser().getId().equals(payload.getUserId())) {
 
-            List<FlashcardsSet> sets = new ArrayList<>();
-            setService.getById(dto.getSets()).stream()
+            List<FlashcardsSet> tagSets = tag.getSets();
+            Iterable<FlashcardsSet> iterable = setsRepository.findAllById(dto.getSets());
+            List<FlashcardsSet> updatedSets = new LinkedList<>();
+            iterable.forEach(updatedSets::add);
+            List<FlashcardsSet> newSets = updatedSets.stream()
+                    .filter(set -> !tagSets.contains(set))
                     .filter(set -> set.isPublic() || set.getUser().getId().equals(payload.getUserId()))
                     .peek(set -> set.getTags().add(tag))
-                    .forEach(sets::add);
+                    .toList();
+            List<FlashcardsSet> removedSets = tagSets.stream()
+                    .filter(set -> !updatedSets.contains(set))
+                    .peek(set -> set.getTags().remove(tag))
+                    .toList();
 
             if (!tag.getColor().getId().equals(dto.getColorId())) {
                 Color color = colorService.getColorById(dto.getColorId());
                 tag.setColor(color);
             }
-            tag.setSets(sets);
+            tagSets.addAll(newSets);
+            tagSets.removeAll(removedSets);
+            tag.setSets(tagSets);
             tag.setName(dto.getName());
             tag.setPublic(dto.isPublic());
-            setsRepository.saveAll(sets);
-            return tagRepository.save(tag);
+            setsRepository.saveAll(removedSets);
+            setsRepository.saveAll(tagSets);
+
+            Tag newTag = tagRepository.save(tag);
+            return newTag;
         } else {
             throw new CustomAccessDeniedException("Access denied. Your are not the author of this tag!");
         }

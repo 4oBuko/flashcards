@@ -22,7 +22,6 @@ export const useTagStore = defineStore("tag", {
         this.tag.sets.forEach((set) => {
           set.flashcards.forEach((card) => cards.push(card));
         });
-        console.log(JSON.stringify(cards));
         this.tag.flashcards = cards;
       });
     },
@@ -50,6 +49,18 @@ export const useTagStore = defineStore("tag", {
         .then((response) => {
           this.tag = response.data;
           router.push(`/tags/${this.tag.id}`);
+        });
+    },
+    update(tag) {
+      instance
+        .put(ENDPOINTS.TAG_UPDATE.replace(":id", tag.id), { ...tag })
+        .then((response) => {
+          this.tag = response.data;
+          let cards = [];
+          this.tag.sets.forEach((set) => {
+            set.flashcards.forEach((card) => cards.push(card));
+          });
+          this.tag.flashcards = cards;
         });
     },
   },

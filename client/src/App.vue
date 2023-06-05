@@ -18,10 +18,10 @@ export default {
     ...mapState(useLanguageStore, ["languages"]),
     ...mapState(useColorStore, ["colors"]),
   },
-  beforeMount() {
-    this.loadUser();
-    this.loadLanguages();
-    this.loadColors();
+  async beforeMount() {
+    await this.loadUser();
+    await this.loadLanguages();
+    await this.loadColors();
   },
 };
 </script>

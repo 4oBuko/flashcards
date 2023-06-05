@@ -16,10 +16,11 @@ export default {
   beforeMount() {
     const tagId = this.$route.params.id;
     this.getTag(tagId);
+    // this.loadUser();
   },
   methods: {
     ...mapActions(useTagStore, ["getTag", "delete"]),
-    ...mapActions(useUserStore, ["likeTag", "unlikeTag", "load"]),
+    ...mapActions(useUserStore, ["likeTag", "unlikeTag", "loadUser"]),
     shuffleCards() {},
     swapValues() {},
     showAnswer(card) {
@@ -60,6 +61,9 @@ export default {
           });
         },
       });
+    },
+    editTag() {
+      router.push(`/tags/${this.tag.id}/edit`);
     },
   },
   computed: {
@@ -143,6 +147,7 @@ export default {
         class="ml-7"
         icon="pi pi-file-edit"
         severity="warning"
+        v-on:click="editTag"
         outlined
       />
       <Button
