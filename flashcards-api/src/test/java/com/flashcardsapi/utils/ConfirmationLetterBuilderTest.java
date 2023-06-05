@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.flashcardsapi.entities.User;
-import com.flashcardsapi.entities.VerificationToken;
+import com.flashcardsapi.entities.db.User;
+import com.flashcardsapi.entities.db.VerificationToken;
 
 public class ConfirmationLetterBuilderTest {
 

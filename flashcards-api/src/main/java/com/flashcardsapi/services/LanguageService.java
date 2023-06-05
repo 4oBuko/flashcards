@@ -1,0 +1,22 @@
+package com.flashcardsapi.services;
+
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import com.flashcardsapi.entities.db.Language;
+import com.flashcardsapi.repositories.LanguageRepository;
+
+import java.util.List;
+import java.util.stream.StreamSupport;
+
+@Service
+@AllArgsConstructor
+public class LanguageService {
+
+    private LanguageRepository languageRepository;
+
+    public List<Language> getAllLanguages() {
+        return StreamSupport.stream(languageRepository.findAll().spliterator(), false)
+                .toList();
+    }
+}

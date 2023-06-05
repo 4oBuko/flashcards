@@ -1,24 +1,24 @@
 package com.flashcardsapi.controllers;
 
 import com.flashcardsapi.dtos.user.CreateUserDTO;
-import org.springframework.beans.factory.annotation.Value;
+import com.flashcardsapi.entities.ConfirmationResult;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.flashcardsapi.entities.VerificationToken;
+import com.flashcardsapi.entities.db.VerificationToken;
 import com.flashcardsapi.services.EmailService;
 import com.flashcardsapi.services.UserService;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
+@Log4j2
 @RequestMapping("/register")
-public class RegistrationController { // todo: test all endpoints
+public class RegistrationController {
     private final UserService userService;
     private final EmailService emailService;
 
@@ -26,9 +26,6 @@ public class RegistrationController { // todo: test all endpoints
         this.userService = userService;
         this.emailService = emailService;
     }
-
-     @Value("${frontend.url}")
-    private String frontendUrl;
 
     @PostMapping()
     @ResponseBody
@@ -40,23 +37,14 @@ public class RegistrationController { // todo: test all endpoints
     }
 
     @GetMapping("/confirm")
-    public void verifyEmail(HttpServletResponse servletResponse, @RequestParam String token) {
-        String message = "message: ";
+    public ConfirmationResult verifyEmail(@RequestParam String token) {
         VerificationToken verificationToken = emailService.getToken(token);
-        if (emailService.verifyToken(token) && verificationToken != null) {
+        if (emailService.verifyToken(token)) {
             userService.confirmUser(verificationToken);
-            servletResponse.setStatus(HttpServletResponse.SC_OK);
-            message += "\"verified successufully!\"";
+            return new ConfirmationResult(true, "verified successfully!");
         } else {
-            servletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            message += "\"verification failed! New verification letter was sent!\"";
-        }
-        try {
-            servletResponse.sendRedirect(frontendUrl);
-            servletResponse.getWriter().write(message);
-            servletResponse.getWriter().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+            emailService.sendVerificationLetter(verificationToken.getUser());
+            return new ConfirmationResult(false, "verification failed! Check your email for new verification letter!");
         }
     }
 }

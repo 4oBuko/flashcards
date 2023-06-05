@@ -1,5 +1,7 @@
 package com.flashcardsapi.controllers;
 
+import com.flashcardsapi.dtos.flashcardsset.CreateFlashcardsSetDTO;
+import com.flashcardsapi.dtos.flashcardsset.UpdateFlashcardsSetDTO;
 import lombok.AllArgsConstructor;
 
 import javax.validation.Valid;
@@ -8,45 +10,61 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import com.flashcardsapi.entities.FlashcardsSet;
-import com.flashcardsapi.entities.User;
-import com.flashcardsapi.services.FlashcardsSetsService;
+import com.flashcardsapi.entities.db.FlashcardsSet;
+import com.flashcardsapi.services.FlashcardsSetService;
 import com.flashcardsapi.services.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("sets")
 @AllArgsConstructor
 public class FlashcardsSetController {
-    private FlashcardsSetsService flashcardsSetsService;
+    private FlashcardsSetService flashcardsSetService;
 
     private UserService userService;
 
+
     @GetMapping("/{setId}")
-    public FlashcardsSet getSetById(@PathVariable long setId) {
-        return flashcardsSetsService.getSetById(setId);
+    public FlashcardsSet getSetById(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
+        return flashcardsSetService.getById(setId, jwt);
+    }
+
+    @GetMapping()
+    public List<FlashcardsSet> getUserSets( @AuthenticationPrincipal Jwt jwt) {
+        return flashcardsSetService.getUsersSets(jwt);
     }
 
     @PostMapping()
-    public FlashcardsSet addNewSet(@Valid @RequestBody FlashcardsSet newSet, @AuthenticationPrincipal Jwt principal) {
-        long userId = (long) principal.getClaims().get("id");
-        User testUser = userService.getById(userId);
-        return flashcardsSetsService.addNewSet(newSet, testUser);
+    public FlashcardsSet addNewSet(@Valid @RequestBody CreateFlashcardsSetDTO newSet, @AuthenticationPrincipal Jwt jwt) {
+        return flashcardsSetService.create(newSet, jwt);
     }
 
     @PutMapping()
-    public FlashcardsSet updateSet(@RequestBody FlashcardsSet setToUpdate) {
-        try {
-            return flashcardsSetsService.updateSet(setToUpdate);
-        } catch (IllegalArgumentException e) {
-            // todo: remove try/catch block with exception handler
-            return null;
-        }
+    public FlashcardsSet updateSet(@Valid @RequestBody  UpdateFlashcardsSetDTO dto, @AuthenticationPrincipal Jwt jwt) {
+        return flashcardsSetService.update(dto, jwt);
     }
 
     @DeleteMapping("/{setId}")
-    public String deleteSetById(@PathVariable long setId) {
-        flashcardsSetsService.deleteSetById(setId);
-        // todo: check if the user can delete this tag
+    public String deleteSetById(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
+        flashcardsSetService.deleteById(setId, jwt);
         return "tag was successfully deleted";
+    }
+
+    @PostMapping("/{setId}/like")
+    public String likeTag(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
+        flashcardsSetService.likeSet(setId, jwt);
+        return "tag was added to favorite list";
+    }
+
+    @DeleteMapping("/{setId}/like")
+    public String unlikeTag(@PathVariable long setId, @AuthenticationPrincipal Jwt jwt) {
+        flashcardsSetService.unlikeSet(setId, jwt);
+        return "tag was removed from your favorite";
+    }
+
+    @GetMapping("/likes")
+    public List<FlashcardsSet> getLikes(@AuthenticationPrincipal Jwt jwt) {
+        return flashcardsSetService.getUserLikes(jwt);
     }
 }

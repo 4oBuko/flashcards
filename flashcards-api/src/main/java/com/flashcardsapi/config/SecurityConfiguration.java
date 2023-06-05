@@ -6,10 +6,10 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,14 +31,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private final RsaKeyProperties keyProperties;
 
+
+    private final String clientUrl;
+
+    public SecurityConfiguration(RsaKeyProperties keyProperties, @Value("${frontend.url}") String clientUrl) {
+        this.keyProperties = keyProperties;
+        this.clientUrl = clientUrl;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // todo: change level of encryption
         return new BCryptPasswordEncoder();
     }
 
@@ -50,14 +56,18 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf(csrf -> csrf.disable()).oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+        http.cors()
+                .and()
+                .csrf().disable()
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .authorizeRequests(
                         auth -> auth.antMatchers("/auth/**").permitAll()
                                 .antMatchers("/languages").permitAll()
                                 .antMatchers("/register/**").permitAll()
                                 .antMatchers("/colors").permitAll()
+                                .antMatchers("/nicknames/**").permitAll()
                                 .anyRequest().authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER));
         return http.build();
     }
 
@@ -80,7 +90,7 @@ public class SecurityConfiguration {
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowedMethods(List.of("*"));
         // set allowed origin because creadentials are allowed
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+        corsConfiguration.setAllowedOrigins(List.of(clientUrl));
         corsConfiguration.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;

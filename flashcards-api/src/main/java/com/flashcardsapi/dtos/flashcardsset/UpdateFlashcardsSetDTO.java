@@ -1,6 +1,7 @@
 package com.flashcardsapi.dtos.flashcardsset;
 
-import com.flashcardsapi.dtos.flashcard.CreateFlashcardDTO;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.flashcardsapi.entities.db.Flashcard;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,23 +18,23 @@ import java.util.List;
 @Setter
 public class UpdateFlashcardsSetDTO {
 
-    @NotNull
+    @NotNull(message = "set id of the updated set")
     private Long id;
 
     @NotBlank(message = "name cannot be empty")
     private String name;
-    @NotNull
-    private Long answerLanguageId;
-    @NotNull
-    private Long questionLanguageId;
 
-    @NotNull
-    private List<Long> setTags;
+    @NotNull(message = "answer language cannot be null")
+    private Long answerLanguageId;
+
+    @NotNull(message = "question language cannot be null")
+    private Long questionLanguageId;
 
     private String Description;
 
     @NotEmpty(message = "set must contain at least one flashcard")
-    private List<CreateFlashcardDTO> flashcards;
+    private List<Flashcard> flashcards;
 
-    //    private boolean isPublic;
+    @JsonAlias("isPublic")
+    private boolean isPublic;
 }

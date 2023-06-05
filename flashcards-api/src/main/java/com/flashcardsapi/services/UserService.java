@@ -2,21 +2,23 @@ package com.flashcardsapi.services;
 
 import com.flashcardsapi.dtos.user.CreateUserDTO;
 import com.flashcardsapi.dtos.user.UpdateUserCredentialDTO;
+import com.flashcardsapi.entities.JwtPayload;
 import com.flashcardsapi.exceptions.AlreadyUsedCredentialsException;
 import com.flashcardsapi.exceptions.CustomEntityNotFoundException;
+import com.flashcardsapi.utils.JwtPayloadReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
-import com.flashcardsapi.entities.User;
-import com.flashcardsapi.entities.VerificationToken;
+import com.flashcardsapi.entities.db.User;
+import com.flashcardsapi.entities.db.VerificationToken;
 import com.flashcardsapi.repositories.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
 @Service
-//@AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
@@ -36,11 +38,10 @@ public class UserService {
 
     private final boolean emailVerificationEnabled;
 
-    public User getById(Long id) throws IllegalArgumentException {
+    public User getById(Long id) {
         return userRepository.findById(id).orElseThrow(CustomEntityNotFoundException::new);
     }
 
-    // todo: add password validation (number of characters and different symbols)
     @Transactional
     public void registerNewUser(CreateUserDTO createUserDTO) {
         if (userRepository.existsByEmail(createUserDTO.getEmail())) {
@@ -48,6 +49,7 @@ public class UserService {
         } else if (userRepository.existsByNickname(createUserDTO.getNickname())) {
             throw new AlreadyUsedCredentialsException("nickname is already used");
         } else {
+//            todo: add empty likes lists
             User user = new User();
             user.setEmail(createUserDTO.getEmail());
             user.setNickname(createUserDTO.getNickname());
@@ -71,38 +73,52 @@ public class UserService {
         return getById(userId);
     }
 
-    public User updatePassword(UpdateUserCredentialDTO credentialDTO) {
+    public User updatePassword(UpdateUserCredentialDTO credentialDTO, Jwt jwt) {
+        JwtPayload payload = JwtPayloadReader.getPayload(jwt);
         String encodedNewPassword = passwordEncoder.encode(credentialDTO.getCredential());
-        User user = userRepository.findById(credentialDTO.getId()).orElseThrow(CustomEntityNotFoundException::new);
+        User user = userRepository.findById(payload.getUserId()).orElseThrow(CustomEntityNotFoundException::new);
         user.setPassword(encodedNewPassword);
         return userRepository.save(user);
     }
 
-    public User updateEmail(UpdateUserCredentialDTO credentialDTO) {
-        User user = userRepository.findById(credentialDTO.getId()).orElseThrow(CustomEntityNotFoundException::new);
+    public User updateEmail(UpdateUserCredentialDTO credentialDTO, Jwt jwt) {
+        JwtPayload payload = JwtPayloadReader.getPayload(jwt);
+        User user = userRepository.findById(payload.getUserId()).orElseThrow(CustomEntityNotFoundException::new);
         user.setEmail(credentialDTO.getCredential());
-        user.setConfirmed(false);
+        if (emailVerificationEnabled) {
+            user.setConfirmed(false);
+            emailService.sendEmailUpdateLetter(user);
+        }
         userRepository.save(user);
-        emailService.sendEmailUpdateLetter(user);
         return user;
     }
 
     @Transactional
-    public User updateNickname(UpdateUserCredentialDTO credentialDTO) {
-        User user = userRepository.findById(credentialDTO.getId()).orElseThrow(CustomEntityNotFoundException::new);
-        user.setNickname(credentialDTO.getCredential());
-        return userRepository.save(user);
+    public User updateNickname(UpdateUserCredentialDTO credentialDTO, Jwt jwt) {
+        JwtPayload payload = JwtPayloadReader.getPayload(jwt);
+        User user = userRepository.findById(payload.getUserId()).orElseThrow(CustomEntityNotFoundException::new);
+        if (isNicknameAvailable(credentialDTO.getCredential())) {
+            user.setNickname(credentialDTO.getCredential());
+            return userRepository.save(user);
+        }
+        throw new AlreadyUsedCredentialsException("Nickname is already used");
     }
 
     public boolean isNicknameAvailable(String nickname) {
-        return userRepository.existsByNickname(nickname);
+        return !userRepository.existsByNickname(nickname);
     }
 
     public void confirmUser(VerificationToken token) {
         User user = token.getUser();
         user.setConfirmed(true);
-        // I can delete token after using
-        user.setConfirmed(true);
         userRepository.save(user);
+    }
+
+    public User getByNickname(String nickname) {
+        return userRepository.findByNickname(nickname).orElseThrow(CustomEntityNotFoundException::new);
+    }
+
+    public User updateFavorites(User user) {
+        return userRepository.save(user);
     }
 }

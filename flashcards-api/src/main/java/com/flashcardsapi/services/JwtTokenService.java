@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-import com.flashcardsapi.entities.User;
+import com.flashcardsapi.entities.db.User;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -17,9 +17,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class JwtTokenService {
-//    todo: create constants for tokens' validity time and use them in createJwtClaimsSet
-//    private final static TemporalUnit refreshTokenValidityTime;
-//    private final static Instant accessTokenValidityTime;
 
     private final JwtEncoder jwtEncoder;
 
@@ -45,8 +42,8 @@ public class JwtTokenService {
 
     private JwtClaimsSet createJwtClaimsSet(User user, boolean isRefreshToken) {
         Instant now = Instant.now();
-//        if isRefreshToken is true token will be valid for 182 days (half of the year) otherwise for an hour
-        Instant validityTime = isRefreshToken ? now.plus(182, ChronoUnit.DAYS) : now.plus(1, ChronoUnit.HOURS);
+//        if isRefreshToken is true token will be valid for 182 days (half of the year) otherwise for 5 minutes
+        Instant validityTime = isRefreshToken ? now.plus(182, ChronoUnit.DAYS) : now.plus(5, ChronoUnit.MINUTES);
         return JwtClaimsSet.builder()
                 .issuedAt(now)
                 .expiresAt(validityTime)
